@@ -1,0 +1,94 @@
+{
+  "id": "tree-max-depth",
+  "title": "二叉树的最大深度",
+  "difficulty": "入门",
+  "tags": [
+    "树",
+    "二叉树",
+    "递归",
+    "DFS"
+  ],
+  "source": {
+    "name": "LeetCode 104",
+    "url": "https://leetcode.cn/problems/maximum-depth-of-binary-tree/"
+  },
+  "statement": "给定一棵二叉树，求它的**最大深度**。\n\n最大深度指从根节点到最远叶子节点的**节点数**。空树的深度为 $0$，只有根节点时为 $1$。",
+  "input_format": "一行，表示二叉树的**层序序列**（广度优先），用空格分隔的整数表示节点值，`null` 表示该位置没有节点。\n\n序列末尾多余的 `null` 会被省略。若整棵树为空，该行为 `null`。\n\n$0 \\le$ 节点数 $\\le 10^5$，节点值 $|v| \\le 10^9$。",
+  "output_format": "一行一个整数，表示树的最大深度。",
+  "constraints": [
+    "0 ≤ 节点数 ≤ 10^5",
+    "|节点值| ≤ 10^9",
+    "输入为层序序列，null 表空"
+  ],
+  "samples": [
+    {
+      "input": "3 9 20 null null 15 7\n",
+      "output": "3\n",
+      "explain": "最长路径是 3→20→15（或 3→20→7），共 3 个节点。"
+    },
+    {
+      "input": "null\n",
+      "output": "0\n",
+      "explain": "空树深度为 0。"
+    }
+  ],
+  "hint": "递归定义：$f(node) = 1 + \\max(f(左), f(右))$，空节点返回 $0$。\n\n也可以层序遍历，每处理完一层深度加一。时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <algorithm>\n\nstruct Node {\n    int val;\n    Node *left, *right;\n    Node(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint depth(Node* root) {\n    // TODO: 递归求最大深度\n    return 0;\n}\n\n// 本题主要考察算法，建树代码较长，可参考题目解析\nint main() {\n    // TODO: 读入层序序列建树并输出 depth(root)\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "3 9 20 null null 15 7\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "0\n",
+      "name": "样例 2（空树）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "name": "只有一个节点",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "1 2 null 3 null 4 null\n",
+      "output": "4\n",
+      "name": "左斜树",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 5 6 7\n",
+      "output": "3\n",
+      "name": "完全二叉树",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 null 3 null 4 null 5 null\n",
+      "output": "5\n",
+      "name": "单边链（长度5）",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 null null 5 6 null 7\n",
+      "output": "4\n",
+      "name": "不规则",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <vector>\n#include <queue>\n#include <sstream>\n#include <iostream>\n#include <algorithm>\n\nstruct Node {\n    int val;\n    Node *left, *right;\n    Node(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint depth(Node* node) {\n    if (!node) return 0;\n    return 1 + std::max(depth(node->left), depth(node->right));\n}\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n    std::istringstream iss(line);\n    std::vector<std::string> tok;\n    std::string t;\n    while (iss >> t) tok.push_back(t);\n    if (tok.empty() || tok[0] == \"null\") { printf(\"0\\n\"); return 0; }\n\n    std::vector<Node*> nodes(tok.size(), nullptr);\n    nodes[0] = new Node(std::stoi(tok[0]));\n    std::queue<int> q;\n    q.push(0);\n    size_t i = 1;\n    while (!q.empty() && i < tok.size()) {\n        int idx = q.front(); q.pop();\n        if (i < tok.size()) {\n            if (tok[i] != \"null\") {\n                nodes[i] = new Node(std::stoi(tok[i]));\n                nodes[idx]->left = nodes[i];\n                q.push((int)i);\n            }\n            ++i;\n        }\n        if (i < tok.size()) {\n            if (tok[i] != \"null\") {\n                nodes[i] = new Node(std::stoi(tok[i]));\n                nodes[idx]->right = nodes[i];\n                q.push((int)i);\n            }\n            ++i;\n        }\n    }\n    printf(\"%d\\n\", depth(nodes[0]));\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,95 @@
+{
+  "id": "tree-inorder",
+  "title": "二叉树的中序遍历",
+  "difficulty": "入门",
+  "tags": [
+    "树",
+    "二叉树",
+    "遍历",
+    "递归",
+    "栈"
+  ],
+  "source": {
+    "name": "LeetCode 94",
+    "url": "https://leetcode.cn/problems/binary-tree-inorder-traversal/"
+  },
+  "statement": "给定一棵二叉树，输出它的**中序遍历**结果。\n\n中序遍历的顺序为：**左子树 → 根节点 → 右子树**，递归地进行。\n\n若树为空，输出空行。",
+  "input_format": "一行，表示二叉树的**层序序列**（广度优先），用空格分隔的整数表示节点值，`null` 表示该位置没有节点。\n\n序列末尾多余的 `null` 会被省略。若整棵树为空，该行为 `null`。\n\n$0 \\le$ 节点数 $\\le 10^5$，节点值 $|v| \\le 10^9$。",
+  "output_format": "一行，按中序遍历顺序输出节点值，以空格分隔。空树输出空行。",
+  "constraints": [
+    "0 ≤ 节点数 ≤ 10^5",
+    "|节点值| ≤ 10^9",
+    "输入为层序序列，null 表空"
+  ],
+  "samples": [
+    {
+      "input": "1 null 2 3\n",
+      "output": "1 3 2\n",
+      "explain": "根为 1，右子节点为 2；2 的左子节点为 3。中序访问顺序：1 → 3 → 2。"
+    },
+    {
+      "input": "null\n",
+      "output": "\n",
+      "explain": "空树输出空行。"
+    }
+  ],
+  "hint": "递归写法最直观：先递归左子树，再访问根，最后递归右子树。\n\n进阶：用**显式栈**模拟递归过程，实现 $O(1)$ 额外空间的迭代版本（Morris 遍历可进一步做到 $O(1)$ 空间）。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nstruct Node {\n    int val;\n    Node *left, *right;\n    Node(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nvoid inorder(Node* node, std::vector<int>& out) {\n    // TODO: 递归中序遍历\n}\n\nint main() {\n    // TODO: 建树 + 输出\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "1 null 2 3\n",
+      "output": "1 3 2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "\n",
+      "name": "样例 2（空树）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n",
+      "output": "5\n",
+      "name": "单个节点",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "4 2 6 1 3 5 7\n",
+      "output": "1 2 3 4 5 6 7\n",
+      "name": "完全二叉树",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 2 null 1 null\n",
+      "output": "1 2 3\n",
+      "name": "左斜",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 null 2 null 3 null 4\n",
+      "output": "1 2 3 4\n",
+      "name": "右斜",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 3 8 1 4 null 9 null null 7\n",
+      "output": "1 3 7 4 5 8 9\n",
+      "name": "不规则",
+      "score": 25,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <vector>\n#include <queue>\n#include <sstream>\n#include <iostream>\n\nstruct Node {\n    int val;\n    Node *left, *right;\n    Node(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nvoid inorder(Node* node, std::vector<int>& out) {\n    if (!node) return;\n    inorder(node->left, out);\n    out.push_back(node->val);\n    inorder(node->right, out);\n}\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n    std::istringstream iss(line);\n    std::vector<std::string> tok;\n    std::string t;\n    while (iss >> t) tok.push_back(t);\n    if (tok.empty() || tok[0] == \"null\") { printf(\"\\n\"); return 0; }\n\n    std::vector<Node*> nodes(tok.size(), nullptr);\n    nodes[0] = new Node(std::stoi(tok[0]));\n    std::queue<int> q;\n    q.push(0);\n    size_t i = 1;\n    while (!q.empty() && i < tok.size()) {\n        int idx = q.front(); q.pop();\n        if (i < tok.size()) {\n            if (tok[i] != \"null\") {\n                nodes[i] = new Node(std::stoi(tok[i]));\n                nodes[idx]->left = nodes[i];\n                q.push((int)i);\n            }\n            ++i;\n        }\n        if (i < tok.size()) {\n            if (tok[i] != \"null\") {\n                nodes[i] = new Node(std::stoi(tok[i]));\n                nodes[idx]->right = nodes[i];\n                q.push((int)i);\n            }\n            ++i;\n        }\n    }\n    std::vector<int> out;\n    inorder(nodes[0], out);\n    for (size_t k = 0; k < out.size(); ++k) {\n        if (k) printf(\" \");\n        printf(\"%d\", out[k]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

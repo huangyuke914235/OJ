@@ -1,0 +1,98 @@
+{
+  "id": "array-merge-intervals",
+  "title": "合并区间",
+  "difficulty": "简单",
+  "tags": [
+    "数组",
+    "排序",
+    "区间"
+  ],
+  "source": {
+    "name": "LeetCode 56",
+    "url": "https://leetcode.cn/problems/merge-intervals/"
+  },
+  "statement": "给定 $n$ 个区间 $[l_i, r_i]$（$l_i \\le r_i$）。请合并所有**重叠或相邻**的区间，输出互不重叠且覆盖范围相同的区间列表，按左端点升序输出。\n\n两个区间 $[a,b]$ 与 $[c,d]$（$a \\le c$）重叠或相邻当且仅当 $c \\le b+1$。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 2 \\times 10^5$）。\n\n接下来 $n$ 行，每行两个整数 $l_i, r_i$（$0 \\le l_i \\le r_i \\le 10^9$）。",
+  "output_format": "第一行输出合并后的区间个数 $m$。\n\n接下来 $m$ 行，每行两个整数，表示合并后的一个区间，按左端点升序。",
+  "constraints": [
+    "1 ≤ n ≤ 2×10^5",
+    "0 ≤ l_i ≤ r_i ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "4\n1 3\n2 6\n8 10\n15 18\n",
+      "output": "3\n1 6\n8 10\n15 18\n",
+      "explain": "[1,3] 与 [2,6] 重叠合并为 [1,6]；[8,10] 与 [15,18] 互不相邻，保持不变。"
+    },
+    {
+      "input": "2\n1 2\n3 4\n",
+      "output": "1\n1 4\n",
+      "explain": "[1,2] 与 [3,4] 相邻（3 ≤ 2+1），合并为 [1,4]。"
+    }
+  ],
+  "hint": "先按左端点排序，再线性扫描：维护当前区间的 $[curL, curR]$，若下一个区间的左端点 $\\le curR + 1$ 则合并（$curR = \\max(curR, r)$），否则输出当前区间并开启新区间。复杂度 $O(n \\log n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <algorithm>\n\nstruct Interval { long long l, r; };\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<Interval> segs(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld %lld\", &segs[i].l, &segs[i].r);\n\n    std::sort(segs.begin(), segs.end(), [](const Interval& a, const Interval& b) {\n        return a.l < b.l;\n    });\n\n    // TODO: 线性合并，先收集结果再输出个数\n\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n1 3\n2 6\n8 10\n15 18\n",
+      "output": "3\n1 6\n8 10\n15 18\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2\n1 2\n3 4\n",
+      "output": "1\n1 4\n",
+      "name": "样例 2（相邻合并）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n0 0\n",
+      "output": "1\n0 0\n",
+      "name": "单点区间",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "3\n5 5\n5 5\n5 5\n",
+      "output": "1\n5 5\n",
+      "name": "重复点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n1 10\n2 3\n4 5\n6 7\n",
+      "output": "1\n1 10\n",
+      "name": "完全包含",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n10 20\n1 2\n3 4\n",
+      "output": "2\n1 4\n10 20\n",
+      "name": "乱序输入",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n0 0\n2 2\n4 4\n6 6\n8 8\n",
+      "output": "5\n0 0\n2 2\n4 4\n6 6\n8 8\n",
+      "name": "间隔相邻链",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1 1\n5 5\n9 9\n",
+      "output": "3\n1 1\n5 5\n9 9\n",
+      "name": "大量不相邻",
+      "score": 0,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <algorithm>\n\nstruct Interval { long long l, r; };\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<Interval> segs(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld %lld\", &segs[i].l, &segs[i].r);\n\n    std::sort(segs.begin(), segs.end(), [](const Interval& a, const Interval& b) {\n        return a.l < b.l;\n    });\n\n    std::vector<Interval> merged;\n    for (int i = 0; i < n; ++i) {\n        if (!merged.empty() && segs[i].l <= merged.back().r + 1) {\n            if (segs[i].r > merged.back().r) merged.back().r = segs[i].r;\n        } else {\n            merged.push_back(segs[i]);\n        }\n    }\n\n    printf(\"%d\\n\", (int)merged.size());\n    for (const auto& s : merged) printf(\"%lld %lld\\n\", s.l, s.r);\n    return 0;\n}\n"
+  }
+}

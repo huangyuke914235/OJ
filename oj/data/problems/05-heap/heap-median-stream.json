@@ -1,0 +1,94 @@
+{
+  "id": "heap-median-stream",
+  "title": "数据流的中位数",
+  "difficulty": "困难",
+  "tags": [
+    "堆",
+    "优先队列",
+    "对顶堆",
+    "设计"
+  ],
+  "source": {
+    "name": "LeetCode 295",
+    "url": "https://leetcode.cn/problems/find-median-from-data-stream/"
+  },
+  "statement": "给定一个整数序列，请依次把每个数加入集合，并在**每次加入后**输出当前集合的**中位数**。\n\n若有偶数个元素，返回**较小**的那个中间值（即下标 $\\lceil n/2 \\rceil$，从 1 计数）。\n\n例如当前集合为 `{-1, 5, 3, 2, 0}`，排序后为 `-1, 0, 2, 3, 5`，中位数为 **2**。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 2 \\times 10^5$）。\n\n第二行 $n$ 个整数 $a_i$（$|a_i| \\le 10^9$）。",
+  "output_format": "共 $n$ 行，第 $i$ 行输出前 $i$ 个数的中位数。",
+  "constraints": [
+    "1 ≤ n ≤ 2×10^5",
+    "|a_i| ≤ 10^9",
+    "偶数个元素时取下中位数"
+  ],
+  "samples": [
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "1\n1\n2\n2\n",
+      "explain": "依次为 {1}→1；{1,2}→1；{1,2,3}→2；{1,2,3,4}→2。"
+    },
+    {
+      "input": "5\n-1 5 3 2 0\n",
+      "output": "-1\n-1\n3\n2\n2\n",
+      "explain": "依次为 {-1}→-1；{-1,5}→-1；排序 -1,3,5 取中得 3；排序 -1,2,3,5 取下中 2；排序 -1,0,2,3,5 取中 2。"
+    }
+  ],
+  "hint": "**对顶堆（双堆）**：维护两个堆：\n\n- **大根堆 `lo`** 存较小的一半，堆顶是这一半的最大值；\n- **小根堆 `hi`** 存较大的一半，堆顶是这一半的最小值。\n\n插入 $x$：先入 `lo`，再把 `lo` 堆顶移到 `hi`；若 `hi` 比 `lo` 多，则把 `hi` 堆顶移回 `lo`。这样恒有 $|lo| \\ge |hi|$ 且 $|lo| - |hi| \\le 1$，**中位数始终是 `lo` 的堆顶**。\n\n每个元素 $O(\\log n)$，总计 $O(n \\log n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n#include <functional>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n\n    std::priority_queue<long long> lo;  // 大根堆\n    std::priority_queue<long long, std::vector<long long>, std::greater<long long>> hi;\n\n    for (int i = 0; i < n; ++i) {\n        long long x;\n        scanf(\"%lld\", &x);\n        // TODO: 维护对顶堆并输出中位数\n    }\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "1\n1\n2\n2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n-1 5 3 2 0\n",
+      "output": "-1\n-1\n3\n2\n2\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n7\n",
+      "output": "7\n",
+      "name": "单元素",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "5\n1 2 3 4 5\n",
+      "output": "1\n1\n2\n2\n3\n",
+      "name": "递增",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5\n5 4 3 2 1\n",
+      "output": "5\n4\n4\n3\n3\n",
+      "name": "递减",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n3 3 3 3\n",
+      "output": "3\n3\n3\n3\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6\n-5 -3 -1 0 2 4\n",
+      "output": "-5\n-5\n-3\n-3\n-1\n-1\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n#include <functional>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n\n    std::priority_queue<long long> lo;\n    std::priority_queue<long long, std::vector<long long>, std::greater<long long>> hi;\n\n    for (int i = 0; i < n; ++i) {\n        long long x;\n        scanf(\"%lld\", &x);\n        lo.push(x);\n        hi.push(lo.top()); lo.pop();\n        if (hi.size() > lo.size()) { lo.push(hi.top()); hi.pop(); }\n        printf(\"%lld\\n\", lo.top());\n    }\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

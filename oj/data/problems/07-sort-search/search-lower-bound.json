@@ -1,0 +1,93 @@
+{
+  "id": "search-lower-bound",
+  "title": "查找首个不小于 x 的位置",
+  "difficulty": "中等",
+  "tags": [
+    "查找",
+    "二分查找",
+    "下界"
+  ],
+  "source": {
+    "name": "LeetCode 35 / STL lower_bound",
+    "url": "https://leetcode.cn/problems/search-insert-position/"
+  },
+  "statement": "给定一个**非递减**排列的数组 $a$ 和 $q$ 次查询，每次查询整数 $x$。\n\n请输出数组中**第一个大于或等于 $x$ 的元素的位置**（从 $1$ 开始计数）。\n\n若数组中所有元素都小于 $x$，输出 $0$ 表示不存在。\n\n该位置也等价于「把 $x$ 插入数组后仍保持非递减，它应占据的下标 $+1$」。",
+  "input_format": "第一行两个整数 $n, q$（$1 \\le n \\le 10^5$，$1 \\le q \\le 10^5$）。\n\n第二行 $n$ 个**非递减**整数 $a_i$。\n\n第三行 $q$ 个整数，为查询的 $x$。",
+  "output_format": "共 $q$ 行，每行一个整数，表示首个 $\\ge x$ 的元素位置（$1$ 开始）；不存在则输出 $0$。",
+  "constraints": [
+    "1 ≤ n, q ≤ 10^5",
+    "|a_i|, |x| ≤ 10^9",
+    "数组非递减（可含重复）"
+  ],
+  "samples": [
+    {
+      "input": "5 3\n1 3 5 7 9\n3 4 10\n",
+      "output": "2\n3\n0\n",
+      "explain": "$\\ge 3$ 的首个位置是 2（值为 3）；$\\ge 4$ 的是 4（值为 5）；$\\ge 10$ 的没有，输出 0。"
+    },
+    {
+      "input": "3 1\n5 6 7\n1\n",
+      "output": "1\n",
+      "explain": "所有元素都 $\\ge 1$，首个位置是 1。"
+    }
+  ],
+  "hint": "这是二分的经典变体。注意**不要**在 `a[mid] == x` 时直接返回——因为可能有更靠前的相等元素。\n\n正确区间：`ans = n+1`（哨兵）；当 `a[mid] >= x` 时记录 `ans = mid` 并 `hi = mid - 1`；否则 `lo = mid + 1`。循环结束后若 `ans == n+1` 则输出 0。\n\nC++ 中也可直接用 `std::lower_bound(a.begin(), a.end(), x)`。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n, q;\n    scanf(\"%d %d\", &n, &q);\n    std::vector<long long> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &a[i]);\n\n    for (int t = 0; t < q; ++t) {\n        long long x;\n        scanf(\"%lld\", &x);\n        // TODO: 求首个 >= x 的位置\n    }\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "5 3\n1 3 5 7 9\n3 4 10\n",
+      "output": "2\n3\n0\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 1\n5 6 7\n1\n",
+      "output": "1\n",
+      "name": "都小于最小值",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 1\n1 2 3\n100\n",
+      "output": "0\n",
+      "name": "都大于最大值",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "4 2\n1 2 3 4\n1 4\n",
+      "output": "1\n4\n",
+      "name": "命中边界",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 3\n1 2 2 2 3\n2 3 4\n",
+      "output": "2\n5\n0\n",
+      "name": "重复元素",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 2\n-5 -3 0 1\n-4 0\n",
+      "output": "2\n3\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2\n5\n5 6\n",
+      "output": "1\n0\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <algorithm>\n\nint main() {\n    int n, q;\n    scanf(\"%d %d\", &n, &q);\n    std::vector<long long> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &a[i]);\n\n    for (int t = 0; t < q; ++t) {\n        long long x;\n        scanf(\"%lld\", &x);\n        int pos = (int)(std::lower_bound(a.begin(), a.end(), x) - a.begin());\n        printf(\"%d\\n\", pos < n ? pos + 1 : 0);\n    }\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

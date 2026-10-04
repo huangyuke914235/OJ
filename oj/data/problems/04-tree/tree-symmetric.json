@@ -1,0 +1,94 @@
+{
+  "id": "tree-symmetric",
+  "title": "对称二叉树",
+  "difficulty": "简单",
+  "tags": [
+    "树",
+    "二叉树",
+    "递归",
+    "镜像"
+  ],
+  "source": {
+    "name": "LeetCode 101",
+    "url": "https://leetcode.cn/problems/symmetric-tree/"
+  },
+  "statement": "给定一棵二叉树，判断它是否**轴对称（镜像对称）**。\n\n即把树沿根节点竖直中线折叠，左右两侧能够完全重合。\n\n空树与单节点树都视为对称。",
+  "input_format": "一行，表示二叉树的**层序序列**（广度优先），用空格分隔的整数表示节点值，`null` 表示该位置没有节点。\n\n序列末尾多余的 `null` 会被省略。若整棵树为空，该行为 `null`。\n\n$0 \\le$ 节点数 $\\le 10^5$，节点值 $|v| \\le 10^9$。",
+  "output_format": "一行，若树是镜像对称的输出 `YES`，否则输出 `NO`。",
+  "constraints": [
+    "0 ≤ 节点数 ≤ 10^5",
+    "|节点值| ≤ 10^9",
+    "输入为层序序列，null 表空"
+  ],
+  "samples": [
+    {
+      "input": "1 2 2 3 4 4 3\n",
+      "output": "YES\n",
+      "explain": "左子树 [`2,3,4`] 与右子树 [`2,4,3`] 互为镜像。"
+    },
+    {
+      "input": "1 2 2 null 3 null 3\n",
+      "output": "NO\n",
+      "explain": "左子树的右孩子是 3，右子树的左孩子也应为 3，但这里右子树的左孩子为空。"
+    }
+  ],
+  "hint": "把「对称」转化为「两棵树互为镜像」：\n\n$mirror(a, b)$ 成立当且仅当：\n1. 两者都为空，或\n2. 值相等，且 $mirror(a.左, b.右)$ 与 $mirror(a.右, b.左)$ 都成立。\n\n初始调用 $mirror(root.左, root.右)$。时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n\nstruct Node {\n    int val;\n    Node *left, *right;\n    Node(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nbool mirror(Node* a, Node* b) {\n    // TODO: 判断两棵子树是否互为镜像\n    return true;\n}\n\nint main() {\n    // TODO\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "1 2 2 3 4 4 3\n",
+      "output": "YES\n",
+      "name": "样例 1（对称）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 2 2 null 3 null 3\n",
+      "output": "NO\n",
+      "name": "样例 2（不对称）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n",
+      "output": "YES\n",
+      "name": "单节点",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "null\n",
+      "output": "YES\n",
+      "name": "空树",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "1 2 2\n",
+      "output": "YES\n",
+      "name": "两层对称",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 2 null 3 3 null\n",
+      "output": "YES\n",
+      "name": "值相同但结构不对称",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2 2 3 4 4 3 5 6 7 8 8 7 6 5\n",
+      "output": "YES\n",
+      "name": "三层对称",
+      "score": 25,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <vector>\n#include <queue>\n#include <sstream>\n#include <iostream>\n\nstruct Node {\n    int val;\n    Node *left, *right;\n    Node(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nbool mirror(Node* a, Node* b) {\n    if (!a && !b) return true;\n    if (!a || !b) return false;\n    return a->val == b->val && mirror(a->left, b->right) && mirror(a->right, b->left);\n}\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n    std::istringstream iss(line);\n    std::vector<std::string> tok;\n    std::string t;\n    while (iss >> t) tok.push_back(t);\n    if (tok.empty() || tok[0] == \"null\") { printf(\"YES\\n\"); return 0; }\n\n    std::vector<Node*> nodes(tok.size(), nullptr);\n    nodes[0] = new Node(std::stoi(tok[0]));\n    std::queue<int> q;\n    q.push(0);\n    size_t i = 1;\n    while (!q.empty() && i < tok.size()) {\n        int idx = q.front(); q.pop();\n        if (i < tok.size()) {\n            if (tok[i] != \"null\") {\n                nodes[i] = new Node(std::stoi(tok[i]));\n                nodes[idx]->left = nodes[i];\n                q.push((int)i);\n            }\n            ++i;\n        }\n        if (i < tok.size()) {\n            if (tok[i] != \"null\") {\n                nodes[i] = new Node(std::stoi(tok[i]));\n                nodes[idx]->right = nodes[i];\n                q.push((int)i);\n            }\n            ++i;\n        }\n    }\n    printf(\"%s\\n\", mirror(nodes[0]->left, nodes[0]->right) ? \"YES\" : \"NO\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

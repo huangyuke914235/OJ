@@ -1,0 +1,106 @@
+{
+  "id": "string-palindrome",
+  "title": "验证回文串",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "双指针"
+  ],
+  "source": {
+    "name": "LeetCode 125",
+    "url": "https://leetcode.cn/problems/valid-palindrome/"
+  },
+  "statement": "给定一个字符串 $s$，判断它是否**回文**。\n\n判定规则：**只考虑字母和数字字符**，忽略其他所有字符（空格、标点等），并且**忽略字母的大小写**。\n\n空字符串视为回文。",
+  "input_format": "一行字符串 $s$（$0 \\le |s| \\le 10^5$），由可见 ASCII 字符组成（可能含空格）。",
+  "output_format": "一行，若 $s$ 是回文串输出 `YES`，否则输出 `NO`。",
+  "constraints": [
+    "0 ≤ |s| ≤ 10^5",
+    "忽略非字母数字字符",
+    "忽略大小写"
+  ],
+  "samples": [
+    {
+      "input": "A man, a plan, a canal: Panama\n",
+      "output": "YES\n",
+      "explain": "去掉非字母数字并统一小写后得到 `amanaplanacanalpanama`，是回文。"
+    },
+    {
+      "input": "race a car\n",
+      "output": "NO\n",
+      "explain": "处理后为 `raceacar`，不是回文。"
+    }
+  ],
+  "hint": "**双指针**：左指针从头、右指针从尾相向移动，遇到非字母数字字符就跳过；比较两个指针处的字符（统一转小写）是否相等。\n\n也可以用 `isalnum()` / `tolower()` 辅助判断，时间 $O(n)$，空间 $O(1)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <cctype>\n#include <iostream>\n\nint main() {\n    std::string s;\n    std::getline(std::cin, s);\n\n    int i = 0, j = (int)s.size() - 1;\n    bool ok = true;\n    // TODO: 双指针验证回文\n\n    printf(\"%s\\n\", ok ? \"YES\" : \"NO\");\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "A man, a plan, a canal: Panama\n",
+      "output": "YES\n",
+      "name": "样例 1（经典）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "race a car\n",
+      "output": "NO\n",
+      "name": "样例 2（不是）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "\n",
+      "output": "YES\n",
+      "name": "空串",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "12321\n",
+      "output": "YES\n",
+      "name": "纯数字回文",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "12345\n",
+      "output": "NO\n",
+      "name": "纯数字非回文",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a\n",
+      "output": "YES\n",
+      "name": "单一字符",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "!!!a!!!\n",
+      "output": "YES\n",
+      "name": "含大量符号",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "AbBa\n",
+      "output": "YES\n",
+      "name": "大小写混合",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "  \n",
+      "output": "YES\n",
+      "name": "空格也算忽略",
+      "score": 10,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <cctype>\n#include <iostream>\n\nint main() {\n    std::string s;\n    std::getline(std::cin, s);\n\n    int i = 0, j = (int)s.size() - 1;\n    bool ok = true;\n    while (i < j) {\n        while (i < j && !std::isalnum((unsigned char)s[i])) ++i;\n        while (i < j && !std::isalnum((unsigned char)s[j])) --j;\n        if (std::tolower((unsigned char)s[i]) != std::tolower((unsigned char)s[j])) {\n            ok = false; break;\n        }\n        ++i; --j;\n    }\n    printf(\"%s\\n\", ok ? \"YES\" : \"NO\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

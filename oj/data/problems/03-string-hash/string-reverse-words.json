@@ -1,0 +1,91 @@
+{
+  "id": "string-reverse-words",
+  "title": "反转字符串中的单词",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 151",
+    "url": "https://leetcode.cn/problems/reverse-words-in-a-string/"
+  },
+  "statement": "给定一个字符串 $s$，请你**反转其中单词的顺序**，单词之间用一个空格分隔。\n\n注意：输入中可能包含**前导空格、尾随空格或单词间的多余空格**，输出时需要把这些多余空格处理掉，单词之间只保留**单个空格**。",
+  "input_format": "一行字符串 $s$（$0 \\le |s| \\le 10^5$），仅包含可见 ASCII 字符与空格。",
+  "output_format": "一行，输出反转单词顺序后的字符串。若 $s$ 不含任何单词，输出一个空行。",
+  "constraints": [
+    "0 ≤ |s| ≤ 10^5",
+    "仅含可见 ASCII 与空格"
+  ],
+  "samples": [
+    {
+      "input": "the sky is blue\n",
+      "output": "blue is sky the\n",
+      "explain": "单词顺序由「the sky is blue」反转为「blue is sky the」。"
+    },
+    {
+      "input": "  hello   world  \n",
+      "output": "world hello\n",
+      "explain": "先按单词切分（忽略多余空格），再反转顺序，最后单空格拼接。"
+    }
+  ],
+  "hint": "按空白字符切分出所有单词（`s.split()` 会自动忽略连续空白），然后逆序用一个空格连接即可。\n\n若要求原地 $O(1)$ 额外空间，可先将整个字符串翻转，再逐个翻转每个单词。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <vector>\n#include <sstream>\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n    std::istringstream iss(line);\n    std::vector<std::string> words;\n    std::string w;\n    while (iss >> w) words.push_back(w);\n\n    // TODO: 逆序输出单词，用单个空格分隔\n\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "the sky is blue\n",
+      "output": "blue is sky the\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "  hello   world  \n",
+      "output": "world hello\n",
+      "name": "样例 2（多空格）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abc\n",
+      "output": "abc\n",
+      "name": "单个单词",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "     \n",
+      "output": "\n",
+      "name": "全空格",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a b c d\n",
+      "output": "d c b a\n",
+      "name": "单字符单词",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "Hello, World!\n",
+      "output": "World! Hello,\n",
+      "name": "含标点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "w0 w1 w2 w3 w4 w5 w6 w7 w8 w9 w10 w11 w12 w13 w14 w15 w16 w17 w18 w19\n",
+      "output": "w19 w18 w17 w16 w15 w14 w13 w12 w11 w10 w9 w8 w7 w6 w5 w4 w3 w2 w1 w0\n",
+      "name": "大量单词",
+      "score": 25,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <vector>\n#include <sstream>\n#include <iostream>\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n    std::istringstream iss(line);\n    std::vector<std::string> words;\n    std::string w;\n    while (iss >> w) words.push_back(w);\n\n    for (int i = (int)words.size() - 1; i >= 0; --i) {\n        if (i != (int)words.size() - 1) printf(\" \");\n        printf(\"%s\", words[i].c_str());\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

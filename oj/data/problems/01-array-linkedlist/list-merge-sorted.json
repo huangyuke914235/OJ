@@ -1,0 +1,40 @@
+{
+  "id": "list-merge-sorted",
+  "title": "合并两个有序链表",
+  "difficulty": "简单",
+  "tags": ["链表", "双指针", "归并"],
+  "source": { "name": "LeetCode 21 / 408 考研真题", "url": "https://leetcode.cn/problems/merge-two-sorted-lists/" },
+  "statement": "给定两个**非递减**排列的链表 $A$ 和 $B$，请将它们合并为一个新的非递减链表，并输出合并后各节点的值。\n\n要求：合并后的链表应当由原有节点串接而成（不能新建节点存放数值）。",
+  "input_format": "第一行两个整数 $n, m$（$0 \\le n, m \\le 2 \\times 10^5$），分别为两个链表的长度。\n\n第二行 $n$ 个整数，为链表 $A$ 的值（非递减）。\n\n第三行 $m$ 个整数，为链表 $B$ 的值（非递减）。\n\n当某链表长度为 0 时，对应行可能为空行。",
+  "output_format": "一行，输出合并后链表的全部节点值，以空格分隔。若两链表均为空，输出一个空行。",
+  "constraints": ["0 ≤ n, m ≤ 2×10^5", "|v| ≤ 10^9", "两个输入链表均非递减"],
+  "samples": [
+    {
+      "input": "3 3\n1 2 4\n1 3 4\n",
+      "output": "1 1 2 3 4 4\n",
+      "explain": "两个有序链表归并后得到 1 1 2 3 4 4。"
+    },
+    {
+      "input": "0 3\n\n5 6 7\n",
+      "output": "5 6 7\n",
+      "explain": "第一个链表为空时结果就是第二个链表。"
+    }
+  ],
+  "hint": "用**哨兵头节点**（dummy node）简化边界处理：比较两链表当前节点，把较小者接到结果链表尾部，指针后移；某链表耗尽后直接接上另一条剩余部分。时间 $O(n+m)$，空间 $O(1)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nstruct Node {\n    int val;\n    Node* next;\n    Node(int v) : val(v), next(nullptr) {}\n};\n\nNode* build(const std::vector<int>& v) {\n    Node dummy(0);\n    Node* tail = &dummy;\n    for (int x : v) { tail->next = new Node(x); tail = tail->next; }\n    return dummy.next;\n}\n\nint main() {\n    int n, m;\n    scanf(\"%d %d\", &n, &m);\n    std::vector<int> a(n), b(m);\n    for (int i = 0; i < n; ++i) scanf(\"%d\", &a[i]);\n    for (int i = 0; i < m; ++i) scanf(\"%d\", &b[i]);\n\n    Node* la = build(a);\n    Node* lb = build(b);\n\n    // TODO: 归并两条有序链表并输出\n\n    return 0;\n}\n"
+  },
+  "tests": [
+    { "input": "3 3\n1 2 4\n1 3 4\n", "output": "1 1 2 3 4 4\n", "name": "样例 1", "score": 10, "sample": true },
+    { "input": "0 3\n\n5 6 7\n", "output": "5 6 7\n", "name": "样例 2（一条为空）", "score": 10, "sample": true },
+    { "input": "0 0\n\n\n", "output": "\n", "name": "都为空", "score": 10 },
+    { "input": "2 0\n-1 2\n\n", "output": "-1 2\n", "name": "第二条为空", "score": 10 },
+    { "input": "4 4\n1 1 1 1\n1 1 1 1\n", "output": "1 1 1 1 1 1 1 1\n", "name": "全相同", "score": 15 },
+    { "input": "3 5\n-10 -5 0\n-100 -50 -1 50 100\n", "output": "-100 -50 -10 -5 -1 0 50 100\n", "name": "交叉插入", "score": 20 },
+    { "input": "5 1\n1 2 3 4 5\n0\n", "output": "0 1 2 3 4 5\n", "name": "单元素前缀", "score": 15 },
+    { "input": "1 6\n100\n1 2 3 4 5 6\n", "output": "1 2 3 4 5 6 100\n", "name": "单元素后缀", "score": 20 }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nstruct Node {\n    int val;\n    Node* next;\n    Node(int v) : val(v), next(nullptr) {}\n};\n\nNode* build(const std::vector<int>& v) {\n    Node dummy(0);\n    Node* tail = &dummy;\n    for (int x : v) { tail->next = new Node(x); tail = tail->next; }\n    return dummy.next;\n}\n\nint main() {\n    int n, m;\n    scanf(\"%d %d\", &n, &m);\n    std::vector<int> a(n), b(m);\n    for (int i = 0; i < n; ++i) scanf(\"%d\", &a[i]);\n    for (int i = 0; i < m; ++i) scanf(\"%d\", &b[i]);\n\n    Node* la = build(a);\n    Node* lb = build(b);\n\n    Node dummy(0);\n    Node* tail = &dummy;\n    while (la && lb) {\n        if (la->val <= lb->val) { tail->next = la; la = la->next; }\n        else { tail->next = lb; lb = lb->next; }\n        tail = tail->next;\n    }\n    tail->next = la ? la : lb;\n\n    bool first = true;\n    for (Node* p = dummy.next; p; p = p->next) {\n        if (!first) printf(\" \");\n        printf(\"%d\", p->val);\n        first = false;\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  }
+}

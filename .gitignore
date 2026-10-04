@@ -1,0 +1,66 @@
+# ---------------------------------------------------------------- Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 虚拟环境
+.venv/
+venv/
+ENV/
+env/
+
+# ---------------------------------------------------------------- 测试与工具缓存
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# ---------------------------------------------------------------- 判题运行时产物
+# 提交记录属于运行时数据，不入库（保持仓库干净，部署时从空开始）
+oj/data/submissions/
+# 判题临时工作目录（若配置到项目内）
+.oj_work/
+*.ojtmp
+
+# ---------------------------------------------------------------- 构建产物
+# 静态站点由 scripts/build_static.py 生成，CI 会重新构建并部署，
+# 因此不入库，避免与题库源文件产生不同步的副本。
+static/
+
+# ---------------------------------------------------------------- 本地助手工作区
+# WorkBuddy 的本地记忆/配置，不属于项目代码
+.workbuddy-ai/
+
+# ---------------------------------------------------------------- 编辑器 / 系统
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------------------------------------------------------------- Streamlit 本地状态
+.streamlit/secrets.toml

@@ -1,0 +1,93 @@
+{
+  "id": "advanced-lis",
+  "title": "最长递增子序列（严格）",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "二分查找",
+    "贪心"
+  ],
+  "source": {
+    "name": "LeetCode 300",
+    "url": "https://leetcode.cn/problems/longest-increasing-subsequence/"
+  },
+  "statement": "给定一个长度为 $n$ 的整数数组，求它的**最长严格递增子序列**的长度。\n\n子序列不要求连续，但必须保持原有的相对顺序。\n\n例如 `[10,9,2,5,3,7,101,18]` 的最长严格递增子序列是 `[2,3,7,101]`（或 `[2,3,7,18]`），长度为 4。\n\n**进阶要求**：使用 $O(n \\log n)$ 的算法。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 2 \\times 10^5$）。\n\n第二行 $n$ 个整数 $a_i$（$|a_i| \\le 10^9$）。",
+  "output_format": "一行一个整数，表示最长严格递增子序列的长度。",
+  "constraints": [
+    "1 ≤ n ≤ 2×10^5",
+    "|a_i| ≤ 10^9",
+    "子序列严格递增"
+  ],
+  "samples": [
+    {
+      "input": "8\n10 9 2 5 3 7 101 18\n",
+      "output": "4\n",
+      "explain": "`[2,3,7,101]` 或 `[2,3,7,18]`，长度 4。"
+    },
+    {
+      "input": "5\n5 4 3 2 1\n",
+      "output": "1\n",
+      "explain": "严格递减，最长递增子序列只能是单个元素。"
+    }
+  ],
+  "hint": "**方法一（DP，$O(n^2)$）**：设 $f_i$ 为以 $a_i$ 结尾的最长递增子序列长度，$f_i = 1 + \\max\\{f_j : j < i, a_j < a_i\\}$。\n\n**方法二（贪心 + 二分，$O(n \\log n)$）**：维护数组 `tails`，其中 `tails[l]` 表示「长度为 $l+1$ 的递增子序列」可能的最小结尾值。\n\n对每个 $x$，用 `lower_bound` 找到 `tails` 中第一个 $\\ge x$ 的位置：找到就替换它，找不到就追加到末尾。最终 `tails` 的长度即为答案。\n\n注意 `tails` 本身**不是**某个具体的最长递增子序列，但它的长度是正确的。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <algorithm>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<int> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%d\", &a[i]);\n\n    std::vector<int> tails;\n    // TODO: 贪心 + 二分维护 tails\n\n    printf(\"%d\\n\", (int)tails.size());\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "8\n10 9 2 5 3 7 101 18\n",
+      "output": "4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n5 4 3 2 1\n",
+      "output": "1\n",
+      "name": "样例 2（递减）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n7\n",
+      "output": "1\n",
+      "name": "单元素",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "4\n3 3 3 3\n",
+      "output": "1\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5\n1 2 3 4 5\n",
+      "output": "5\n",
+      "name": "严格递增",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6\n-3 -1 -2 0 -5 4\n",
+      "output": "4\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "7\n1 3 2 4 3 5 4\n",
+      "output": "4\n",
+      "name": "锯齿",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <algorithm>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<int> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%d\", &a[i]);\n\n    std::vector<int> tails;\n    for (int x : a) {\n        auto it = std::lower_bound(tails.begin(), tails.end(), x);\n        if (it == tails.end()) tails.push_back(x);\n        else *it = x;\n    }\n    printf(\"%d\\n\", (int)tails.size());\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,92 @@
+{
+  "id": "advanced-edit-distance",
+  "title": "编辑距离",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "字符串",
+    "二维 DP"
+  ],
+  "source": {
+    "name": "LeetCode 72",
+    "url": "https://leetcode.cn/problems/edit-distance/"
+  },
+  "statement": "给定两个字符串 $s$ 和 $t$，求把 $s$ 转换成 $t$ 所需的**最少操作次数**。\n\n允许的操作有三种：\n1. 插入一个字符；\n2. 删除一个字符；\n3. 替换一个字符。\n\n每次操作计为 1 步。",
+  "input_format": "第一行字符串 $s$。\n\n第二行字符串 $t$。\n\n（$0 \\le |s|, |t| \\le 2000$）",
+  "output_format": "一行一个整数，表示最小操作次数。",
+  "constraints": [
+    "0 ≤ |s|, |t| ≤ 2000",
+    "仅含可见 ASCII"
+  ],
+  "samples": [
+    {
+      "input": "horse\nros\n",
+      "output": "3\n",
+      "explain": "horse → rorse（替换 h）→ rose（删除 r）→ ros（删除 e），共 3 步。"
+    },
+    {
+      "input": "intention\nexecution\n",
+      "output": "5\n",
+      "explain": "经典例子，最少需要 5 次操作。"
+    }
+  ],
+  "hint": "**二维 DP**：设 $dp[i][j]$ 表示把 $s$ 的前 $i$ 个字符变成 $t$ 的前 $j$ 个字符的最少操作数。\n\n边界：$dp[i][0] = i$（全删除），$dp[0][j] = j$（全插入）。\n\n转移：\n- 若 $s_i = t_j$：$dp[i][j] = dp[i-1][j-1]$；\n- 否则 $dp[i][j] = 1 + \\min(dp[i-1][j],\\ dp[i][j-1],\\ dp[i-1][j-1])$\n  （分别对应删除、插入、替换）。\n\n时间 $O(|s| \\cdot |t|)$。由于只依赖上一行，可用**滚动数组**把空间降到 $O(\\min(|s|,|t|))$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <vector>\n#include <algorithm>\n#include <iostream>\n\nint main() {\n    std::string s, t;\n    std::getline(std::cin, s);\n    std::getline(std::cin, t);\n    int n = (int)s.size(), m = (int)t.size();\n\n    // TODO: 动态规划\n\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "horse\nros\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "intention\nexecution\n",
+      "output": "5\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "\n\n",
+      "output": "0\n",
+      "name": "都为空",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "abc\n",
+      "output": "3\n",
+      "name": "一个为空",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abc\nabc\n",
+      "output": "0\n",
+      "name": "完全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abc\nxyz\n",
+      "output": "3\n",
+      "name": "完全替换",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "a\nabcdefg\n",
+      "output": "6\n",
+      "name": "长度差很大",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <vector>\n#include <algorithm>\n#include <iostream>\n\nint main() {\n    std::string s, t;\n    std::getline(std::cin, s);\n    std::getline(std::cin, t);\n    int n = (int)s.size(), m = (int)t.size();\n\n    std::vector<int> prev(m + 1), cur(m + 1);\n    for (int j = 0; j <= m; ++j) prev[j] = j;\n\n    for (int i = 1; i <= n; ++i) {\n        cur[0] = i;\n        for (int j = 1; j <= m; ++j) {\n            if (s[i - 1] == t[j - 1]) cur[j] = prev[j - 1];\n            else cur[j] = 1 + std::min(std::min(prev[j], cur[j - 1]), prev[j - 1]);\n        }\n        std::swap(prev, cur);\n    }\n    printf(\"%d\\n\", prev[m]);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

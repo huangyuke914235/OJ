@@ -1,0 +1,93 @@
+{
+  "id": "queue-with-two-stacks",
+  "title": "用两个栈实现队列",
+  "difficulty": "简单",
+  "tags": [
+    "栈",
+    "队列",
+    "设计"
+  ],
+  "source": {
+    "name": "LeetCode 232 / 剑指 Offer 09",
+    "url": "https://leetcode.cn/problems/implement-queue-using-stacks/"
+  },
+  "statement": "请用**两个栈**实现一个队列，支持以下操作：\n\n- `push x`：把元素 $x$ 加入队尾；\n- `pop`：删除并返回队首元素；\n- `peek`：返回队首元素（不删除）；\n- `size`：返回当前队列中元素个数。\n\n要求所有操作的**均摊时间复杂度为 $O(1)$**。",
+  "input_format": "第一行一个整数 $q$（$1 \\le q \\le 2 \\times 10^5$），表示操作总数。\n\n接下来 $q$ 行，每行一个操作，格式如上所述。其中 $|x| \\le 10^9$。\n\n**保证队列非空时才会调用 `pop` / `peek`**，因此无需处理越界情况。",
+  "output_format": "对每个 `pop`、`peek`、`size` 操作，输出一行对应的结果。",
+  "constraints": [
+    "1 ≤ q ≤ 2×10^5",
+    "|x| ≤ 10^9",
+    "pop/peek 仅在非空队列上调用"
+  ],
+  "samples": [
+    {
+      "input": "5\npush 1\npush 2\npeek\npop\nsize\n",
+      "output": "1\n1\n1\n",
+      "explain": "依次执行：入队 1、入队 2；`peek` 返回队首 1；`pop` 删掉队首 1；`size` 返回剩余的 1 个元素。"
+    },
+    {
+      "input": "6\npush 5\npop\npush 7\npop\npush 9\npeek\n",
+      "output": "5\n7\n9\n",
+      "explain": "元素始终先进先出：5 被弹出，7 被弹出，最后队首是 9。"
+    }
+  ],
+  "hint": "设两个栈为 `in` 和 `out`：\n\n- `push`：直接压入 `in`；\n- `pop` / `peek`：若 `out` 为空，把 `in` 中所有元素依次弹出并压入 `out`（这样顺序就反过来了，`out` 的栈顶即为队首），然后操作 `out`。\n\n**均摊分析**：每个元素最多被搬运一次，因此 $q$ 次操作总共 $O(q)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <cstring>\n\n// TODO: 定义两个栈，实现队列\n\nint main() {\n    int q;\n    scanf(\"%d\", &q);\n    for (int i = 0; i < q; ++i) {\n        char op[16];\n        scanf(\"%s\", op);\n        if (strcmp(op, \"push\") == 0) {\n            long long x;\n            scanf(\"%lld\", &x);\n            // TODO\n        } else if (strcmp(op, \"pop\") == 0) {\n            // TODO\n        } else if (strcmp(op, \"peek\") == 0) {\n            // TODO\n        } else if (strcmp(op, \"size\") == 0) {\n            // TODO\n        }\n    }\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "5\npush 1\npush 2\npeek\npop\nsize\n",
+      "output": "1\n1\n1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "6\npush 5\npop\npush 7\npop\npush 9\npeek\n",
+      "output": "5\n7\n9\n",
+      "name": "样例 2（连续入队弹出）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "6\npush 1\npush 2\npush 3\npop\npop\npop\n",
+      "output": "1\n2\n3\n",
+      "name": "入队后全出队",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6\npush 1\npop\npush 2\npop\npush 3\npop\n",
+      "output": "1\n2\n3\n",
+      "name": "反复交替",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "7\npush 1\npush 2\npop\npush 3\npeek\nsize\npop\n",
+      "output": "1\n2\n2\n2\n",
+      "name": "部分出队再入队",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2\npush 5\nsize\n",
+      "output": "1\n",
+      "name": "只有 size",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "6\npush 9\npush 8\npush 7\nsize\npeek\npop\n",
+      "output": "3\n9\n9\n",
+      "name": "大量入队后查询",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <cstring>\n\nstd::vector<long long> in, out;\n\nint main() {\n    int q;\n    scanf(\"%d\", &q);\n    for (int i = 0; i < q; ++i) {\n        char op[16];\n        scanf(\"%s\", op);\n        if (strcmp(op, \"push\") == 0) {\n            long long x;\n            scanf(\"%lld\", &x);\n            in.push_back(x);\n        } else if (strcmp(op, \"pop\") == 0) {\n            if (out.empty()) {\n                while (!in.empty()) { out.push_back(in.back()); in.pop_back(); }\n            }\n            printf(\"%lld\\n\", out.back());\n            out.pop_back();\n        } else if (strcmp(op, \"peek\") == 0) {\n            if (out.empty()) {\n                while (!in.empty()) { out.push_back(in.back()); in.pop_back(); }\n            }\n            printf(\"%lld\\n\", out.back());\n        } else if (strcmp(op, \"size\") == 0) {\n            printf(\"%d\\n\", (int)(in.size() + out.size()));\n        }\n    }\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

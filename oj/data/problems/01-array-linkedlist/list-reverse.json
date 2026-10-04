@@ -1,0 +1,40 @@
+{
+  "id": "list-reverse",
+  "title": "单链表反转",
+  "difficulty": "简单",
+  "tags": ["链表", "指针", "迭代"],
+  "source": { "name": "LeetCode 206 / 408 考研高频题", "url": "https://leetcode.cn/problems/reverse-linked-list/" },
+  "statement": "给定一个单链表，请将它反转，并输出反转后每个节点的值。\n\n链表节点的定义如下：\n\n```cpp\nstruct Node {\n    int val;\n    Node* next;\n};\n```\n\n输入按顺序给出各节点的值，你需要读取它们并建立链表（或直接用等价方式处理），反转后依次输出节点值。",
+  "input_format": "第一行一个整数 $n$（$0 \\le n \\le 2 \\times 10^5$），表示链表长度。\n\n第二行 $n$ 个整数，按从头到尾的顺序给出节点值 $v_i$（$|v_i| \\le 10^9$）。当 $n=0$ 时第二行为空行。",
+  "output_format": "一行，输出反转后链表的节点值，以空格分隔。若 $n=0$，输出一个空行。",
+  "constraints": ["0 ≤ n ≤ 2×10^5", "|v_i| ≤ 10^9"],
+  "samples": [
+    {
+      "input": "5\n1 2 3 4 5\n",
+      "output": "5 4 3 2 1\n",
+      "explain": "链表 1→2→3→4→5 反转为 5→4→3→2→1。"
+    },
+    {
+      "input": "0\n\n",
+      "output": "\n",
+      "explain": "空链表反转后仍为空，输出空行。"
+    }
+  ],
+  "hint": "迭代法：用三个指针 `prev / cur / next`，每次把 `cur->next` 指向 `prev`，然后整体后移。注意保存 `next` 以免断链。时间 $O(n)$，空间 $O(1)$。递归写法虽然简洁但 $n$ 很大时会爆栈。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nstruct Node {\n    int val;\n    Node* next;\n    Node(int v) : val(v), next(nullptr) {}\n};\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n\n    // TODO: 读入并建链表，反转后输出\n\n    return 0;\n}\n"
+  },
+  "tests": [
+    { "input": "5\n1 2 3 4 5\n", "output": "5 4 3 2 1\n", "name": "样例 1", "score": 10, "sample": true },
+    { "input": "0\n\n", "output": "\n", "name": "样例 2（空链表）", "score": 10, "sample": true },
+    { "input": "1\n7\n", "output": "7\n", "name": "单节点", "score": 10 },
+    { "input": "2\n1 2\n", "output": "2 1\n", "name": "两节点", "score": 10 },
+    { "input": "6\n-1 -2 -3 -4 -5 -6\n", "output": "-6 -5 -4 -3 -2 -1\n", "name": "负数", "score": 15 },
+    { "input": "4\n0 0 0 0\n", "output": "0 0 0 0\n", "name": "全部相同", "score": 15 },
+    { "input": "9\n1000000000 -1000000000 5 5 -5 -5 0 1 -1\n", "output": "-1 1 0 -5 -5 5 5 -1000000000 1000000000\n", "name": "极值与重复", "score": 15 },
+    { "input": "8\n1 2 3 4 5 6 7 8\n", "output": "8 7 6 5 4 3 2 1\n", "name": "偶数长度", "score": 15 }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nstruct Node {\n    int val;\n    Node* next;\n    Node(int v) : val(v), next(nullptr) {}\n};\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n\n    Node* head = nullptr;\n    Node* tail = nullptr;\n    for (int i = 0; i < n; ++i) {\n        int v;\n        scanf(\"%d\", &v);\n        Node* node = new Node(v);\n        if (!head) { head = tail = node; }\n        else { tail->next = node; tail = node; }\n    }\n\n    Node* prev = nullptr;\n    Node* cur = head;\n    while (cur) {\n        Node* nxt = cur->next;\n        cur->next = prev;\n        prev = cur;\n        cur = nxt;\n    }\n    head = prev;\n\n    bool first = true;\n    for (Node* p = head; p; p = p->next) {\n        if (!first) printf(\" \");\n        printf(\"%d\", p->val);\n        first = false;\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  }
+}

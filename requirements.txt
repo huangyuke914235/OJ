@@ -1,0 +1,6 @@
+# DS-OJ 运行依赖
+streamlit>=1.32
+psutil>=5.9
+
+# 可选：提供 Monaco 语法高亮编辑器（未安装时自动回退到纯文本编辑框）
+streamlit-ace>=0.1.1

@@ -1,0 +1,99 @@
+{
+  "id": "string-valid-anagram",
+  "title": "有效的字母异位词",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "哈希表",
+    "计数"
+  ],
+  "source": {
+    "name": "LeetCode 242",
+    "url": "https://leetcode.cn/problems/valid-anagram/"
+  },
+  "statement": "给定两个字符串 $s$ 和 $t$，判断 $t$ 是否是 $s$ 的**字母异位词**。\n\n字母异位词指：两个字符串包含的**字符种类与每种字符的个数完全相同**，只是排列顺序可能不同。区分大小写与空格。",
+  "input_format": "第一行字符串 $s$。\n\n第二行字符串 $t$。\n\n（$0 \\le |s|, |t| \\le 10^5$）",
+  "output_format": "一行，若 $t$ 是 $s$ 的字母异位词输出 `YES`，否则输出 `NO`。",
+  "constraints": [
+    "0 ≤ |s|, |t| ≤ 10^5",
+    "区分大小写"
+  ],
+  "samples": [
+    {
+      "input": "anagram\nnagaram\n",
+      "output": "YES\n",
+      "explain": "两个字符串都由 3 个 `a`、1 个 `n`、1 个 `g`、1 个 `r`、1 个 `m` 组成。"
+    },
+    {
+      "input": "rat\ncar\n",
+      "output": "NO\n",
+      "explain": "`rat` 含 `t`，`car` 不含，字符构成不同。"
+    }
+  ],
+  "hint": "用一个长度 256 的计数数组统计 $s$ 中每个字符出现次数，再遍历 $t$ 逐个减掉；若出现负数或最后计数器不全为 0，则不是异位词。\n\n也可以用哈希表（`std::unordered_map`）实现，思路相同。时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <iostream>\n\nint main() {\n    std::string s, t;\n    std::getline(std::cin, s);\n    std::getline(std::cin, t);\n    if (s.size() != t.size()) { printf(\"NO\\n\"); return 0; }\n\n    int cnt[256] = {0};\n    // TODO: 用计数数组判断\n\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "anagram\nnagaram\n",
+      "output": "YES\n",
+      "name": "样例 1（是异位词）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "rat\ncar\n",
+      "output": "NO\n",
+      "name": "样例 2（不是）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abc\nab\n",
+      "output": "NO\n",
+      "name": "长度不同",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "abc\nabc\n",
+      "output": "YES\n",
+      "name": "同一单词",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a b c\na bc \n",
+      "output": "YES\n",
+      "name": "含空格",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aaa\naaa\n",
+      "output": "YES\n",
+      "name": "全相同字母",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "Abc\nabc\n",
+      "output": "NO\n",
+      "name": "大小写敏感",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "eeeiiiooopppqqqrrrtttuuuwwwyyy\nqwertyuiopqwertyuiopqwertyuiop\n",
+      "output": "YES\n",
+      "name": "长字符串",
+      "score": 10,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <iostream>\n\nint main() {\n    std::string s, t;\n    std::getline(std::cin, s);\n    std::getline(std::cin, t);\n    if (s.size() != t.size()) { printf(\"NO\\n\"); return 0; }\n\n    int cnt[256] = {0};\n    for (unsigned char c : s) cnt[c]++;\n    for (unsigned char c : t) cnt[c]--;\n    bool ok = true;\n    for (int i = 0; i < 256; ++i) if (cnt[i] != 0) { ok = false; break; }\n    printf(\"%s\\n\", ok ? \"YES\" : \"NO\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

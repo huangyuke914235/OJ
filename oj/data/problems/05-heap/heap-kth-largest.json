@@ -1,0 +1,100 @@
+{
+  "id": "heap-kth-largest",
+  "title": "数组中的第 K 大元素",
+  "difficulty": "简单",
+  "tags": [
+    "堆",
+    "优先队列",
+    "快速选择",
+    "排序"
+  ],
+  "source": {
+    "name": "LeetCode 215",
+    "url": "https://leetcode.cn/problems/kth-largest-element-in-an-array/"
+  },
+  "statement": "给定一个整数数组，返回其中**第 $k$ 大**的元素。\n\n注意是「第 $k$ 大」而非「第 $k$ 个不同的数」：例如数组 `[3,2,3,1,2,4,5,5,6]` 的第 4 大元素是 **4**（排序后为 `6,5,5,4,...`）。",
+  "input_format": "第一行两个整数 $n, k$（$1 \\le k \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数 $a_i$（$|a_i| \\le 10^9$）。",
+  "output_format": "一行一个整数，表示第 $k$ 大的元素。",
+  "constraints": [
+    "1 ≤ k ≤ n ≤ 10^5",
+    "|a_i| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "6 2\n3 2 1 5 6 4\n",
+      "output": "5\n",
+      "explain": "降序排列为 6 5 4 3 2 1，第 2 大是 5。"
+    },
+    {
+      "input": "9 4\n3 2 3 1 2 4 5 5 6\n",
+      "output": "4\n",
+      "explain": "降序为 6 5 5 4 3 3 2 2 1，第 4 大是 4。"
+    }
+  ],
+  "hint": "**方法一（堆）**：维护一个大小为 $k$ 的**小根堆**，遍历数组，堆未满就入堆；满了则与堆顶比较——比堆顶大就替换堆顶。遍历结束时堆顶即答案。时间 $O(n \\log k)$。\n\n**方法二（快速选择）**：借用快速排序的 partition，期望 $O(n)$。\n\n直接排序是 $O(n \\log n)$，本题数据也能通过，但建议掌握堆的解法。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n#include <algorithm>\n\nint main() {\n    int n, k;\n    scanf(\"%d %d\", &n, &k);\n    std::vector<int> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%d\", &a[i]);\n\n    // TODO: 用大小为 k 的小根堆求解\n\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "6 2\n3 2 1 5 6 4\n",
+      "output": "5\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "9 4\n3 2 3 1 2 4 5 5 6\n",
+      "output": "4\n",
+      "name": "样例 2（含重复）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5 1\n-1 -5 -3 -2 -4\n",
+      "output": "-1\n",
+      "name": "k=1（最大值）",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 5\n1 2 3 4 5\n",
+      "output": "1\n",
+      "name": "k=n（最小值）",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6 3\n7 7 7 7 7 7\n",
+      "output": "7\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 1\n42\n",
+      "output": "42\n",
+      "name": "单元素",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "5 3\n-2 -1 0 1 2\n",
+      "output": "0\n",
+      "name": "跨越零",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 2\n1000000000 -1000000000 0 1\n",
+      "output": "1\n",
+      "name": "大数值",
+      "score": 10,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n#include <functional>\n\nint main() {\n    int n, k;\n    scanf(\"%d %d\", &n, &k);\n    std::vector<int> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%d\", &a[i]);\n\n    std::priority_queue<int, std::vector<int>, std::greater<int>> pq;\n    for (int x : a) {\n        pq.push(x);\n        if ((int)pq.size() > k) pq.pop();\n    }\n    printf(\"%d\\n\", pq.top());\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

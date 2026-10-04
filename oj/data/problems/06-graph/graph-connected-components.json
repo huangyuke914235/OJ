@@ -1,0 +1,94 @@
+{
+  "id": "graph-connected-components",
+  "title": "无向图连通块数量",
+  "difficulty": "入门",
+  "tags": [
+    "图",
+    "DFS",
+    "BFS",
+    "并查集"
+  ],
+  "source": {
+    "name": "LeetCode 547 变形 / 图论基础",
+    "url": "https://leetcode.cn/problems/number-of-provinces/"
+  },
+  "statement": "给定一个包含 $n$ 个节点、$m$ 条边的**无向图**，请统计它有多少个**连通块**。\n\n若两个节点之间存在路径则它们属于同一连通块。单独一个没有任何边的节点也算一个连通块。\n\n节点编号为 $1 \\sim n$。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 10^5$，$0 \\le m \\le 2 \\times 10^5$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$，表示一条无向边。",
+  "output_format": "一行一个整数，表示连通块数量。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ m ≤ 2×10^5",
+    "无重边、无自环"
+  ],
+  "samples": [
+    {
+      "input": "5 3\n1 2\n2 3\n4 5\n",
+      "output": "2\n",
+      "explain": "{1,2,3} 构成一个连通块，{4,5} 构成另一个。"
+    },
+    {
+      "input": "3 0\n",
+      "output": "3\n",
+      "explain": "没有边，3 个节点各自是独立连通块。"
+    }
+  ],
+  "hint": "对每个未访问节点发起一次 DFS/BFS，把所有能到达的节点标记为已访问；发起搜索的次数即为连通块数量。\n\n时间 $O(n + m)$，空间 $O(n + m)$。\n\n也可以用**并查集**：把每条边的两个端点合并，最终不同集合的个数即为答案。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n\nint main() {\n    int n, m;\n    scanf(\"%d %d\", &n, &m);\n    std::vector<std::vector<int>> adj(n + 1);\n    for (int i = 0; i < m; ++i) {\n        int u, v;\n        scanf(\"%d %d\", &u, &v);\n        adj[u].push_back(v);\n        adj[v].push_back(u);\n    }\n\n    // TODO: 统计连通块数量\n\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "5 3\n1 2\n2 3\n4 5\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 0\n",
+      "output": "3\n",
+      "name": "样例 2（无向孤立点）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 1\n1 2\n",
+      "output": "1\n",
+      "name": "单点单边",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "5 4\n1 2\n2 3\n3 4\n4 5\n",
+      "output": "1\n",
+      "name": "完全连通链",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 0\n",
+      "output": "4\n",
+      "name": "全部孤立",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6 3\n1 2\n2 3\n3 1\n",
+      "output": "4\n",
+      "name": "环 + 孤立点",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "6 4\n1 2\n2 3\n4 5\n5 6\n",
+      "output": "2\n",
+      "name": "两个连通块",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n\nint main() {\n    int n, m;\n    scanf(\"%d %d\", &n, &m);\n    std::vector<std::vector<int>> adj(n + 1);\n    for (int i = 0; i < m; ++i) {\n        int u, v;\n        scanf(\"%d %d\", &u, &v);\n        adj[u].push_back(v);\n        adj[v].push_back(u);\n    }\n\n    std::vector<char> seen(n + 1, 0);\n    int cnt = 0;\n    for (int s = 1; s <= n; ++s) {\n        if (seen[s]) continue;\n        ++cnt;\n        std::queue<int> q;\n        q.push(s);\n        seen[s] = 1;\n        while (!q.empty()) {\n            int u = q.front(); q.pop();\n            for (int v : adj[u]) if (!seen[v]) { seen[v] = 1; q.push(v); }\n        }\n    }\n    printf(\"%d\\n\", cnt);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

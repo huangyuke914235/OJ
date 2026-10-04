@@ -1,0 +1,95 @@
+{
+  "id": "heap-merge-k-sorted",
+  "title": "合并 K 个有序数组",
+  "difficulty": "中等",
+  "tags": [
+    "堆",
+    "优先队列",
+    "多路归并",
+    "分治"
+  ],
+  "source": {
+    "name": "LeetCode 23 变形",
+    "url": "https://leetcode.cn/problems/merge-k-sorted-lists/"
+  },
+  "statement": "给定 $k$ 个**非递减**排列的整数数组，请把它们合并为一个非递减数组并输出。\n\n要求时间复杂度优于把所有元素直接合并后排序的 $O(N \\log N)$（$N$ 为元素总数），即 $O(N \\log k)$。\n\n允许存在空数组。",
+  "input_format": "第一行一个整数 $k$（$1 \\le k \\le 10^3$），表示数组个数。\n\n接下来 $k$ 行，第 $i$ 行给出第 $i$ 个数组的元素，以空格分隔；该行可能为空（表示空数组）。\n\n保证每个数组非递减。元素总数 $N \\le 2 \\times 10^5$，$|a| \\le 10^9$。",
+  "output_format": "一行，输出合并后的非递减序列，以空格分隔。若所有数组均为空，输出空行。",
+  "constraints": [
+    "1 ≤ k ≤ 10^3",
+    "元素总数 ≤ 2×10^5",
+    "|a| ≤ 10^9",
+    "每个数组非递减"
+  ],
+  "samples": [
+    {
+      "input": "3\n1 4 5\n1 3 4\n2 6\n",
+      "output": "1 1 2 3 4 4 5 6\n",
+      "explain": "三个有序数组归并为一个有序数组。"
+    },
+    {
+      "input": "1\n1 2 3\n",
+      "output": "1 2 3\n",
+      "explain": "只有一个数组时，合并结果就是它本身。"
+    }
+  ],
+  "hint": "**多路归并 + 小根堆**：每个数组维护一个读取指针，初始把各数组的首元素（连同其所属数组编号）压入小根堆。\n\n每次弹出堆顶（当前全局最小值）加入答案，然后把该元素所在数组的**下一个元素**压入堆。\n\n堆的大小始终不超过 $k$，因此总时间 $O(N \\log k)$，空间 $O(k)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n#include <string>\n#include <sstream>\n#include <iostream>\n\nint main() {\n    int k;\n    scanf(\"%d\", &k);\n    getchar();\n    std::vector<std::vector<long long>> arrs(k);\n    for (int i = 0; i < k; ++i) {\n        std::string line;\n        std::getline(std::cin, line);\n        std::istringstream iss(line);\n        long long v;\n        while (iss >> v) arrs[i].push_back(v);\n    }\n\n    // TODO: 多路归并\n\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "3\n1 4 5\n1 3 4\n2 6\n",
+      "output": "1 1 2 3 4 4 5 6\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n1 2 3\n",
+      "output": "1 2 3\n",
+      "name": "样例 2（单数组）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 5\n\n2 3\n",
+      "output": "1 2 3 5\n",
+      "name": "空数组混合",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2\n\n",
+      "output": "\n",
+      "name": "全部为空",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "3\n1 1 1\n1 1\n1\n",
+      "output": "1 1 1 1 1 1\n",
+      "name": "有重复值",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n-5 -1\n-3 0\n-4 2\n",
+      "output": "-5 -4 -3 -1 0 2\n",
+      "name": "负数值",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1\n100 200 300 400\n50\n",
+      "output": "1 50 100 200 300 400\n",
+      "name": "长度悬殊",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n#include <string>\n#include <sstream>\n#include <iostream>\n\nstruct Item {\n    long long val;\n    int arr, idx;\n    bool operator>(const Item& o) const { return val > o.val; }\n};\n\nint main() {\n    int k;\n    scanf(\"%d\", &k);\n    getchar();\n    std::vector<std::vector<long long>> arrs(k);\n    for (int i = 0; i < k; ++i) {\n        std::string line;\n        std::getline(std::cin, line);\n        std::istringstream iss(line);\n        long long v;\n        while (iss >> v) arrs[i].push_back(v);\n    }\n\n    std::priority_queue<Item, std::vector<Item>, std::greater<Item>> pq;\n    for (int i = 0; i < k; ++i)\n        if (!arrs[i].empty()) pq.push({arrs[i][0], i, 0});\n\n    std::vector<long long> out;\n    while (!pq.empty()) {\n        Item it = pq.top(); pq.pop();\n        out.push_back(it.val);\n        int ni = it.idx + 1;\n        if (ni < (int)arrs[it.arr].size())\n            pq.push({arrs[it.arr][ni], it.arr, ni});\n    }\n    for (size_t i = 0; i < out.size(); ++i) {\n        if (i) printf(\" \");\n        printf(\"%lld\", out[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

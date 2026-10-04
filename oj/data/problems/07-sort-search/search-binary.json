@@ -1,0 +1,92 @@
+{
+  "id": "search-binary",
+  "title": "二分查找（返回下标）",
+  "difficulty": "入门",
+  "tags": [
+    "查找",
+    "二分查找"
+  ],
+  "source": {
+    "name": "LeetCode 704",
+    "url": "https://leetcode.cn/problems/binary-search/"
+  },
+  "statement": "给定一个**升序**排列的长度为 $n$ 的数组 $a$ 和 $q$ 次查询，每次查询一个整数 $x$，请输出 $x$ 在数组中的**下标**（从 $0$ 开始计数）。\n\n若数组中不存在 $x$，输出 $-1$。\n\n要求每次查询使用**二分查找**，复杂度 $O(\\log n)$。",
+  "input_format": "第一行两个整数 $n, q$（$1 \\le n \\le 10^5$，$1 \\le q \\le 10^5$）。\n\n第二行 $n$ 个**升序**整数 $a_i$。\n\n第三行 $q$ 个整数，为查询的 $x$。",
+  "output_format": "共 $q$ 行，每行一个整数，表示对应查询的答案（不存在则 $-1$）。",
+  "constraints": [
+    "1 ≤ n, q ≤ 10^5",
+    "|a_i|, |x| ≤ 10^9",
+    "数组升序"
+  ],
+  "samples": [
+    {
+      "input": "5 3\n1 3 5 7 9\n3 5 10\n",
+      "output": "1\n2\n-1\n",
+      "explain": "3 在下标 1，5 在下标 2；10 不存在，输出 -1。"
+    },
+    {
+      "input": "3 2\n1 2 3\n0 4\n",
+      "output": "-1\n-1\n",
+      "explain": "0 和 4 都不在数组中。"
+    }
+  ],
+  "hint": "**标准二分**：维护闭区间 `[lo, hi]`，每次取 `mid = (lo + hi) / 2`：\n\n- `a[mid] == x` → 找到；\n- `a[mid] < x` → 答案在右半，`lo = mid + 1`；\n- `a[mid] > x` → 答案在左半，`hi = mid - 1`。\n\n注意 `mid` 用 `lo + (hi - lo) / 2` 可避免两数相加溢出。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n, q;\n    scanf(\"%d %d\", &n, &q);\n    std::vector<long long> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &a[i]);\n\n    for (int t = 0; t < q; ++t) {\n        long long x;\n        scanf(\"%lld\", &x);\n        // TODO: 二分查找并输出下标\n    }\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "5 3\n1 3 5 7 9\n3 5 10\n",
+      "output": "1\n2\n-1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 2\n1 2 3\n0 4\n",
+      "output": "-1\n-1\n",
+      "name": "找不到",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 1\n5\n5\n",
+      "output": "0\n",
+      "name": "单元素命中",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "1 1\n5\n6\n",
+      "output": "-1\n",
+      "name": "单元素未命中",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "5 2\n10 20 30 40 50\n10 50\n",
+      "output": "0\n4\n",
+      "name": "首尾元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 3\n-10 -5 0 5 10\n-5 0 10\n",
+      "output": "1\n2\n4\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 3\n1 2 3 4\n3 3 3\n",
+      "output": "2\n2\n2\n",
+      "name": "全部查询相同",
+      "score": 15,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n, q;\n    scanf(\"%d %d\", &n, &q);\n    std::vector<long long> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &a[i]);\n\n    for (int t = 0; t < q; ++t) {\n        long long x;\n        scanf(\"%lld\", &x);\n        int lo = 0, hi = n - 1, ans = -1;\n        while (lo <= hi) {\n            int mid = lo + (hi - lo) / 2;\n            if (a[mid] == x) { ans = mid; break; }\n            else if (a[mid] < x) lo = mid + 1;\n            else hi = mid - 1;\n        }\n        printf(\"%d\\n\", ans);\n    }\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

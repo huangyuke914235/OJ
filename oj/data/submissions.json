@@ -1,0 +1,53 @@
+[
+  {
+    "problem_id": "array-reverse",
+    "problem_title": "数组逆序",
+    "difficulty": "入门",
+    "category": "数组与链表",
+    "lang": "cpp17",
+    "verdict": "WA",
+    "passed": 2,
+    "total": 8,
+    "score": 20,
+    "max_score": 100,
+    "time": 0.09399760000087554,
+    "memory_kb": 15468,
+    "source": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    if (scanf(\"%d\", &n) != 1) return 0;\n    std::vector<int> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%d\", &a[i]);\n\n    // TODO: 在此实现逆序\n\n    for (int i = 0; i < n; ++i) {\n        if (i) printf(\" \");\n        printf(\"%d\", a[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n",
+    "message": "答案错误：通过 2/8 个测试点",
+    "id": "3983b1066aa9"
+  },
+  {
+    "problem_id": "array-reverse",
+    "problem_title": "数组逆序",
+    "difficulty": "入门",
+    "category": "数组与链表",
+    "lang": "cpp17",
+    "verdict": "WA",
+    "passed": 2,
+    "total": 8,
+    "score": 20,
+    "max_score": 100,
+    "time": 0.09437209999668994,
+    "memory_kb": 15820,
+    "source": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    if (scanf(\"%d\", &n) != 1) return 0;\n    std::vector<int> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%d\", &a[i]);\n\n    // TODO: 在此实现逆序\n\n    for (int i = 0; i < n; ++i) {\n        if (i) printf(\" \");\n        printf(\"%d\", a[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n",
+    "message": "答案错误：通过 2/8 个测试点",
+    "id": "e71acef58f42"
+  },
+  {
+    "problem_id": "array-reverse",
+    "problem_title": "数组逆序",
+    "difficulty": "入门",
+    "category": "数组与链表",
+    "lang": "cpp17",
+    "verdict": "WA",
+    "passed": 2,
+    "total": 8,
+    "score": 20,
+    "max_score": 100,
+    "time": 0.1065959000006842,
+    "memory_kb": 15484,
+    "source": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    if (scanf(\"%d\", &n) != 1) return 0;\n    std::vector<int> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%d\", &a[i]);\n\n    // TODO: 在此实现逆序\n\n    for (int i = 0; i < n; ++i) {\n        if (i) printf(\" \");\n        printf(\"%d\", a[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n",
+    "message": "答案错误：通过 2/8 个测试点",
+    "id": "050853274d2d"
+  }
+]

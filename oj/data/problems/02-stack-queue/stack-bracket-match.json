@@ -1,0 +1,99 @@
+{
+  "id": "stack-bracket-match",
+  "title": "括号匹配",
+  "difficulty": "入门",
+  "tags": [
+    "栈",
+    "字符串",
+    "括号匹配"
+  ],
+  "source": {
+    "name": "LeetCode 20 / 栈的经典应用",
+    "url": "https://leetcode.cn/problems/valid-parentheses/"
+  },
+  "statement": "给定一个只包含字符 `(`、`)`、`[`、`]`、`{`、`}` 的字符串 $s$，判断它是否是**合法的括号序列**。\n\n合法序列的定义：\n1. 左括号必须用**相同类型**的右括号闭合；\n2. 左括号必须以**正确的顺序**闭合。\n\n这是栈（Stack）最经典的应用场景。",
+  "input_format": "一行一个字符串 $s$（$0 \\le |s| \\le 10^5$），仅包含上述六种括号字符。$s$ 可能为空串。",
+  "output_format": "一行，若 $s$ 是合法括号序列输出 `YES`，否则输出 `NO`。",
+  "constraints": [
+    "0 ≤ |s| ≤ 10^5",
+    "仅含 ()[]{} 六种字符"
+  ],
+  "samples": [
+    {
+      "input": "()[]{}\n",
+      "output": "YES\n",
+      "explain": "三种括号各自配对，整体合法。"
+    },
+    {
+      "input": "([)]\n",
+      "output": "NO\n",
+      "explain": "`(` 被 `]` 关闭，顺序错误。"
+    }
+  ],
+  "hint": "**核心思路**：遇到左括号就压栈；遇到右括号时，检查栈顶是否为对应的左括号——是则弹出，不是（或栈为空）则说明非法。\n\n扫描结束后，栈必须为空才算合法。时间 $O(n)$，空间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n\nchar s[100005];\nchar stk[100005];\n\nint main() {\n    if (!fgets(s, sizeof(s), stdin)) { printf(\"YES\\n\"); return 0; }\n    int top = 0;\n    int len = (int)strlen(s);\n    for (int i = 0; i < len; ++i) {\n        char c = s[i];\n        // TODO: 用栈判断括号序列是否合法\n    }\n    printf(\"%s\\n\", top == 0 ? \"YES\" : \"NO\");\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "()[]{}\n",
+      "output": "YES\n",
+      "name": "样例 1（合法）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "([)]\n",
+      "output": "NO\n",
+      "name": "样例 2（非法）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "\n",
+      "output": "YES\n",
+      "name": "空串",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "((()))\n",
+      "output": "YES\n",
+      "name": "单种括号",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "((\n",
+      "output": "NO\n",
+      "name": "缺少右括号",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "())\n",
+      "output": "NO\n",
+      "name": "多余的右括号",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "(((((((((((((((((((((((((((((((((((((((((((((((((())))))))))))))))))))))))))))))))))))))))))))))))))\n",
+      "output": "YES\n",
+      "name": "嵌套很深",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "{[()]}[()]\n",
+      "output": "YES\n",
+      "name": "交错但合法",
+      "score": 15,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n\nchar s[100005];\nchar stk[100005];\n\nint main() {\n    if (!fgets(s, sizeof(s), stdin)) { printf(\"YES\\n\"); return 0; }\n    int top = 0;\n    int len = (int)strlen(s);\n    int ok = 1;\n    for (int i = 0; i < len; ++i) {\n        char c = s[i];\n        if (c == '(' || c == '[' || c == '{') {\n            stk[top++] = c;\n        } else if (c == ')' || c == ']' || c == '}') {\n            char need = (c == ')') ? '(' : (c == ']' ? '[' : '{');\n            if (top == 0 || stk[top - 1] != need) { ok = 0; break; }\n            --top;\n        }\n    }\n    if (top != 0) ok = 0;\n    printf(\"%s\\n\", ok ? \"YES\" : \"NO\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

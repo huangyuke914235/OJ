@@ -1,0 +1,101 @@
+{
+  "id": "tree-validate-bst",
+  "title": "验证二叉搜索树",
+  "difficulty": "中等",
+  "tags": [
+    "树",
+    "二叉搜索树",
+    "递归",
+    "中序遍历"
+  ],
+  "source": {
+    "name": "LeetCode 98",
+    "url": "https://leetcode.cn/problems/validate-binary-search-tree/"
+  },
+  "statement": "给定一棵二叉树，判断它是否是**二叉搜索树（BST）**。\n\nBST 的定义：对于任意节点，其**左子树中所有节点值严格小于它**，**右子树中所有节点值严格大于它**。\n\n空树视为合法的 BST。",
+  "input_format": "一行，表示二叉树的**层序序列**（广度优先），用空格分隔的整数表示节点值，`null` 表示该位置没有节点。\n\n序列末尾多余的 `null` 会被省略。若整棵树为空，该行为 `null`。\n\n$0 \\le$ 节点数 $\\le 10^5$，节点值 $|v| \\le 10^9$。",
+  "output_format": "一行，若为合法的 BST 输出 `YES`，否则输出 `NO`。",
+  "constraints": [
+    "0 ≤ 节点数 ≤ 10^5",
+    "|节点值| ≤ 10^9",
+    "输入为层序序列，null 表空"
+  ],
+  "samples": [
+    {
+      "input": "2 1 3\n",
+      "output": "YES\n",
+      "explain": "左子 1 < 2，右子 3 > 2，合法。"
+    },
+    {
+      "input": "5 1 4 null null 3 6\n",
+      "output": "NO\n",
+      "explain": "节点 4 位于 5 的右子树中，但 3 < 5，违反了右子树全部大于根的要求。"
+    }
+  ],
+  "hint": "**常见错误**：只比较父子两层的值是不够的，必须保证**整棵子树**都在合法区间内。\n\n正确做法是递归时传递开区间 $(lo, hi)$：对节点值 $v$，要求 $lo < v < hi$；递归左子树时上界收紧为 $v$，递归右子树时下界收紧为 $v$。\n\n等价做法：中序遍历必须是**严格递增**序列。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nstruct Node {\n    int val;\n    Node *left, *right;\n    Node(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nbool valid(Node* node, long long lo, long long hi) {\n    // TODO: 区间约束递归\n    return true;\n}\n\nint main() {\n    // TODO\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "2 1 3\n",
+      "output": "YES\n",
+      "name": "样例 1（合法 BST）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5 1 4 null null 3 6\n",
+      "output": "NO\n",
+      "name": "样例 2（非法）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "YES\n",
+      "name": "空树（视为合法）",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "1\n",
+      "output": "YES\n",
+      "name": "单节点",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "2 2 3\n",
+      "output": "NO\n",
+      "name": "相等值非法",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "8 3 10 1 6 null 14 null null 4 7 13\n",
+      "output": "YES\n",
+      "name": "合法多层",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "10 5 15 null null 6 20\n",
+      "output": "NO\n",
+      "name": "深层非法",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 null 2 null 3\n",
+      "output": "YES\n",
+      "name": "只有右子树",
+      "score": 15,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <vector>\n#include <queue>\n#include <sstream>\n#include <iostream>\n\nstruct Node {\n    int val;\n    Node *left, *right;\n    Node(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nbool valid(Node* node, long long lo, long long hi) {\n    if (!node) return true;\n    long long v = node->val;\n    if (v <= lo || v >= hi) return false;\n    return valid(node->left, lo, v) && valid(node->right, v, hi);\n}\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n    std::istringstream iss(line);\n    std::vector<std::string> tok;\n    std::string t;\n    while (iss >> t) tok.push_back(t);\n    if (tok.empty() || tok[0] == \"null\") { printf(\"YES\\n\"); return 0; }\n\n    std::vector<Node*> nodes(tok.size(), nullptr);\n    nodes[0] = new Node(std::stoi(tok[0]));\n    std::queue<int> q;\n    q.push(0);\n    size_t i = 1;\n    while (!q.empty() && i < tok.size()) {\n        int idx = q.front(); q.pop();\n        if (i < tok.size()) {\n            if (tok[i] != \"null\") {\n                nodes[i] = new Node(std::stoi(tok[i]));\n                nodes[idx]->left = nodes[i];\n                q.push((int)i);\n            }\n            ++i;\n        }\n        if (i < tok.size()) {\n            if (tok[i] != \"null\") {\n                nodes[i] = new Node(std::stoi(tok[i]));\n                nodes[idx]->right = nodes[i];\n                q.push((int)i);\n            }\n            ++i;\n        }\n    }\n    printf(\"%s\\n\", valid(nodes[0], -2147483649LL, 2147483648LL) ? \"YES\" : \"NO\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

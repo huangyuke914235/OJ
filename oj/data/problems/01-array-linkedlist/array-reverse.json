@@ -1,0 +1,41 @@
+{
+  "id": "array-reverse",
+  "title": "数组逆序",
+  "difficulty": "入门",
+  "tags": ["数组", "双指针"],
+  "source": { "name": "经典入门题 / LeetCode 344 变形", "url": "https://leetcode.cn/problems/reverse-string/" },
+  "statement": "给定一个长度为 $n$ 的整数数组 $a_1, a_2, \\dots, a_n$，请将它**原地逆序**，即把数组变成 $a_n, a_{n-1}, \\dots, a_1$。\n\n本题用于熟悉评测系统的输入输出格式：程序从标准输入读入数据，向标准输出打印结果。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数 $a_i$（$-10^9 \\le a_i \\le 10^9$），以空格分隔。",
+  "output_format": "一行，输出逆序后的数组，相邻整数之间用一个空格分隔。行末允许有空格，不允许输出多余内容。",
+  "constraints": ["1 ≤ n ≤ 10^5", "|a_i| ≤ 10^9"],
+  "samples": [
+    {
+      "input": "5\n1 2 3 4 5\n",
+      "output": "5 4 3 2 1\n",
+      "explain": "把 1 2 3 4 5 逆序后得到 5 4 3 2 1。"
+    },
+    {
+      "input": "1\n42\n",
+      "output": "42\n",
+      "explain": "只有一个元素时结果不变。"
+    }
+  ],
+  "hint": "使用双指针：一个指向开头，一个指向结尾，交换后相向移动，直到相遇。时间复杂度 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    if (scanf(\"%d\", &n) != 1) return 0;\n    std::vector<int> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%d\", &a[i]);\n\n    // TODO: 在此实现逆序\n\n    for (int i = 0; i < n; ++i) {\n        if (i) printf(\" \");\n        printf(\"%d\", a[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  },
+  "tests": [
+    { "input": "5\n1 2 3 4 5\n", "output": "5 4 3 2 1\n", "name": "样例 1", "score": 10, "sample": true },
+    { "input": "1\n42\n", "output": "42\n", "name": "样例 2", "score": 10, "sample": true },
+    { "input": "2\n-1 1\n", "output": "1 -1\n", "name": "两元素", "score": 10 },
+    { "input": "6\n7 7 7 7 7 7\n", "output": "7 7 7 7 7 7\n", "name": "全部相同", "score": 10 },
+    { "input": "4\n-5 -4 -3 -2\n", "output": "-2 -3 -4 -5\n", "name": "全负数", "score": 10 },
+    { "input": "3\n0 -1000000000 1000000000\n", "output": "1000000000 -1000000000 0\n", "name": "极值", "score": 15 },
+    { "input": "10\n9 8 7 6 5 4 3 2 1 0\n", "output": "0 1 2 3 4 5 6 7 8 9\n", "name": "逆序输入", "score": 15 },
+    { "input": "20\n1 3 5 7 9 11 13 15 17 19 2 4 6 8 10 12 14 16 18 20\n", "output": "20 18 16 14 12 10 8 6 4 2 19 17 15 13 11 9 7 5 3 1\n", "name": "偶数长度混合", "score": 20 }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    if (scanf(\"%d\", &n) != 1) return 0;\n    std::vector<int> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%d\", &a[i]);\n\n    for (int i = 0, j = n - 1; i < j; ++i, --j) {\n        int tmp = a[i];\n        a[i] = a[j];\n        a[j] = tmp;\n    }\n\n    for (int i = 0; i < n; ++i) {\n        if (i) printf(\" \");\n        printf(\"%d\", a[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,40 @@
+{
+  "id": "list-remove-nth-from-end",
+  "title": "删除链表的倒数第 k 个节点",
+  "difficulty": "简单",
+  "tags": ["链表", "双指针", "快慢指针"],
+  "source": { "name": "LeetCode 19 / 408 考研真题", "url": "https://leetcode.cn/problems/remove-nth-node-from-end-of-list/" },
+  "statement": "给定一个单链表，删除它的**倒数第 $k$ 个**节点，输出删除后的链表节点值序列。\n\n数据保证 $1 \\le k \\le n$，即待删除节点一定存在。",
+  "input_format": "第一行两个整数 $n, k$（$1 \\le n \\le 2 \\times 10^5$，$1 \\le k \\le n$）。\n\n第二行 $n$ 个整数，为链表从头到尾的节点值。",
+  "output_format": "一行，输出删除倒数第 $k$ 个节点后的链表值，以空格分隔。若链表变为空，输出一个空行。",
+  "constraints": ["1 ≤ n ≤ 2×10^5", "1 ≤ k ≤ n", "|v_i| ≤ 10^9"],
+  "samples": [
+    {
+      "input": "5 2\n1 2 3 4 5\n",
+      "output": "1 2 3 5\n",
+      "explain": "倒数第 2 个节点是 4，删除后得到 1 2 3 5。"
+    },
+    {
+      "input": "1 1\n9\n",
+      "output": "\n",
+      "explain": "只有一个节点且 k=1，删除后链表为空。"
+    }
+  ],
+  "hint": "**一遍扫描**的关键技巧：先让快指针走 $k$ 步，再让快慢指针同步前进，当快指针到达末尾时，慢指针恰好指向倒数第 $k+1$ 个节点，删除它的后继即可。使用**哨兵头节点**可以统一处理删除头节点的情况。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nstruct Node {\n    int val;\n    Node* next;\n    Node(int v) : val(v), next(nullptr) {}\n};\n\nint main() {\n    int n, k;\n    scanf(\"%d %d\", &n, &k);\n    Node dummy(0);\n    Node* tail = &dummy;\n    for (int i = 0; i < n; ++i) {\n        int v;\n        scanf(\"%d\", &v);\n        tail->next = new Node(v);\n        tail = tail->next;\n    }\n\n    // TODO: 删除倒数第 k 个节点并输出\n\n    return 0;\n}\n"
+  },
+  "tests": [
+    { "input": "5 2\n1 2 3 4 5\n", "output": "1 2 3 5\n", "name": "样例 1", "score": 10, "sample": true },
+    { "input": "1 1\n9\n", "output": "\n", "name": "样例 2（删空）", "score": 10, "sample": true },
+    { "input": "3 1\n1 2 3\n", "output": "1 2\n", "name": "删除尾节点", "score": 10 },
+    { "input": "3 3\n1 2 3\n", "output": "2 3\n", "name": "删除头节点", "score": 15 },
+    { "input": "4 2\n-1 -2 -3 -4\n", "output": "-1 -2 -4\n", "name": "负数", "score": 15 },
+    { "input": "5 5\n7 7 7 7 7\n", "output": "7 7 7 7\n", "name": "全部相同且删头", "score": 15 },
+    { "input": "6 3\n10 20 30 40 50 60\n", "output": "10 20 30 50 60\n", "name": "中间删除", "score": 15 },
+    { "input": "2 1\n1000000000 -1000000000\n", "output": "1000000000\n", "name": "极值删尾", "score": 10 }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nstruct Node {\n    int val;\n    Node* next;\n    Node(int v) : val(v), next(nullptr) {}\n};\n\nint main() {\n    int n, k;\n    scanf(\"%d %d\", &n, &k);\n    Node dummy(0);\n    Node* tail = &dummy;\n    for (int i = 0; i < n; ++i) {\n        int v;\n        scanf(\"%d\", &v);\n        tail->next = new Node(v);\n        tail = tail->next;\n    }\n\n    Node* fast = &dummy;\n    Node* slow = &dummy;\n    for (int i = 0; i < k; ++i) fast = fast->next;\n    while (fast->next) { fast = fast->next; slow = slow->next; }\n    Node* toDel = slow->next;\n    slow->next = toDel->next;\n    delete toDel;\n\n    bool first = true;\n    for (Node* p = dummy.next; p; p = p->next) {\n        if (!first) printf(\" \");\n        printf(\"%d\", p->val);\n        first = false;\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  }
+}

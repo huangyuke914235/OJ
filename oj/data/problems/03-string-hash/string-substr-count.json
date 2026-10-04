@@ -1,0 +1,99 @@
+{
+  "id": "string-substr-count",
+  "title": "子串出现次数（不重叠）",
+  "difficulty": "简单",
+  "tags": [
+    "字符串",
+    "哈希",
+    "KMP"
+  ],
+  "source": {
+    "name": "字符串匹配经典题 / KMP 应用",
+    "url": "https://oi-wiki.org/string/kmp/"
+  },
+  "statement": "给定一个文本串 $T$ 和一个模式串 $P$，请统计 $P$ 作为 $T$ 的**不重叠子串**出现的次数。\n\n所谓不重叠，指每次匹配成功后从匹配段的**下一个字符**继续尝试，已用掉的字符不能再次参与匹配。\n\n例如 $T$ = `aaaa`，$P$ = `aa`，第 1、2 个字符匹配成功后从第 4 个字符继续，因此答案是 **2** 而不是 3。",
+  "input_format": "第一行文本串 $T$。\n\n第二行模式串 $P$。\n\n（$0 \\le |T|, |P| \\le 10^5$）",
+  "output_format": "一行一个整数，表示出现次数。",
+  "constraints": [
+    "0 ≤ |T|, |P| ≤ 10^5",
+    "仅含可见 ASCII"
+  ],
+  "samples": [
+    {
+      "input": "aaaa\naa\n",
+      "output": "2\n",
+      "explain": "匹配位置为 1 和 3，互不重叠，共 2 次。"
+    },
+    {
+      "input": "abcabcabc\nabc\n",
+      "output": "3\n",
+      "explain": "从位置 1、4、7 各匹配一次，共 3 次。"
+    }
+  ],
+  "hint": "朴素做法：从每个位置尝试匹配，匹配成功则跳过整个模式串长度。最坏复杂度 $O(|T| \\cdot |P|)$。\n\n更优做法是 **KMP 算法**：先用 $O(|P|)$ 预处理出 `nxt` 数组，再线性扫描 $T$，整体 $O(|T| + |P|)$。本题数据规模下朴素做法也能通过。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <iostream>\n\nint main() {\n    std::string t, p;\n    std::getline(std::cin, t);\n    std::getline(std::cin, p);\n    if (p.empty() || p.size() > t.size()) { printf(\"0\\n\"); return 0; }\n\n    int cnt = 0;\n    // TODO: 统计不重叠出现次数\n\n    printf(\"%d\\n\", cnt);\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "aaaa\naa\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abcabcabc\nabc\n",
+      "output": "3\n",
+      "name": "样例 2",
+      "score": 15,
+      "sample": true
+    },
+    {
+      "input": "abcdef\nxyz\n",
+      "output": "0\n",
+      "name": "无匹配",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "ab\nabcd\n",
+      "output": "0\n",
+      "name": "模式比文本长",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "abc\nabc\n",
+      "output": "1\n",
+      "name": "完全匹配",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "ababab\na\n",
+      "output": "3\n",
+      "name": "单字符模式",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aaa\naa\n",
+      "output": "1\n",
+      "name": "重叠不计数",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "abababababababababababababababababababab\nab\n",
+      "output": "20\n",
+      "name": "长文本",
+      "score": 15,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <string>\n#include <iostream>\n\nint main() {\n    std::string t, p;\n    std::getline(std::cin, t);\n    std::getline(std::cin, p);\n    if (p.empty() || p.size() > t.size()) { printf(\"0\\n\"); return 0; }\n\n    int cnt = 0;\n    size_t i = 0;\n    while (i + p.size() <= t.size()) {\n        if (t.compare(i, p.size(), p) == 0) { ++cnt; i += p.size(); }\n        else ++i;\n    }\n    printf(\"%d\\n\", cnt);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

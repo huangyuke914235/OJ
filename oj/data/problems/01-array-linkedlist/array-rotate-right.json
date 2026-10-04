@@ -1,0 +1,99 @@
+{
+  "id": "array-rotate-right",
+  "title": "数组循环右移",
+  "difficulty": "简单",
+  "tags": [
+    "数组",
+    "模拟",
+    "数学"
+  ],
+  "source": {
+    "name": "LeetCode 189 / 408 考研真题变形",
+    "url": "https://leetcode.cn/problems/rotate-array/"
+  },
+  "statement": "给定长度为 $n$ 的整数数组，将它**循环右移** $k$ 位。即原数组 $a_1, a_2, \\dots, a_n$ 变为 $a_{n-k+1}, \\dots, a_n, a_1, \\dots, a_{n-k}$（下标按 $1$ 计数，$k$ 已对 $n$ 取模）。\n\n请输出移动后的数组。",
+  "input_format": "第一行两个整数 $n, k$（$1 \\le n \\le 2 \\times 10^5$，$0 \\le k \\le 10^9$）。\n\n第二行 $n$ 个整数 $a_i$（$-10^9 \\le a_i \\le 10^9$）。",
+  "output_format": "一行，输出循环右移后的数组，相邻整数间以一个空格分隔。",
+  "constraints": [
+    "1 ≤ n ≤ 2×10^5",
+    "0 ≤ k ≤ 10^9",
+    "|a_i| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "7 3\n1 2 3 4 5 6 7\n",
+      "output": "5 6 7 1 2 3 4\n",
+      "explain": "右移 3 位：最后的 5 6 7 移到最前面。"
+    },
+    {
+      "input": "4 4\n1 2 3 4\n",
+      "output": "1 2 3 4\n",
+      "explain": "k = n 时相当于没有移动。"
+    }
+  ],
+  "hint": "先令 $k \\bmod n$。经典做法是**三次翻转**：整体翻转 → 翻转前 $k$ 个 → 翻转后 $n-k$ 个，时间 $O(n)$、空间 $O(1)$。也可以直接按新下标输出。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    long long k;\n    scanf(\"%d %lld\", &n, &k);\n    std::vector<int> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%d\", &a[i]);\n\n    k %= n;\n    // TODO: 输出循环右移 k 位后的数组\n\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "7 3\n1 2 3 4 5 6 7\n",
+      "output": "5 6 7 1 2 3 4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 4\n1 2 3 4\n",
+      "output": "1 2 3 4\n",
+      "name": "样例 2（k=n）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 1000000000\n9\n",
+      "output": "9\n",
+      "name": "n=1 且大 k",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 0\n1 2 3 4 5\n",
+      "output": "1 2 3 4 5\n",
+      "name": "k=0",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "6 5\n1 2 3 4 5 6\n",
+      "output": "2 3 4 5 6 1\n",
+      "name": "k=n-1",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 1000000000\n-1 -2 -3\n",
+      "output": "-3 -1 -2\n",
+      "name": "负数 + 大 k 取模",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "8 12\n0 1 2 3 4 5 6 7\n",
+      "output": "4 5 6 7 0 1 2 3\n",
+      "name": "k 大于 n",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 2\n10 20 30 40\n",
+      "output": "30 40 10 20\n",
+      "name": "偶数长度",
+      "score": 10,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    long long k;\n    scanf(\"%d %lld\", &n, &k);\n    std::vector<int> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%d\", &a[i]);\n\n    k %= n;\n    for (int i = 0; i < n; ++i) {\n        if (i) printf(\" \");\n        int idx = ((i - (int)k) % n + n) % n;\n        printf(\"%d\", a[idx]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "id": "graph-bfs-shortest",
+  "title": "无权图单源最短路",
+  "difficulty": "简单",
+  "tags": [
+    "图",
+    "BFS",
+    "最短路"
+  ],
+  "source": {
+    "name": "BFS 经典 / 算法导论 22.2",
+    "url": "https://oi-wiki.org/graph/bfs/"
+  },
+  "statement": "给定一个 $n$ 个节点、$m$ 条边的**无向无权图**，以及起点 $s$，求 $s$ 到每个节点的**最短路径长度**（经过的边数）。\n\n若某节点从 $s$ 不可达，输出 $-1$。$s$ 到自身距离为 $0$。",
+  "input_format": "第一行三个整数 $n, m, s$（$1 \\le n \\le 10^5$，$0 \\le m \\le 2 \\times 10^5$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$，表示一条无向边。",
+  "output_format": "一行 $n$ 个整数，依次为节点 $1 \\sim n$ 到 $s$ 的最短距离，以空格分隔（不可达为 $-1$）。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ m ≤ 2×10^5",
+    "1 ≤ s ≤ n"
+  ],
+  "samples": [
+    {
+      "input": "5 4 1\n1 2\n1 3\n2 4\n3 5\n",
+      "output": "0 1 1 2 2\n",
+      "explain": "1 到自身 0；2、3 距离 1；4、5 距离 2。"
+    },
+    {
+      "input": "4 1 1\n1 2\n",
+      "output": "0 1 -1 -1\n",
+      "explain": "节点 3、4 从 1 无法到达，输出 -1。"
+    }
+  ],
+  "hint": "**BFS** 天然按距离递增的顺序扩展：起点入队、`dist[s]=0`；每次出队节点 $u$，遍历其邻居 $v$——若 $v$ 尚未被访问，则 `dist[v] = dist[u] + 1` 并入队。\n\n无权图中 BFS 首次到达某节点时的距离即为最短路。时间 $O(n + m)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n\nint main() {\n    int n, m, s;\n    scanf(\"%d %d %d\", &n, &m, &s);\n    std::vector<std::vector<int>> adj(n + 1);\n    for (int i = 0; i < m; ++i) {\n        int u, v;\n        scanf(\"%d %d\", &u, &v);\n        adj[u].push_back(v);\n        adj[v].push_back(u);\n    }\n\n    std::vector<int> dist(n + 1, -1);\n    // TODO: BFS 计算最短路\n\n    for (int i = 1; i <= n; ++i) {\n        if (i > 1) printf(\" \");\n        printf(\"%d\", dist[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "5 4 1\n1 2\n1 3\n2 4\n3 5\n",
+      "output": "0 1 1 2 2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 1 1\n1 2\n",
+      "output": "0 1 -1 -1\n",
+      "name": "样例 2（不可达）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 0 1\n",
+      "output": "0\n",
+      "name": "单点",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "5 4 1\n1 2\n2 3\n3 4\n4 5\n",
+      "output": "0 1 2 3 4\n",
+      "name": "链状",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 4 1\n1 2\n1 3\n1 4\n1 5\n",
+      "output": "0 1 1 1 1\n",
+      "name": "星形",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 3 2\n1 2\n2 3\n3 4\n",
+      "output": "1 0 1 2\n",
+      "name": "从中间出发",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5 5 1\n1 2\n2 3\n3 1\n3 4\n4 5\n",
+      "output": "0 1 1 2 3\n",
+      "name": "含环",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n\nint main() {\n    int n, m, s;\n    scanf(\"%d %d %d\", &n, &m, &s);\n    std::vector<std::vector<int>> adj(n + 1);\n    for (int i = 0; i < m; ++i) {\n        int u, v;\n        scanf(\"%d %d\", &u, &v);\n        adj[u].push_back(v);\n        adj[v].push_back(u);\n    }\n\n    std::vector<int> dist(n + 1, -1);\n    std::queue<int> q;\n    dist[s] = 0;\n    q.push(s);\n    while (!q.empty()) {\n        int u = q.front(); q.pop();\n        for (int v : adj[u]) if (dist[v] == -1) {\n            dist[v] = dist[u] + 1;\n            q.push(v);\n        }\n    }\n    for (int i = 1; i <= n; ++i) {\n        if (i > 1) printf(\" \");\n        printf(\"%d\", dist[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}
