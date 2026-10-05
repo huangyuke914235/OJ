@@ -15,7 +15,12 @@
         "循环条件 `lo <= hi`（闭区间）与 `lo < hi`（半开区间）必须与边界更新方式配套，混用必错"
       ],
       "problems": [
-        "search-binary"
+        "search-binary",
+        "search-exists",
+        "search-insert-position",
+        "search-lower-bound-practice",
+        "search-upper-bound-practice",
+        "search-count-occurrences"
       ]
     },
     {
@@ -29,7 +34,9 @@
         "返回值可能是 `n`（表示所有元素都小于 x），调用方要处理这个边界"
       ],
       "problems": [
-        "search-lower-bound"
+        "search-lower-bound",
+        "search-first-last",
+        "search-kth-missing"
       ]
     },
     {
@@ -43,7 +50,8 @@
         "答案空间的上界要开够，通常取 `1e9` 或 `1e18`"
       ],
       "problems": [
-        "search-sqrt"
+        "search-sqrt",
+        "search-sqrt-practice"
       ]
     },
     {
@@ -57,7 +65,8 @@
         "归并排序需要辅助数组，注意每层合并后要把数据拷回原数组"
       ],
       "problems": [
-        "sort-inversion-count"
+        "sort-inversion-count",
+        "sort-merge"
       ]
     },
     {
@@ -71,7 +80,13 @@
         "快排是**不稳定**排序，若要求稳定请用归并"
       ],
       "problems": [
-        "sort-quicksort"
+        "sort-quicksort",
+        "sort-insertion",
+        "sort-bubble",
+        "sort-selection",
+        "sort-counting",
+        "sort-kth-largest",
+        "sort-stable-demo"
       ]
     },
     {
@@ -85,7 +100,8 @@
         "数组无重复元素时逻辑最简单；有重复需额外处理"
       ],
       "problems": [
-        "search-rotated-array"
+        "search-rotated-array",
+        "search-peak-element"
       ]
     },
     {

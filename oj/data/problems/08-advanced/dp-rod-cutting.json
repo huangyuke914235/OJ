@@ -1,0 +1,91 @@
+{
+  "id": "dp-rod-cutting",
+  "title": "钢条切割",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "完全背包"
+  ],
+  "source": {
+    "name": "经典 DP 问题",
+    "url": "https://leetcode.cn/problems/coin-change/"
+  },
+  "statement": "一根长度为 $n$ 的钢条，价格表给出长度 $1 \\sim n$ 的钢条各自的价格 $p_i$。\n\n把钢条切割成若干段（可以不切）出售，求**最大收益**。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 1000$）。\n\n第二行 $n$ 个正整数 $p_i$（$1 \\le p_i \\le 10^4$），表示长度 $i$ 的钢条价格。",
+  "output_format": "一行一个整数，表示最大收益。",
+  "constraints": [
+    "1 ≤ n ≤ 1000",
+    "1 ≤ p_i ≤ 10^4"
+  ],
+  "samples": [
+    {
+      "input": "4\n1 5 8 9\n",
+      "output": "10\n",
+      "explain": ""
+    },
+    {
+      "input": "5\n2 5 7 8 10\n",
+      "output": "12\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**状态**：`dp[i]` = 长度为 $i$ 的钢条能获得的最大收益。\n\n**转移**：`dp[i] = max(p[i], max over j<i of dp[j] + dp[i-j])`。\n\n含义是「要么整根不切（得 $p_i$），要么切成两段 $j$ 和 $i-j$ 分别求最优」。\n\n> **更简洁的写法**：`dp[i] = max(p[j] + dp[i-j])`（$1 \\le j \\le i$）——枚举**第一刀**的长度，剩余部分递归求解。两种写法等价。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>p(n+1);\nfor(int i=1;i<=n;++i)scanf(\"%lld\",&p[i]);\nvector<long long>dp(n+1,0);\nfor(int i=1;i<=n;++i){\nlong long best=p[i];\nfor(int j=1;j<i;++j)best=max(best,dp[j]+dp[i-j]);\ndp[i]=best;}\nprintf(\"%lld\\n\",dp[n]);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n1 5 8 9\n",
+      "output": "10\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n2 5 7 8 10\n",
+      "output": "12\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n5\n",
+      "output": "5\n",
+      "name": "单长度",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n1 2 100\n",
+      "output": "100\n",
+      "name": "整根最划算",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n10 5 3 1\n",
+      "output": "40\n",
+      "name": "递减价格",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n5 5 5 5\n",
+      "output": "20\n",
+      "name": "全相同价格",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "7\n1 5 8 9 10 17 17\n",
+      "output": "18\n",
+      "name": "长度 7",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>p(n+1);\nfor(int i=1;i<=n;++i)scanf(\"%lld\",&p[i]);\nvector<long long>dp(n+1,0);\nfor(int i=1;i<=n;++i){\nlong long best=p[i];\nfor(int j=1;j<i;++j)best=max(best,dp[j]+dp[i-j]);\ndp[i]=best;}\nprintf(\"%lld\\n\",dp[n]);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

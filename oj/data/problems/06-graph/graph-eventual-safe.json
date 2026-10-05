@@ -1,0 +1,85 @@
+{
+  "id": "graph-eventual-safe",
+  "title": "找到所有的安全节点",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "拓扑排序",
+    "反向图"
+  ],
+  "source": {
+    "name": "LeetCode 802",
+    "url": "https://leetcode.cn/problems/find-eventual-safe-states/"
+  },
+  "statement": "给定有向图。**安全节点**指「从它出发的**所有**路径最终都能走到一个**出度为 0** 的节点」（即不会陷入环）。\n\n请按**编号升序**输出所有安全节点的编号，以空格分隔。若无安全节点则输出空行。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 10^4$，$0 \\le m \\le 4\\times10^4$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$，表示一条 $u \\to v$ 的边。",
+  "output_format": "一行，升序输出安全节点编号，以空格分隔；无则输出空行。",
+  "constraints": [
+    "1 ≤ n ≤ 10^4",
+    "0 ≤ m ≤ 4×10^4"
+  ],
+  "samples": [
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "1 2 3 4\n",
+      "explain": ""
+    },
+    {
+      "input": "5 5\n1 2\n2 3\n3 1\n4 2\n5 4\n",
+      "output": "\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**反向图 + 拓扑排序**：\n\n1. 建**反向图**（把每条边 $u \\to v$ 变成 $v \\to u$）；\n2. 在反向图上做拓扑排序，从「原图出度为 0」的点（即反向图入度为 0）出发；\n3. 能在这个拓扑过程中被访问到的点就是**安全节点**。\n\n> **直觉**：安全节点的定义是「不会走进环」，反向思考就是从「终点」逆着走能到达的点。\n\n> **易错点**：必须用**反向图**！在原图上做拓扑排序得到的是另一回事。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);vector<int>indeg(n+1,0);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);\ng[v].push_back(u);++indeg[u];}\nqueue<int>q;for(int i=1;i<=n;++i)if(indeg[i]==0)q.push(i);\nvector<bool>safe(n+1,false);\nwhile(!q.empty()){int u=q.front();q.pop();safe[u]=true;\nfor(int v:g[u])if(--indeg[v]==0)q.push(v);}\nbool first=true;\nfor(int i=1;i<=n;++i)if(safe[i]){if(!first)printf(\" \");printf(\"%d\",i);first=false;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "1 2 3 4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5 5\n1 2\n2 3\n3 1\n4 2\n5 4\n",
+      "output": "\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 0\n",
+      "output": "1 2 3\n",
+      "name": "无边",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 2\n1 2\n2 1\n",
+      "output": "\n",
+      "name": "全环",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 0\n",
+      "output": "1\n",
+      "name": "单点",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2 1\n1 1\n",
+      "output": "2\n",
+      "name": "自环",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);vector<int>indeg(n+1,0);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);\ng[v].push_back(u);++indeg[u];}\nqueue<int>q;for(int i=1;i<=n;++i)if(indeg[i]==0)q.push(i);\nvector<bool>safe(n+1,false);\nwhile(!q.empty()){int u=q.front();q.pop();safe[u]=true;\nfor(int v:g[u])if(--indeg[v]==0)q.push(v);}\nbool first=true;\nfor(int i=1;i<=n;++i)if(safe[i]){if(!first)printf(\" \");printf(\"%d\",i);first=false;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,94 @@
+{
+  "id": "heap-task-scheduler",
+  "title": "任务调度器",
+  "difficulty": "中等",
+  "tags": [
+    "堆",
+    "优先队列",
+    "贪心",
+    "调度"
+  ],
+  "source": {
+    "name": "LeetCode 621",
+    "url": "https://leetcode.cn/problems/task-scheduler/"
+  },
+  "statement": "给定一组任务（用大写字母表示）和冷却时间 $n$，**同一类任务**两次执行之间必须间隔至少 $n$ 个时间单位。\n\nCPU 可以**空闲**。求执行完所有任务所需的**最少时间单位数**。",
+  "input_format": "第一行一个整数 $m$（$1 \\le m \\le 10^4$），表示任务个数。\n\n第二行 $m$ 个大写字母，以空格分隔。\n\n第三行一个整数 $n$（$0 \\le n \\le 100$），表示冷却时间。",
+  "output_format": "一行一个整数，表示最少所需时间。",
+  "constraints": [
+    "1 ≤ m ≤ 10^4",
+    "0 ≤ n ≤ 100",
+    "任务用大写字母表示"
+  ],
+  "samples": [
+    {
+      "input": "6\nA A A B B B\n2\n",
+      "output": "8\n",
+      "explain": ""
+    },
+    {
+      "input": "6\nA A A B B B\n0\n",
+      "output": "6\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**大根堆 + 按轮次调度**：每一轮长度为 $n+1$（冷却窗口）。\n\n每轮从堆中取出现次数最多的任务执行（次数减 1 暂存），执行完一轮后把剩余次数大于 0 的放回堆。\n\n> **关键**：当堆空且暂存的任务都已耗尽时，可以**提前结束本轮**（CPU 不再空转）。\n\n> **另解（公式法）**：设最大频次为 $f$，频次为 $f$ 的任务有 $c$ 种，则答案是 `max(m, (f-1)*(n+1) + c)`。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int m;scanf(\"%d\",&m);\nint cnt[26]={0};\nfor(int i=0;i<m;++i){char c[4];scanf(\"%s\",c);++cnt[c[0]-'A'];}\nint n;scanf(\"%d\",&n);\npriority_queue<int>pq;\nfor(int i=0;i<26;++i)if(cnt[i])pq.push(cnt[i]);\nint time=0;\nwhile(!pq.empty()){\nvector<int>tmp;\nfor(int i=0;i<=n;++i){\nif(!pq.empty()){tmp.push_back(pq.top()-1);pq.pop();}\n++time;\nif(pq.empty()){bool any=false;for(int v:tmp)if(v>0)any=true;\nif(!any)break;}}\nfor(int v:tmp)if(v>0)pq.push(v);}\nprintf(\"%d\\n\",time);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "6\nA A A B B B\n2\n",
+      "output": "8\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "6\nA A A B B B\n0\n",
+      "output": "6\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "12\nA A A A A A B C D E F G\n2\n",
+      "output": "16\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\nA\n2\n",
+      "output": "1\n",
+      "name": "单任务",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\nA B C\n1\n",
+      "output": "3\n",
+      "name": "全不同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2\nA B\n2\n",
+      "output": "2\n",
+      "name": "两个任务",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2\nA A\n5\n",
+      "output": "7\n",
+      "name": "冷却很大",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int m;scanf(\"%d\",&m);\nint cnt[26]={0};\nfor(int i=0;i<m;++i){char c[4];scanf(\"%s\",c);++cnt[c[0]-'A'];}\nint n;scanf(\"%d\",&n);\npriority_queue<int>pq;\nfor(int i=0;i<26;++i)if(cnt[i])pq.push(cnt[i]);\nint time=0;\nwhile(!pq.empty()){\nvector<int>tmp;\nfor(int i=0;i<=n;++i){\nif(!pq.empty()){tmp.push_back(pq.top()-1);pq.pop();}\n++time;\nif(pq.empty()){bool any=false;for(int v:tmp)if(v>0)any=true;\nif(!any)break;}}\nfor(int v:tmp)if(v>0)pq.push(v);}\nprintf(\"%d\\n\",time);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

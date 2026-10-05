@@ -1,0 +1,84 @@
+{
+  "id": "string-reverse-vowels",
+  "title": "反转字符串中的元音字母",
+  "difficulty": "简单",
+  "tags": [
+    "字符串",
+    "双指针"
+  ],
+  "source": {
+    "name": "LeetCode 345",
+    "url": "https://leetcode.cn/problems/reverse-vowels-of-a-string/"
+  },
+  "statement": "给定一个字符串，**只反转其中的元音字母**（`a`、`e`、`i`、`o`、`u`，不分大小写），其余字符位置不变。",
+  "input_format": "一行一个字符串 $s$（$1 \\le |s| \\le 3\\times10^5$），可含字母、数字与符号。",
+  "output_format": "一行，处理后的字符串。",
+  "constraints": [
+    "1 ≤ |s| ≤ 3×10^5",
+    "元音不分大小写"
+  ],
+  "samples": [
+    {
+      "input": "hello\n",
+      "output": "holle\n",
+      "explain": ""
+    },
+    {
+      "input": "leetcode\n",
+      "output": "leotcede\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**相向双指针**：左右指针都只停在元音上，交换后同时向中间移动。\n\n> **易错点**：内层 while 也要带 `i < j` 边界，否则可能越界或死循环。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nbool isV(char c){char l=tolower((unsigned char)c);\nreturn l=='a'||l=='e'||l=='i'||l=='o'||l=='u';}\nint main(){string s;getline(cin,s);\nint i=0,j=(int)s.size()-1;\nwhile(i<j){\nwhile(i<j&&!isV(s[i]))++i;\nwhile(i<j&&!isV(s[j]))--j;\nswap(s[i],s[j]);++i;--j;}\nprintf(\"%s\\n\",s.c_str());return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "hello\n",
+      "output": "holle\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "leetcode\n",
+      "output": "leotcede\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "xyz\n",
+      "output": "xyz\n",
+      "name": "无元音",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aeiou\n",
+      "output": "uoiea\n",
+      "name": "全元音",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aA\n",
+      "output": "Aa\n",
+      "name": "含大写",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "a1e2i\n",
+      "output": "i1e2a\n",
+      "name": "含数字",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nbool isV(char c){char l=tolower((unsigned char)c);\nreturn l=='a'||l=='e'||l=='i'||l=='o'||l=='u';}\nint main(){string s;getline(cin,s);\nint i=0,j=(int)s.size()-1;\nwhile(i<j){\nwhile(i<j&&!isV(s[i]))++i;\nwhile(i<j&&!isV(s[j]))--j;\nswap(s[i],s[j]);++i;--j;}\nprintf(\"%s\\n\",s.c_str());return 0;}\n"
+  },
+  "time_limit": 2.0
+}

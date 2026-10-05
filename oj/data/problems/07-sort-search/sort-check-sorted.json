@@ -1,0 +1,84 @@
+{
+  "id": "sort-check-sorted",
+  "title": "判断数组是否已排序",
+  "difficulty": "入门",
+  "tags": [
+    "数组",
+    "排序"
+  ],
+  "source": {
+    "name": "排序基础",
+    "url": "https://leetcode.cn/problems/sort-an-array/"
+  },
+  "statement": "判断数组是否**非递减**。是输出 `YES`，否则 `NO`。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数（$|a_i| \\le 10^9$）。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "|a_i| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "5\n1 2 3 4 5\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n1 3 2\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**检查相邻对**：只需确认每一对相邻元素都满足 `a[i-1] <= a[i]`。\n\n时间 $O(n)$，空间 $O(1)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nbool ok=true;\nfor(int i=1;i<n;++i)if(a[i-1]>a[i]){ok=false;break;}\nprintf(\"%s\\n\",ok?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n1 2 3 4 5\n",
+      "output": "YES\n",
+      "name": "样例 1（有序）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 3 2\n",
+      "output": "NO\n",
+      "name": "样例 2（无序）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n7\n",
+      "output": "YES\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n2 2 2 2\n",
+      "output": "YES\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n4 3 2 1\n",
+      "output": "NO\n",
+      "name": "递减",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n-3 -1 0 2\n",
+      "output": "YES\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nbool ok=true;\nfor(int i=1;i<n;++i)if(a[i-1]>a[i]){ok=false;break;}\nprintf(\"%s\\n\",ok?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

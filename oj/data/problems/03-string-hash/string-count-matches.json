@@ -1,0 +1,86 @@
+{
+  "id": "string-count-matches",
+  "title": "统计匹配的规则项",
+  "difficulty": "简单",
+  "tags": [
+    "字符串",
+    "哈希表",
+    "计数"
+  ],
+  "source": {
+    "name": "LeetCode 1773",
+    "url": "https://leetcode.cn/problems/count-items-matching-a-rule/"
+  },
+  "statement": "给定若干物品，每个物品用 `type:color:name` 描述。\n\n再给定一条规则 `ruleKey:ruleValue`，统计满足该规则的物品个数。\n\n`ruleKey` 只会是 `type`、`color`、`name` 之一。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^4$）。\n\n第二行 $n$ 个物品描述，以空格分隔，每个形如 `type:color:name`（三段均为小写字母）。\n\n第三行一个规则 `ruleKey:ruleValue`。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "1 ≤ n ≤ 10^4",
+    "三段均为小写字母",
+    "ruleKey ∈ {type, color, name}"
+  ],
+  "samples": [
+    {
+      "input": "3\nphone:blue:pixel phone:red:mi phone:blue:note\ntype:phone\n",
+      "output": "3\n",
+      "explain": ""
+    },
+    {
+      "input": "2\nphone:blue:pixel phone:red:mi\ncolor:red\n",
+      "output": "1\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**按规则字段拆分比较**：把每个物品按 `:` 拆成三段，根据 `ruleKey` 决定比较哪一段。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<string>items(n);\nfor(int i=0;i<n;++i)cin>>items[i];\nstring rule;cin>>rule;\nsize_t pos=rule.find(':');\nstring key=rule.substr(0,pos),val=rule.substr(pos+1);\nint idx=(key==\"type\")?0:(key==\"color\"?1:2);\nint cnt=0;\nfor(auto&it:items){\nsize_t p1=it.find(':'),p2=it.find(':',p1+1);\nstring segs[3]={it.substr(0,p1),it.substr(p1+1,p2-p1-1),it.substr(p2+1)};\nif(segs[idx]==val)++cnt;}\nprintf(\"%d\\n\",cnt);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3\nphone:blue:pixel phone:red:mi phone:blue:note\ntype:phone\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2\nphone:blue:pixel phone:red:mi\ncolor:red\n",
+      "output": "1\n",
+      "name": "匹配 color",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2\nphone:blue:pixel phone:red:mi\nname:mi\n",
+      "output": "1\n",
+      "name": "匹配 name",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\nphone:blue:pixel\ntype:book\n",
+      "output": "0\n",
+      "name": "无匹配",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\na:b:c\ntype:a\n",
+      "output": "1\n",
+      "name": "单物品",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\nx:y:z x:y:z x:y:z\ntype:x\n",
+      "output": "3\n",
+      "name": "全部匹配",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<string>items(n);\nfor(int i=0;i<n;++i)cin>>items[i];\nstring rule;cin>>rule;\nsize_t pos=rule.find(':');\nstring key=rule.substr(0,pos),val=rule.substr(pos+1);\nint idx=(key==\"type\")?0:(key==\"color\"?1:2);\nint cnt=0;\nfor(auto&it:items){\nsize_t p1=it.find(':'),p2=it.find(':',p1+1);\nstring segs[3]={it.substr(0,p1),it.substr(p1+1,p2-p1-1),it.substr(p2+1)};\nif(segs[idx]==val)++cnt;}\nprintf(\"%d\\n\",cnt);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

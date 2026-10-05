@@ -1,0 +1,93 @@
+{
+  "id": "dp-word-break",
+  "title": "单词拆分",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "字符串",
+    "哈希表"
+  ],
+  "source": {
+    "name": "LeetCode 139",
+    "url": "https://leetcode.cn/problems/word-break/"
+  },
+  "statement": "给定一个字符串和一个单词字典，判断字符串**能否**被拆分成字典中单词的**拼接**。\n\n字典中的单词**可以重复使用**。\n\n能则输出 `YES`，否则 `NO`。",
+  "input_format": "第一行一个字符串 $s$（$1 \\le |s| \\le 300$），仅含小写字母。\n\n第二行一个整数 $n$（$1 \\le n \\le 1000$）。\n\n接下来 $n$ 行，每行一个单词（仅小写字母）。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ |s| ≤ 300",
+    "1 ≤ n ≤ 1000",
+    "字典单词可重复使用"
+  ],
+  "samples": [
+    {
+      "input": "leetcode\n2\nleet\ncode\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "applepenapple\n2\napple\npen\n",
+      "output": "YES\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**状态**：`dp[i]` = 字符串的**前 $i$ 个字符**能否被拆分。\n\n转移：对每个 $i$，枚举切分点 $j$，若 `dp[j]` 为真**且** `s[j..i-1]` 在字典中，则 `dp[i]` 为真。\n\n用**哈希集合**存字典，查询 $O(1)$。时间 $O(n^2)$。\n\n> **优化**：枚举 $j$ 时可以只考虑「长度不超过字典最长单词」的范围，或改用**字典树（Trie）** 加速匹配。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;int n;cin>>n;\nunordered_set<string>ws;\nfor(int i=0;i<n;++i){string w;cin>>w;ws.insert(w);}\nint L=s.size();vector<bool>dp(L+1,false);dp[0]=true;\nfor(int i=1;i<=L;++i)for(int j=0;j<i;++j)\nif(dp[j]&&ws.count(s.substr(j,i-j))){dp[i]=true;break;}\nprintf(\"%s\\n\",dp[L]?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "leetcode\n2\nleet\ncode\n",
+      "output": "YES\n",
+      "name": "样例 1（可以）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "applepenapple\n2\napple\npen\n",
+      "output": "YES\n",
+      "name": "样例 2（可以，可重复使用）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "a\n1\na\n",
+      "output": "YES\n",
+      "name": "单字符命中",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a\n1\nb\n",
+      "output": "NO\n",
+      "name": "单字符未命中",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aaaa\n2\na\naa\n",
+      "output": "YES\n",
+      "name": "可重复使用",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "abcd\n2\nab\ncde\n",
+      "output": "NO\n",
+      "name": "无法拆分",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "abc\n1\nabc\n",
+      "output": "YES\n",
+      "name": "整串即单词",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;int n;cin>>n;\nunordered_set<string>ws;\nfor(int i=0;i<n;++i){string w;cin>>w;ws.insert(w);}\nint L=s.size();vector<bool>dp(L+1,false);dp[0]=true;\nfor(int i=1;i<=L;++i)for(int j=0;j<i;++j)\nif(dp[j]&&ws.count(s.substr(j,i-j))){dp[i]=true;break;}\nprintf(\"%s\\n\",dp[L]?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

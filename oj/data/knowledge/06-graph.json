@@ -15,7 +15,9 @@
         "图不连通时，起点的连通分量之外的点距离应保持 -1，不要当成 0"
       ],
       "problems": [
-        "graph-bfs-shortest"
+        "graph-bfs-shortest",
+        "graph-bfs-order",
+        "graph-connected-two"
       ]
     },
     {
@@ -29,7 +31,9 @@
         "顶点编号是 0-based 还是 1-based 要统一，数组大小要相应开够"
       ],
       "problems": [
-        "graph-connected-components"
+        "graph-connected-components",
+        "graph-dfs-order",
+        "graph-provinces"
       ]
     },
     {
@@ -43,7 +47,12 @@
         "结果长度 < V 说明有环，这是判断 DAG 的标准手段，别忘了检查"
       ],
       "problems": [
-        "graph-topological-sort"
+        "graph-topological-sort",
+        "graph-topo-lex-min",
+        "graph-course-schedule",
+        "graph-eventual-safe",
+        "graph-dag-shortest",
+        "graph-count-paths"
       ]
     },
     {
@@ -57,7 +66,9 @@
         "判断「加这条边是否成环」= 判断两端点是否已在同一集合（`find(a) == find(b)`）"
       ],
       "problems": [
-        "advanced-dsu"
+        "advanced-dsu",
+        "graph-tree-check",
+        "graph-kruskal-mst"
       ]
     },
     {
@@ -71,7 +82,15 @@
         "多源 BFS（多个起点同时扩展）只需在初始化时把所有起点入队，不要写成多次单源 BFS"
       ],
       "problems": [
-        "graph-grid-islands"
+        "graph-grid-islands",
+        "graph-max-island-area",
+        "graph-flood-fill",
+        "graph-rotting-oranges",
+        "graph-zero-one-matrix",
+        "graph-surrounded-regions",
+        "graph-binary-matrix-path",
+        "graph-word-search",
+        "graph-unique-paths-obstacle"
       ]
     },
     {
@@ -85,7 +104,8 @@
         "距离数组要用 long long，INF 取足够大（如 4e18）"
       ],
       "problems": [
-        "graph-dijkstra"
+        "graph-dijkstra",
+        "graph-min-cost-connect"
       ]
     },
     {
@@ -99,7 +119,8 @@
         "孤立点自成一组，不影响二分性"
       ],
       "problems": [
-        "graph-bipartite"
+        "graph-bipartite",
+        "graph-has-cycle"
       ]
     }
   ],

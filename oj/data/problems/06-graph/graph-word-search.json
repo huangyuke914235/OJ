@@ -1,0 +1,94 @@
+{
+  "id": "graph-word-search",
+  "title": "单词搜索",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "DFS",
+    "回溯",
+    "网格"
+  ],
+  "source": {
+    "name": "LeetCode 79",
+    "url": "https://leetcode.cn/problems/word-search/"
+  },
+  "statement": "给定一个字符网格和一个单词，判断单词是否存在于网格中。\n\n单词由**上下左右相邻**的格子依次连接而成，**同一个格子不能重复使用**。\n\n存在输出 `YES`，否则 `NO`。",
+  "input_format": "第一行两个整数 $r, c$（$1 \\le r, c \\le 6$）。\n\n接下来 $r$ 行，每行一个长度为 $c$ 的字符串（仅含大写字母）。\n\n最后一行一个字符串 $word$（仅含大写字母）。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ r, c ≤ 6",
+    "仅含大写字母",
+    "同一格不能重复使用"
+  ],
+  "samples": [
+    {
+      "input": "3 4\nABCE\nSFCS\nADEE\nABCCED\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "3 4\nABCE\nSFCS\nADEE\nSEE\n",
+      "output": "YES\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**DFS + 回溯**：从每个格子出发尝试匹配。\n\n匹配到第 $k$ 个字符时，若当前格子的字符不等于 `word[k]` 就失败；否则**临时把当前格子标记为已用**（例如改成 `#`），递归四个方向，**返回后恢复**。\n\n> **关键**：`k == len(word)` 时立即返回成功（在检查格子合法性**之前**判断）。\n\n> **易错点**：必须**回溯恢复**格子内容，否则后续的起点尝试会受污染。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint r,c;vector<string>g;string w;\nbool dfs(int i,int j,int k){\nif(k==(int)w.size())return true;\nif(i<0||i>=r||j<0||j>=c||g[i][j]!=w[k])return false;\nchar t=g[i][j];g[i][j]='#';\nbool ok=dfs(i+1,j,k+1)||dfs(i-1,j,k+1)||dfs(i,j+1,k+1)||dfs(i,j-1,k+1);\ng[i][j]=t;return ok;}\nint main(){scanf(\"%d %d\",&r,&c);g.resize(r);\nfor(int i=0;i<r;++i)cin>>g[i];\ncin>>w;\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)\nif(dfs(i,j,0)){printf(\"YES\\n\");return 0;}\nprintf(\"NO\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 4\nABCE\nSFCS\nADEE\nABCCED\n",
+      "output": "YES\n",
+      "name": "样例 1（存在）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 4\nABCE\nSFCS\nADEE\nSEE\n",
+      "output": "YES\n",
+      "name": "样例 2（存在）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 4\nABCE\nSFCS\nADEE\nABCB\n",
+      "output": "NO\n",
+      "name": "样例 3（不存在）",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 1\nA\nA\n",
+      "output": "YES\n",
+      "name": "单格命中",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 1\nA\nB\n",
+      "output": "NO\n",
+      "name": "单格未命中",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 3\nAAA\nABA\nAAA\nAAAAA\n",
+      "output": "YES\n",
+      "name": "需回溯",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2\nAB\nABC\n",
+      "output": "NO\n",
+      "name": "超出网格",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint r,c;vector<string>g;string w;\nbool dfs(int i,int j,int k){\nif(k==(int)w.size())return true;\nif(i<0||i>=r||j<0||j>=c||g[i][j]!=w[k])return false;\nchar t=g[i][j];g[i][j]='#';\nbool ok=dfs(i+1,j,k+1)||dfs(i-1,j,k+1)||dfs(i,j+1,k+1)||dfs(i,j-1,k+1);\ng[i][j]=t;return ok;}\nint main(){scanf(\"%d %d\",&r,&c);g.resize(r);\nfor(int i=0;i<r;++i)cin>>g[i];\ncin>>w;\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)\nif(dfs(i,j,0)){printf(\"YES\\n\");return 0;}\nprintf(\"NO\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

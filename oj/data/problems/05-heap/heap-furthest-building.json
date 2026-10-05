@@ -1,0 +1,93 @@
+{
+  "id": "heap-furthest-building",
+  "title": "到达最远的建筑",
+  "difficulty": "中等",
+  "tags": [
+    "堆",
+    "优先队列",
+    "贪心"
+  ],
+  "source": {
+    "name": "LeetCode 1642",
+    "url": "https://leetcode.cn/problems/furthest-building-you-can-reach/"
+  },
+  "statement": "从左到右依次经过建筑，每栋高度为 $h_i$。从 $i$ 到 $i+1$：\n\n- 若下一栋**不更高**，可以直接通过；\n- 若更高，需要付出高度差——可以用**砖块**（消耗等量砖）或**梯子**（不限高度，但数量有限）。\n\n求最多能到达的**建筑下标**（从 $0$ 开始）。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数 $h_i$（$1 \\le h_i \\le 10^9$）。\n\n第三行两个整数 $bricks, ladders$（$0 \\le bricks \\le 10^9$，$0 \\le ladders \\le n$）。",
+  "output_format": "一行一个整数，表示能到达的最远建筑下标。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "1 ≤ h_i ≤ 10^9",
+    "0 ≤ bricks ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "5\n4 2 7 6 9 14 12\n5 1\n",
+      "output": "4\n",
+      "explain": ""
+    },
+    {
+      "input": "5\n4 12 2 7 3 18 20 3 19\n10 2\n",
+      "output": "4\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**小根堆 + 贪心**：把遇到的高度差都放进小根堆，**梯子优先留给最高的落差**。\n\n当落差数量超过梯子数时，把**最小的落差**改用砖块支付；若砖块不够，说明卡在这里。\n\n> **核心思路**：先假设所有上坡都用梯子，超出的部分再用砖块补——用堆来选出「最不值得用梯子的那些」。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>h(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&h[i]);\nlong long bricks,ladders;scanf(\"%lld %lld\",&bricks,&ladders);\npriority_queue<long long,vector<long long>,greater<long long>>pq;\nfor(int i=0;i+1<n;++i){\nlong long d=h[i+1]-h[i];\nif(d<=0)continue;\npq.push(d);\nif((long long)pq.size()>ladders){bricks-=pq.top();pq.pop();\nif(bricks<0){printf(\"%d\\n\",i);return 0;}}}\nprintf(\"%d\\n\",n-1);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n4 2 7 6 9 14 12\n5 1\n",
+      "output": "4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n4 12 2 7 3 18 20 3 19\n10 2\n",
+      "output": "4\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n5\n0 0\n",
+      "output": "0\n",
+      "name": "单建筑",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n5 4 3 2\n0 0\n",
+      "output": "3\n",
+      "name": "全程下坡",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n1 5 9 13\n0 3\n",
+      "output": "3\n",
+      "name": "梯子足够",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1 10 20\n5 0\n",
+      "output": "0\n",
+      "name": "砖不够",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1 2 3\n10 10\n",
+      "output": "2\n",
+      "name": "砖梯都够",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>h(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&h[i]);\nlong long bricks,ladders;scanf(\"%lld %lld\",&bricks,&ladders);\npriority_queue<long long,vector<long long>,greater<long long>>pq;\nfor(int i=0;i+1<n;++i){\nlong long d=h[i+1]-h[i];\nif(d<=0)continue;\npq.push(d);\nif((long long)pq.size()>ladders){bricks-=pq.top();pq.pop();\nif(bricks<0){printf(\"%d\\n\",i);return 0;}}}\nprintf(\"%d\\n\",n-1);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,84 @@
+{
+  "id": "string-capitalize-title",
+  "title": "将标题首字母大写",
+  "difficulty": "简单",
+  "tags": [
+    "字符串",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 2129",
+    "url": "https://leetcode.cn/problems/capitalize-the-title/"
+  },
+  "statement": "把标题中每个单词改成「**首字母大写、其余字母小写**」。\n\n**特例**：长度为 1 或 2 的单词**全部转成小写**。\n\n单词间用单个空格分隔。",
+  "input_format": "第一行一个标题字符串（长度 $1 \\le |s| \\le 100$），由空格分隔的字母单词组成。",
+  "output_format": "一行，处理后的标题。",
+  "constraints": [
+    "1 ≤ |s| ≤ 100",
+    "仅含字母与空格"
+  ],
+  "samples": [
+    {
+      "input": "capiTalIze tHe titLe\n",
+      "output": "Capitalize The Title\n",
+      "explain": ""
+    },
+    {
+      "input": "First leTTeR of EACH Word\n",
+      "output": "First Letter of Each Word\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**逐单词处理**：长度 $\\le 2$ 的单词全小写，否则首字母大写、其余小写。\n\n> **易错点**：`toupper` / `tolower` 的返回值是 `int`，赋给 `char` 前建议显式转换。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string line;getline(cin,line);\nstringstream ss(line);string w;bool first=true;\nwhile(ss>>w){\nif(w.size()<=2)for(char&c:w)c=tolower((unsigned char)c);\nelse{w[0]=toupper((unsigned char)w[0]);\nfor(size_t i=1;i<w.size();++i)w[i]=tolower((unsigned char)w[i]);}\nif(!first)printf(\" \");printf(\"%s\",w.c_str());first=false;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "capiTalIze tHe titLe\n",
+      "output": "Capitalize The Title\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "First leTTeR of EACH Word\n",
+      "output": "First Letter of Each Word\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "a bc def\n",
+      "output": "a bc Def\n",
+      "name": "全短词",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "HELLO WORLD\n",
+      "output": "Hello World\n",
+      "name": "全大写",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a\n",
+      "output": "a\n",
+      "name": "单词",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "tHe QUICK brown FOX\n",
+      "output": "The Quick Brown Fox\n",
+      "name": "长标题",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string line;getline(cin,line);\nstringstream ss(line);string w;bool first=true;\nwhile(ss>>w){\nif(w.size()<=2)for(char&c:w)c=tolower((unsigned char)c);\nelse{w[0]=toupper((unsigned char)w[0]);\nfor(size_t i=1;i<w.size();++i)w[i]=tolower((unsigned char)w[i]);}\nif(!first)printf(\" \");printf(\"%s\",w.c_str());first=false;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

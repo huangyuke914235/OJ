@@ -1,0 +1,87 @@
+{
+  "id": "tree-postorder-iterative",
+  "title": "后序遍历（迭代实现）",
+  "difficulty": "中等",
+  "tags": [
+    "树",
+    "二叉树",
+    "遍历",
+    "栈"
+  ],
+  "source": {
+    "name": "LeetCode 145",
+    "url": "https://leetcode.cn/problems/binary-tree-postorder-traversal/"
+  },
+  "statement": "用**迭代**实现二叉树的**后序遍历**，输出遍历序列。\n\n后序顺序：**左 → 右 → 根**。",
+  "input_format": "一行，二叉树的层序序列（`null` 表示空节点）。节点数 $\\le 10^5$。",
+  "output_format": "一行，后序遍历序列；空树输出空行。",
+  "constraints": [
+    "节点数 ≤ 10^5",
+    "|v| ≤ 10^9",
+    "必须用迭代实现"
+  ],
+  "samples": [
+    {
+      "input": "1 null 2 3\n",
+      "output": "3 2 1\n",
+      "explain": ""
+    },
+    {
+      "input": "null\n",
+      "output": "\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**「反向」技巧**：\n\n按「根 → **右** → **左**」的顺序做前序遍历（只需在压栈时**先左后右**），最后把结果**整体反转**，就得到「左 → 右 → 根」。\n\n> 这是迭代实现后序最简洁的写法。**严格模拟后序**（用 `lastVisited` 标记）也可以，但代码复杂得多。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nNode*root=buildTree(tk);\nvector<long long>res;vector<Node*>st;\nif(root)st.push_back(root);\nwhile(!st.empty()){Node*n=st.back();st.pop_back();\nres.push_back(n->v);\nif(n->l)st.push_back(n->l);\nif(n->r)st.push_back(n->r);}\nreverse(res.begin(),res.end());\nfor(size_t i=0;i<res.size();++i){if(i)printf(\" \");printf(\"%lld\",res[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "1 null 2 3\n",
+      "output": "3 2 1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "\n",
+      "name": "空树",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "name": "单节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 5 6 7\n",
+      "output": "4 5 2 6 7 3 1\n",
+      "name": "完整树",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 null 3\n",
+      "output": "3 2 1\n",
+      "name": "只有左链",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "-1 2 -3\n",
+      "output": "2 -3 -1\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nNode*root=buildTree(tk);\nvector<long long>res;vector<Node*>st;\nif(root)st.push_back(root);\nwhile(!st.empty()){Node*n=st.back();st.pop_back();\nres.push_back(n->v);\nif(n->l)st.push_back(n->l);\nif(n->r)st.push_back(n->r);}\nreverse(res.begin(),res.end());\nfor(size_t i=0;i<res.size();++i){if(i)printf(\" \");printf(\"%lld\",res[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

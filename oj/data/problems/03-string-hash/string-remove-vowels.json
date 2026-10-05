@@ -1,0 +1,84 @@
+{
+  "id": "string-remove-vowels",
+  "title": "删除字符串中的元音字母",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "字符处理"
+  ],
+  "source": {
+    "name": "字符串基础",
+    "url": "https://leetcode.cn/problems/reverse-vowels-of-a-string/"
+  },
+  "statement": "给定一个字符串，**删除其中所有元音字母**（`a`、`e`、`i`、`o`、`u`，不分大小写），输出结果。",
+  "input_format": "一行一个字符串 $s$（$0 \\le |s| \\le 10^5$），可含字母、数字与空格。",
+  "output_format": "一行，删除元音后的字符串。",
+  "constraints": [
+    "0 ≤ |s| ≤ 10^5",
+    "元音不分大小写"
+  ],
+  "samples": [
+    {
+      "input": "leetcode\n",
+      "output": "ltcd\n",
+      "explain": ""
+    },
+    {
+      "input": "aeiou\n",
+      "output": "\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**逐字符过滤**：把字符转成小写后判断是否为元音，不是就保留。\n\n> **易错点**：输入可能含空格，要用 `getline`；元音判断**不分大小写**。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nstring r;\nfor(char c:s){\nchar l=tolower((unsigned char)c);\nif(l=='a'||l=='e'||l=='i'||l=='o'||l=='u')continue;\nr+=c;}\nprintf(\"%s\\n\",r.c_str());return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "leetcode\n",
+      "output": "ltcd\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "aeiou\n",
+      "output": "\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "\n",
+      "output": "\n",
+      "name": "空串",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "xyz\n",
+      "output": "xyz\n",
+      "name": "无元音",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "AEIOUabc\n",
+      "output": "bc\n",
+      "name": "含大写",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "hello world\n",
+      "output": "hll wrld\n",
+      "name": "含空格",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nstring r;\nfor(char c:s){\nchar l=tolower((unsigned char)c);\nif(l=='a'||l=='e'||l=='i'||l=='o'||l=='u')continue;\nr+=c;}\nprintf(\"%s\\n\",r.c_str());return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,92 @@
+{
+  "id": "tree-sum-left-leaves",
+  "title": "左叶子之和",
+  "difficulty": "入门",
+  "tags": [
+    "树",
+    "二叉树",
+    "递归"
+  ],
+  "source": {
+    "name": "LeetCode 404",
+    "url": "https://leetcode.cn/problems/sum-of-left-leaves/"
+  },
+  "statement": "求二叉树中**所有左叶子节点**的值之和。\n\n**左叶子**指：它是某个节点的**左孩子**，且**本身是叶子**（左右孩子都为空）。",
+  "input_format": "一行，二叉树的层序序列（`null` 表示空节点）。节点数 $\\le 1000$。",
+  "output_format": "一行一个整数，表示左叶子之和。",
+  "constraints": [
+    "节点数 ≤ 1000",
+    "|v| ≤ 1000"
+  ],
+  "samples": [
+    {
+      "input": "3 9 20 null null 15 7\n",
+      "output": "24\n",
+      "explain": ""
+    },
+    {
+      "input": "null\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**递归时多传一个「我是不是左孩子」的标志**。\n\n当节点是叶子**且**标志为真时，累加它的值。\n\n> **易错点**：根节点不算左叶子（它没有父节点），所以初始调用传 `false`。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nlong long sm(Node*n,bool isLeft){\nif(!n)return 0;\nif(!n->l&&!n->r)return isLeft?n->v:0;\nreturn sm(n->l,true)+sm(n->r,false);}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nprintf(\"%lld\\n\",sm(buildTree(tk),false));return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 9 20 null null 15 7\n",
+      "output": "24\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "0\n",
+      "name": "空树",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n",
+      "output": "0\n",
+      "name": "单节点（根不算左叶）",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2\n",
+      "output": "2\n",
+      "name": "只有左叶",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 null 2\n",
+      "output": "0\n",
+      "name": "只有右叶",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "-1 -2 -3\n",
+      "output": "-2\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 5 6 7\n",
+      "output": "10\n",
+      "name": "完整树",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nlong long sm(Node*n,bool isLeft){\nif(!n)return 0;\nif(!n->l&&!n->r)return isLeft?n->v:0;\nreturn sm(n->l,true)+sm(n->r,false);}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nprintf(\"%lld\\n\",sm(buildTree(tk),false));return 0;}\n"
+  },
+  "time_limit": 2.0
+}

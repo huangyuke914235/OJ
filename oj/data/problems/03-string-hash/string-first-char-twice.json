@@ -1,0 +1,85 @@
+{
+  "id": "string-first-char-twice",
+  "title": "第一个出现两次的字母",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "哈希表"
+  ],
+  "source": {
+    "name": "LeetCode 2351",
+    "url": "https://leetcode.cn/problems/first-letter-to-appear-twice/"
+  },
+  "statement": "给定一个小写字母字符串，找出**第一个出现两次**的字母并输出。\n\n**保证**至少有一个字母出现两次。",
+  "input_format": "一行一个字符串 $s$（$2 \\le |s| \\le 100$），仅含小写字母。",
+  "output_format": "一行，第一个出现两次的字母。",
+  "constraints": [
+    "2 ≤ |s| ≤ 100",
+    "仅小写字母",
+    "保证存在答案"
+  ],
+  "samples": [
+    {
+      "input": "abccbaacz\n",
+      "output": "c\n",
+      "explain": ""
+    },
+    {
+      "input": "abcdd\n",
+      "output": "d\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**边扫描边记录**：用一个布尔数组记录「已经出现过」的字母，遇到重复立即返回。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;bool seen[26]={false};\nfor(char c:s){\nint i=c-'a';\nif(seen[i]){printf(\"%c\\n\",c);return 0;}\nseen[i]=true;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "abccbaacz\n",
+      "output": "c\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abcdd\n",
+      "output": "d\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "aabb\n",
+      "output": "a\n",
+      "name": "相邻重复",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abca\n",
+      "output": "a\n",
+      "name": "首尾相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aa\n",
+      "output": "a\n",
+      "name": "两字符",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "abcabc\n",
+      "output": "a\n",
+      "name": "多次出现",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;bool seen[26]={false};\nfor(char c:s){\nint i=c-'a';\nif(seen[i]){printf(\"%c\\n\",c);return 0;}\nseen[i]=true;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,85 @@
+{
+  "id": "heap-ugly-number",
+  "title": "丑数 II",
+  "difficulty": "中等",
+  "tags": [
+    "堆",
+    "优先队列",
+    "数学"
+  ],
+  "source": {
+    "name": "LeetCode 264",
+    "url": "https://leetcode.cn/problems/ugly-number-ii/"
+  },
+  "statement": "**丑数**指只含质因子 $2$、$3$、$5$ 的正整数（$1$ 也是丑数）。\n\n求第 $n$ 个丑数（按从小到大排序）。",
+  "input_format": "一行一个整数 $n$（$1 \\le n \\le 1690$）。",
+  "output_format": "一行一个整数，表示第 $n$ 个丑数。",
+  "constraints": [
+    "1 ≤ n ≤ 1690",
+    "丑数只含质因子 2、3、5"
+  ],
+  "samples": [
+    {
+      "input": "10\n",
+      "output": "12\n",
+      "explain": ""
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**小根堆 + 去重**：\n\n1. 初始把 1 放入小根堆；\n2. 每次弹出堆顶（当前最小丑数），**把它乘 2、3、5 后的结果压入堆**；\n3. 用集合**去重**（否则 6 会由 2×3 和 3×2 重复产生）。\n\n第 $n$ 次弹出的就是第 $n$ 个丑数。\n\n> **另解（三指针 DP）**：维护三个指针分别指向「×2」「×3」「×5」的位置，每次取三者最小值推进，时间 $O(n)$、空间 $O(n)$，是本题最优解。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\npriority_queue<long long,vector<long long>,greater<long long>>pq;\nset<long long>seen;pq.push(1);seen.insert(1);\nlong long cur=1;\nfor(int i=0;i<n;++i){cur=pq.top();pq.pop();\nfor(long long f:{2LL,3LL,5LL}){\nlong long v=cur*f;\nif(!seen.count(v)){seen.insert(v);pq.push(v);}}}\nprintf(\"%lld\\n\",cur);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "10\n",
+      "output": "12\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "name": "n = 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2\n",
+      "output": "2\n",
+      "name": "n = 2",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "7\n",
+      "output": "8\n",
+      "name": "n = 7",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "100\n",
+      "output": "1536\n",
+      "name": "n = 100",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1690\n",
+      "output": "2123366400\n",
+      "name": "n = 1690",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\npriority_queue<long long,vector<long long>,greater<long long>>pq;\nset<long long>seen;pq.push(1);seen.insert(1);\nlong long cur=1;\nfor(int i=0;i<n;++i){cur=pq.top();pq.pop();\nfor(long long f:{2LL,3LL,5LL}){\nlong long v=cur*f;\nif(!seen.count(v)){seen.insert(v);pq.push(v);}}}\nprintf(\"%lld\\n\",cur);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

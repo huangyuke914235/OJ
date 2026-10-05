@@ -1,0 +1,92 @@
+{
+  "id": "dp-min-path-sum",
+  "title": "最小路径和",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "矩阵",
+    "二维DP"
+  ],
+  "source": {
+    "name": "LeetCode 64",
+    "url": "https://leetcode.cn/problems/minimum-path-sum/"
+  },
+  "statement": "给定一个非负整数矩阵，从**左上角**走到**右下角**，每次只能向右或向下移动一格。\n\n求路径上所有数字之和的**最小值**。",
+  "input_format": "第一行两个整数 $r, c$（$1 \\le r, c \\le 200$）。\n\n接下来 $r$ 行，每行 $c$ 个非负整数（$0 \\le v \\le 200$）。",
+  "output_format": "一行一个整数，表示最小路径和。",
+  "constraints": [
+    "1 ≤ r, c ≤ 200",
+    "0 ≤ v ≤ 200"
+  ],
+  "samples": [
+    {
+      "input": "3 3\n1 3 1\n1 5 1\n4 2 1\n",
+      "output": "7\n",
+      "explain": ""
+    },
+    {
+      "input": "1 1\n5\n",
+      "output": "5\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**与「不同路径」同框架**，只是把「计数」换成「取最小值」：\n\n`dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + g[i][j]`。\n\n> **易错点**：**第一行和第一列要单独初始化**（它们只有一条路径），不能直接用上面的转移式。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<vector<long long>>g(r,vector<long long>(c));\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)scanf(\"%lld\",&g[i][j]);\nvector<vector<long long>>dp(r,vector<long long>(c,0));\ndp[0][0]=g[0][0];\nfor(int j=1;j<c;++j)dp[0][j]=dp[0][j-1]+g[0][j];\nfor(int i=1;i<r;++i){dp[i][0]=dp[i-1][0]+g[i][0];\nfor(int j=1;j<c;++j)dp[i][j]=min(dp[i-1][j],dp[i][j-1])+g[i][j];}\nprintf(\"%lld\\n\",dp[r-1][c-1]);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 3\n1 3 1\n1 5 1\n4 2 1\n",
+      "output": "7\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 1\n5\n",
+      "output": "5\n",
+      "name": "单格",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 3\n1 2 3\n",
+      "output": "6\n",
+      "name": "单行",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 1\n1\n2\n3\n",
+      "output": "6\n",
+      "name": "单列",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 2\n0 0\n0 0\n",
+      "output": "0\n",
+      "name": "全零",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 3\n1 1 1\n1 1 1\n1 1 1\n",
+      "output": "5\n",
+      "name": "方阵 3",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2 2\n9 9\n9 1\n",
+      "output": "19\n",
+      "name": "含大值",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<vector<long long>>g(r,vector<long long>(c));\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)scanf(\"%lld\",&g[i][j]);\nvector<vector<long long>>dp(r,vector<long long>(c,0));\ndp[0][0]=g[0][0];\nfor(int j=1;j<c;++j)dp[0][j]=dp[0][j-1]+g[0][j];\nfor(int i=1;i<r;++i){dp[i][0]=dp[i-1][0]+g[i][0];\nfor(int j=1;j<c;++j)dp[i][j]=min(dp[i-1][j],dp[i][j-1])+g[i][j];}\nprintf(\"%lld\\n\",dp[r-1][c-1]);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

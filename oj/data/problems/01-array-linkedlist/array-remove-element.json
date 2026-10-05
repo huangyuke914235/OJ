@@ -1,0 +1,93 @@
+{
+  "id": "array-remove-element",
+  "title": "移除元素",
+  "difficulty": "入门",
+  "tags": [
+    "数组",
+    "双指针",
+    "原地"
+  ],
+  "source": {
+    "name": "LeetCode 27",
+    "url": "https://leetcode.cn/problems/remove-element/"
+  },
+  "statement": "给定数组 $a$ 和值 $val$，请**原地**移除所有等于 $val$ 的元素，返回新长度 $k$。\n\n元素的**相对顺序可以改变**。结果放在数组前 $k$ 个位置。\n\n**要求空间复杂度 $O(1)$**。",
+  "input_format": "第一行一个整数 $n$（$0 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数。\n\n第三行一个整数 $val$。",
+  "output_format": "第一行输出 $k$；第二行输出前 $k$ 个元素（空格分隔），$k=0$ 时输出空行。",
+  "constraints": [
+    "0 ≤ n ≤ 10^5",
+    "|a_i|, |val| ≤ 10^9",
+    "要求 O(1) 空间"
+  ],
+  "samples": [
+    {
+      "input": "4\n3 2 2 3\n3\n",
+      "output": "2\n2 2\n",
+      "explain": ""
+    },
+    {
+      "input": "8\n0 1 2 2 3 0 4 2\n2\n",
+      "output": "5\n0 1 3 0 4\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**读写双指针**：`k` 指向下一个要写入的位置。遍历数组，只要元素不等于 `val` 就写到 `a[k++]`。\n\n时间 $O(n)$，空间 $O(1)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nlong long val;scanf(\"%lld\",&val);\nint k=0;for(int i=0;i<n;++i)if(a[i]!=val)a[k++]=a[i];\nprintf(\"%d\\n\",k);\nfor(int i=0;i<k;++i){if(i)printf(\" \");printf(\"%lld\",a[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n3 2 2 3\n3\n",
+      "output": "2\n2 2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "8\n0 1 2 2 3 0 4 2\n2\n",
+      "output": "5\n0 1 3 0 4\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n5 5 5\n5\n",
+      "output": "0\n\n",
+      "name": "全部相等",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n1 2 3\n9\n",
+      "output": "3\n1 2 3\n",
+      "name": "全部不等",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n5\n5\n",
+      "output": "0\n\n",
+      "name": "单元素命中",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n5\n6\n",
+      "output": "1\n5\n",
+      "name": "单元素未命中",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n-1 0 -1 1 -1\n-1\n",
+      "output": "2\n0 1\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nlong long val;scanf(\"%lld\",&val);\nint k=0;for(int i=0;i<n;++i)if(a[i]!=val)a[k++]=a[i];\nprintf(\"%d\\n\",k);\nfor(int i=0;i<k;++i){if(i)printf(\" \");printf(\"%lld\",a[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

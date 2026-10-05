@@ -1,0 +1,93 @@
+{
+  "id": "tree-level-average",
+  "title": "二叉树的层平均值",
+  "difficulty": "简单",
+  "tags": [
+    "树",
+    "二叉树",
+    "BFS",
+    "层序"
+  ],
+  "source": {
+    "name": "LeetCode 637",
+    "url": "https://leetcode.cn/problems/average-of-levels-in-binary-tree/"
+  },
+  "statement": "输出二叉树**每一层节点值的平均值**，从根所在层开始，每层保留 **5 位小数**，以空格分隔。",
+  "input_format": "一行，二叉树的层序序列（`null` 表示空节点）。节点数 $\\le 10^4$。",
+  "output_format": "一行，各层平均值（保留 5 位小数）。空树输出空行。",
+  "constraints": [
+    "节点数 ≤ 10^4",
+    "|v| ≤ 2^31−1"
+  ],
+  "samples": [
+    {
+      "input": "3 9 20 null null 15 7\n",
+      "output": "3.00000 14.50000 11.00000\n",
+      "explain": ""
+    },
+    {
+      "input": "null\n",
+      "output": "\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**层序遍历 + 逐层求和**：每层先固定 `sz = q.size()`，处理这一层的 `sz` 个节点并累加，最后求平均。\n\n> **易错点**：求平均时用 `long long` 存和，最后再转 `double` 相除，避免精度损失。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nNode*root=buildTree(tk);\nif(!root){printf(\"\\n\");return 0;}\nqueue<Node*>q;q.push(root);bool first=true;\nwhile(!q.empty()){int sz=q.size();long long s=0;\nfor(int i=0;i<sz;++i){Node*n=q.front();q.pop();s+=n->v;\nif(n->l)q.push(n->l);if(n->r)q.push(n->r);}\nif(!first)printf(\" \");printf(\"%.5f\",(double)s/sz);first=false;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 9 20 null null 15 7\n",
+      "output": "3.00000 14.50000 11.00000\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "\n",
+      "name": "空树",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n",
+      "output": "5.00000\n",
+      "name": "单节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 5 6 7\n",
+      "output": "1.00000 2.50000 5.50000\n",
+      "name": "完整树",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "-1 -2 -3\n",
+      "output": "-1.00000 -2.50000\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2 null 3\n",
+      "output": "1.00000 2.00000 3.00000\n",
+      "name": "只有左链",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2 3\n",
+      "output": "1.00000 2.50000\n",
+      "name": "两层",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nNode*root=buildTree(tk);\nif(!root){printf(\"\\n\");return 0;}\nqueue<Node*>q;q.push(root);bool first=true;\nwhile(!q.empty()){int sz=q.size();long long s=0;\nfor(int i=0;i<sz;++i){Node*n=q.front();q.pop();s+=n->v;\nif(n->l)q.push(n->l);if(n->r)q.push(n->r);}\nif(!first)printf(\" \");printf(\"%.5f\",(double)s/sz);first=false;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

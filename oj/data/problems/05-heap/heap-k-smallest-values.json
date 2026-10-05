@@ -1,0 +1,86 @@
+{
+  "id": "heap-k-smallest-values",
+  "title": "最小的 K 个数",
+  "difficulty": "简单",
+  "tags": [
+    "堆",
+    "优先队列",
+    "Top-K"
+  ],
+  "source": {
+    "name": "Top-K 变体",
+    "url": "https://leetcode.cn/problems/kth-largest-element-in-an-array/"
+  },
+  "statement": "给定数组和整数 $k$，找出其中**最小的 $k$ 个数**，按**升序**输出。\n\n**要求**：用**大根堆**维护，时间 $O(n\\log k)$。",
+  "input_format": "第一行两个整数 $n, k$（$1 \\le k \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数（$|a_i| \\le 10^9$）。",
+  "output_format": "一行 $k$ 个整数，升序排列。",
+  "constraints": [
+    "1 ≤ k ≤ n ≤ 10^5",
+    "|a_i| ≤ 10^9",
+    "要求 O(n log k)"
+  ],
+  "samples": [
+    {
+      "input": "6 2\n3 2 1 5 6 4\n",
+      "output": "1 2\n",
+      "explain": ""
+    },
+    {
+      "input": "3 1\n3 2 1\n",
+      "output": "1\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**大小为 $k$ 的大根堆**：堆中保存「当前最小的 $k$ 个数」，堆顶是其中**最大**的。\n\n遇到比堆顶小的元素就替换堆顶。最后堆中就是最小的 $k$ 个数，排序后输出。\n\n> **对比**：「最大的 $k$ 个」用**小根堆**，方向正好相反。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);\npriority_queue<long long>pq;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);pq.push(x);\nif((int)pq.size()>k)pq.pop();}\nvector<long long>r;while(!pq.empty()){r.push_back(pq.top());pq.pop();}\nsort(r.begin(),r.end());\nfor(int i=0;i<k;++i){if(i)printf(\" \");printf(\"%lld\",r[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "6 2\n3 2 1 5 6 4\n",
+      "output": "1 2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 1\n3 2 1\n",
+      "output": "1\n",
+      "name": "k = 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 4\n1 2 3 4\n",
+      "output": "1 2 3 4\n",
+      "name": "k = n",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 2\n5 5 5 5\n",
+      "output": "5 5\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 2\n-1 -2 -3 -4 -5\n",
+      "output": "-5 -4\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 1\n7\n",
+      "output": "7\n",
+      "name": "单元素",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);\npriority_queue<long long>pq;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);pq.push(x);\nif((int)pq.size()>k)pq.pop();}\nvector<long long>r;while(!pq.empty()){r.push_back(pq.top());pq.pop();}\nsort(r.begin(),r.end());\nfor(int i=0;i<k;++i){if(i)printf(\" \");printf(\"%lld\",r[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

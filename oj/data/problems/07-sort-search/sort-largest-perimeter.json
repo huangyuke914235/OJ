@@ -1,0 +1,92 @@
+{
+  "id": "sort-largest-perimeter",
+  "title": "三角形的最大周长",
+  "difficulty": "简单",
+  "tags": [
+    "数组",
+    "排序",
+    "贪心"
+  ],
+  "source": {
+    "name": "LeetCode 976",
+    "url": "https://leetcode.cn/problems/largest-perimeter-triangle/"
+  },
+  "statement": "给定边长数组，从中选出 **3 条边**组成三角形，求**最大周长**。\n\n若无法组成任何三角形，输出 $0$。\n\n**组成条件**：任意两边之和大于第三边。",
+  "input_format": "第一行一个整数 $n$（$3 \\le n \\le 10^4$）。\n\n第二行 $n$ 个正整数（$1 \\le a_i \\le 10^6$）。",
+  "output_format": "一行一个整数，表示最大周长；无法组成三角形则输出 0。",
+  "constraints": [
+    "3 ≤ n ≤ 10^4",
+    "1 ≤ a_i ≤ 10^6"
+  ],
+  "samples": [
+    {
+      "input": "4\n2 1 2\n",
+      "output": "5\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n1 2 1\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**排序后贪心**：把边长**降序**排序，从最大的开始，检查连续三条能否组成三角形。\n\n**为什么只需检查相邻三条**：若 `a[i] >= a[i+1] + a[i+2]`，那么 `a[i]` 与任何更小的两条边都无法组成三角形，所以可以直接跳过 `a[i]`。\n\n时间 $O(n\\log n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nsort(a.rbegin(),a.rend());\nfor(int i=0;i+2<n;++i)\nif(a[i]<a[i+1]+a[i+2]){printf(\"%lld\\n\",a[i]+a[i+1]+a[i+2]);return 0;}\nprintf(\"0\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n2 1 2\n",
+      "output": "5\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 2 1\n",
+      "output": "0\n",
+      "name": "样例 2（无法组成）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n3 2 3 4\n",
+      "output": "10\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n5 5 5\n",
+      "output": "15\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n1 1 2\n",
+      "output": "0\n",
+      "name": "退化三角形",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n1 1 1 100 100\n",
+      "output": "201\n",
+      "name": "大边优先",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "6\n2 3 4 5 6 7\n",
+      "output": "18\n",
+      "name": "多个候选",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nsort(a.rbegin(),a.rend());\nfor(int i=0;i+2<n;++i)\nif(a[i]<a[i+1]+a[i+2]){printf(\"%lld\\n\",a[i]+a[i+1]+a[i+2]);return 0;}\nprintf(\"0\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

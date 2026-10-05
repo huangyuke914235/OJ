@@ -1,0 +1,94 @@
+{
+  "id": "graph-provinces",
+  "title": "省份数量",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "并查集",
+    "连通块",
+    "DFS"
+  ],
+  "source": {
+    "name": "LeetCode 547",
+    "url": "https://leetcode.cn/problems/number-of-provinces/"
+  },
+  "statement": "有 $n$ 个城市，若两个城市**直接或间接相连**则属于同一个省。\n\n给定城市间的连接关系，求**省份总数**。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 200$，$0 \\le m \\le 10^4$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$，表示城市 $u$ 与 $v$ 直接相连（无向）。",
+  "output_format": "一行一个整数，表示省份数量。",
+  "constraints": [
+    "1 ≤ n ≤ 200",
+    "0 ≤ m ≤ 10^4",
+    "无向图"
+  ],
+  "samples": [
+    {
+      "input": "3 1\n1 2\n",
+      "output": "2\n",
+      "explain": ""
+    },
+    {
+      "input": "3 0\n",
+      "output": "3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**数连通块**：对每个未访问的顶点发起一次 BFS/DFS，块数加一。\n\n> **并查集解法**：把所有相连的城市 `union` 起来，最后统计不同根的数量。两种做法复杂度都是 $O(n + m \\cdot \\alpha(n))$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);\ng[u].push_back(v);g[v].push_back(u);}\nvector<bool>vis(n+1,false);int cnt=0;\nfor(int s=1;s<=n;++s){if(vis[s])continue;++cnt;\nqueue<int>q;q.push(s);vis[s]=true;\nwhile(!q.empty()){int u=q.front();q.pop();\nfor(int v:g[u])if(!vis[v]){vis[v]=true;q.push(v);}}}\nprintf(\"%d\\n\",cnt);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 1\n1 2\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 0\n",
+      "output": "3\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "1\n",
+      "name": "全连通",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 0\n",
+      "output": "1\n",
+      "name": "单城市",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 3\n1 2\n2 3\n1 3\n",
+      "output": "1\n",
+      "name": "两两连通",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 2\n1 2\n3 4\n",
+      "output": "2\n",
+      "name": "两个分量",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5 4\n1 2\n1 3\n1 4\n1 5\n",
+      "output": "1\n",
+      "name": "星形",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);\ng[u].push_back(v);g[v].push_back(u);}\nvector<bool>vis(n+1,false);int cnt=0;\nfor(int s=1;s<=n;++s){if(vis[s])continue;++cnt;\nqueue<int>q;q.push(s);vis[s]=true;\nwhile(!q.empty()){int u=q.front();q.pop();\nfor(int v:g[u])if(!vis[v]){vis[v]=true;q.push(v);}}}\nprintf(\"%d\\n\",cnt);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

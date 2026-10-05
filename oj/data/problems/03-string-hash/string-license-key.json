@@ -1,0 +1,92 @@
+{
+  "id": "string-license-key",
+  "title": "密钥格式化",
+  "difficulty": "简单",
+  "tags": [
+    "字符串",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 482",
+    "url": "https://leetcode.cn/problems/license-key-formatting/"
+  },
+  "statement": "给定密钥字符串 $s$（含字母、数字和 `-`）与整数 $k$，重新格式化：\n\n1. 去掉所有 `-`，并把字母转为**大写**；\n2. 从**左到右**按每 $k$ 个字符分组，组间用 `-` 连接；\n3. 若第一组不足 $k$ 个，则**第一组较短**，其余每组恰好 $k$ 个。",
+  "input_format": "第一行一个字符串 $s$（$1 \\le |s| \\le 10^5$），含字母、数字、`-`。\n\n第二行一个整数 $k$（$1 \\le k \\le 10^4$）。",
+  "output_format": "一行，格式化后的密钥。",
+  "constraints": [
+    "1 ≤ |s| ≤ 10^5",
+    "1 ≤ k ≤ 10^4",
+    "字母转大写"
+  ],
+  "samples": [
+    {
+      "input": "5F3Z-2e-9-w\n4\n",
+      "output": "5F3Z-2E9W\n",
+      "explain": ""
+    },
+    {
+      "input": "2-5g-3-J\n2\n",
+      "output": "2-5G-3J\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**先清洗再分组**：去掉所有 `-` 并转大写后，令 `first = n % k`（若为 0 则取 $k$）。\n\n先输出前 `first` 个字符，之后每 $k$ 个加一个 `-`。\n\n> **易错点**：第一组的长度是 `n % k`，**不足 $k$ 的是第一组而不是最后一组**。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;int k;cin>>s>>k;\nstring t;\nfor(char c:s)if(c!='-')t+=toupper((unsigned char)c);\nint n=t.size();int first=n%k;if(first==0)first=k;\nstring r=t.substr(0,first);\nfor(int i=first;i<n;i+=k)r+=\"-\"+t.substr(i,k);\nprintf(\"%s\\n\",r.c_str());return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5F3Z-2e-9-w\n4\n",
+      "output": "5F3Z-2E9W\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2-5g-3-J\n2\n",
+      "output": "2-5G-3J\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abc\n2\n",
+      "output": "A-BC\n",
+      "name": "无连字符",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abcd\n2\n",
+      "output": "AB-CD\n",
+      "name": "k 整除长度",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a-b-c-d\n2\n",
+      "output": "AB-CD\n",
+      "name": "含多个连字符",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "ab\n5\n",
+      "output": "AB\n",
+      "name": "k 大于长度",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "a\n1\n",
+      "output": "A\n",
+      "name": "单个字符",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;int k;cin>>s>>k;\nstring t;\nfor(char c:s)if(c!='-')t+=toupper((unsigned char)c);\nint n=t.size();int first=n%k;if(first==0)first=k;\nstring r=t.substr(0,first);\nfor(int i=first;i<n;i+=k)r+=\"-\"+t.substr(i,k);\nprintf(\"%s\\n\",r.c_str());return 0;}\n"
+  },
+  "time_limit": 2.0
+}

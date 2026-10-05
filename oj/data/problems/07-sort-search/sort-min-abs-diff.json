@@ -1,0 +1,84 @@
+{
+  "id": "sort-min-abs-diff",
+  "title": "有序数组中的最小绝对差",
+  "difficulty": "简单",
+  "tags": [
+    "数组",
+    "排序"
+  ],
+  "source": {
+    "name": "LeetCode 1200",
+    "url": "https://leetcode.cn/problems/minimum-absolute-difference/"
+  },
+  "statement": "给定数组，求**任意两个元素之间绝对值差的最小值**。",
+  "input_format": "第一行一个整数 $n$（$2 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数（$|a_i| \\le 10^9$）。",
+  "output_format": "一行一个整数，表示最小绝对差。",
+  "constraints": [
+    "2 ≤ n ≤ 10^5",
+    "|a_i| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "4\n4 2 1 3\n",
+      "output": "1\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n1 3 1\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**排序后看相邻**：绝对值差最小的两个元素，排序后必然**相邻**。\n\n所以排序后扫描相邻差值即可。时间 $O(n\\log n)$。\n\n> **为什么**：若 $x \\le y \\le z$，则 $z - x = (z-y) + (y-x) \\ge \\max(z-y, y-x)$，跨元素不可能比相邻更近。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nsort(a.begin(),a.end());\nlong long best=LLONG_MAX;\nfor(int i=1;i<n;++i)best=min(best,a[i]-a[i-1]);\nprintf(\"%lld\\n\",best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n4 2 1 3\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 3 1\n",
+      "output": "0\n",
+      "name": "含重复",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2\n5 3\n",
+      "output": "2\n",
+      "name": "两元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n-1 -5 2 3\n",
+      "output": "1\n",
+      "name": "含负数",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n7 7 7\n",
+      "output": "0\n",
+      "name": "全相同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1 100 10000\n",
+      "output": "99\n",
+      "name": "大跨度",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nsort(a.begin(),a.end());\nlong long best=LLONG_MAX;\nfor(int i=1;i<n;++i)best=min(best,a[i]-a[i-1]);\nprintf(\"%lld\\n\",best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

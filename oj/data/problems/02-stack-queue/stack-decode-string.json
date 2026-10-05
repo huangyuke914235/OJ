@@ -1,0 +1,86 @@
+{
+  "id": "stack-decode-string",
+  "title": "字符串解码",
+  "difficulty": "中等",
+  "tags": [
+    "栈",
+    "字符串",
+    "递归"
+  ],
+  "source": {
+    "name": "LeetCode 394",
+    "url": "https://leetcode.cn/problems/decode-string/"
+  },
+  "statement": "给定一个编码字符串，按规则解码。规则为 `k[encoded]`，表示方括号内的内容**重复 $k$ 次**。\n\n可以嵌套，例如 `3[a2[c]]` 解码为 `accaccacc`。\n\n输入保证合法，数字只表示重复次数（不会出现 0）。",
+  "input_format": "一行一个字符串（长度 $1 \\le |s| \\le 10^4$），仅含小写字母、数字和方括号。",
+  "output_format": "一行，解码后的字符串。",
+  "constraints": [
+    "1 ≤ |s| ≤ 10^4",
+    "输入保证合法",
+    "重复次数 ≥ 1"
+  ],
+  "samples": [
+    {
+      "input": "3[a]2[bc]\n",
+      "output": "aaabcbc\n",
+      "explain": ""
+    },
+    {
+      "input": "3[a2[c]]\n",
+      "output": "accaccacc\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**双栈 / 栈存上下文**：\n\n- 遇到数字：累积 `num`；\n- 遇到 `[`：把**当前的字符串与数字**压栈，然后清空它们，开始处理括号内部；\n- 遇到 `]`：弹出「之前的字符串 + 重复次数」，把当前内容重复 $k$ 次后**拼到之前的字符串后面**；\n- 遇到字母：追加到当前字符串。\n\n时间 $O(输出长度)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;vector<pair<string,int>>st;\nstring cur;int num=0;\nfor(char c:s){\nif(isdigit((unsigned char)c))num=num*10+(c-'0');\nelse if(c=='['){st.push_back({cur,num});cur=\"\";num=0;}\nelse if(c==']'){auto pr=st.back();st.pop_back();\nstring t2;for(int i=0;i<pr.second;++i)t2+=cur;cur=pr.first+t2;}\nelse cur+=c;}\nprintf(\"%s\\n\",cur.c_str());return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3[a]2[bc]\n",
+      "output": "aaabcbc\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3[a2[c]]\n",
+      "output": "accaccacc\n",
+      "name": "样例 2（嵌套）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2[abc]3[cd]ef\n",
+      "output": "abcabccdcdcdef\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abc\n",
+      "output": "abc\n",
+      "name": "无编码",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "10[z]\n",
+      "output": "zzzzzzzzzz\n",
+      "name": "单字符重复",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2[a2[b2[c]]]\n",
+      "output": "abccbccabccbcc\n",
+      "name": "多层嵌套",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;vector<pair<string,int>>st;\nstring cur;int num=0;\nfor(char c:s){\nif(isdigit((unsigned char)c))num=num*10+(c-'0');\nelse if(c=='['){st.push_back({cur,num});cur=\"\";num=0;}\nelse if(c==']'){auto pr=st.back();st.pop_back();\nstring t2;for(int i=0;i<pr.second;++i)t2+=cur;cur=pr.first+t2;}\nelse cur+=c;}\nprintf(\"%s\\n\",cur.c_str());return 0;}\n"
+  },
+  "time_limit": 2.0
+}

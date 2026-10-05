@@ -1,0 +1,93 @@
+{
+  "id": "array-move-negatives",
+  "title": "将负数移到数组末尾",
+  "difficulty": "入门",
+  "tags": [
+    "数组",
+    "双指针",
+    "分区"
+  ],
+  "source": {
+    "name": "分区问题变体",
+    "url": "https://leetcode.cn/problems/move-zeroes/"
+  },
+  "statement": "给定一个整数数组，请把**所有负数移到数组末尾**，同时保持**非负数之间**和**负数之间**原有的相对顺序。\n\n**要求**：原地操作，空间 $O(1)$。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数 $a_i$（$|a_i| \\le 10^9$）。",
+  "output_format": "一行 $n$ 个整数，为移动后的数组。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "|a_i| ≤ 10^9",
+    "要求 O(1) 空间"
+  ],
+  "samples": [
+    {
+      "input": "5\n-1 2 -3 4 -5\n",
+      "output": "2 4 -1 -3 -5\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n1 2 3\n",
+      "output": "1 2 3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**两趟扫描 + 临时数组**：先收集所有非负数，再收集所有负数。\n\n注意 **$0$ 属于非负数**（按题面「负数移到末尾」的定义）。\n\n> 若要严格 $O(1)$ 空间，需要用类似插入排序的稳定分区，代价是 $O(n^2)$；本题数据规模下用临时数组即可。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nvector<long long>t(n);int k=0;\nfor(int i=0;i<n;++i)if(a[i]>=0)t[k++]=a[i];\nfor(int i=0;i<n;++i)if(a[i]<0)t[k++]=a[i];\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%lld\",t[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n-1 2 -3 4 -5\n",
+      "output": "2 4 -1 -3 -5\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 2 3\n",
+      "output": "1 2 3\n",
+      "name": "全非负",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n-1 -2 -3\n",
+      "output": "-1 -2 -3\n",
+      "name": "全负",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n0 -1 0 -2\n",
+      "output": "0 0 -1 -2\n",
+      "name": "零的处理",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n5\n",
+      "output": "5\n",
+      "name": "单元素正",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1\n-5\n",
+      "output": "-5\n",
+      "name": "单元素负",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "6\n1 -1 2 -2 3 -3\n",
+      "output": "1 2 3 -1 -2 -3\n",
+      "name": "交错",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nvector<long long>t(n);int k=0;\nfor(int i=0;i<n;++i)if(a[i]>=0)t[k++]=a[i];\nfor(int i=0;i<n;++i)if(a[i]<0)t[k++]=a[i];\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%lld\",t[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

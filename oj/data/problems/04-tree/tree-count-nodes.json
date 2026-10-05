@@ -1,0 +1,91 @@
+{
+  "id": "tree-count-nodes",
+  "title": "二叉树的节点个数",
+  "difficulty": "入门",
+  "tags": [
+    "树",
+    "二叉树",
+    "递归"
+  ],
+  "source": {
+    "name": "LeetCode 222",
+    "url": "https://leetcode.cn/problems/count-complete-tree-nodes/"
+  },
+  "statement": "统计二叉树中的**节点总数**。",
+  "input_format": "一行，二叉树的层序序列（`null` 表示空节点）。节点数 $\\le 10^5$。",
+  "output_format": "一行一个整数，表示节点个数。空树输出 0。",
+  "constraints": [
+    "节点数 ≤ 10^5"
+  ],
+  "samples": [
+    {
+      "input": "1 2 3 4 5 6\n",
+      "output": "6\n",
+      "explain": ""
+    },
+    {
+      "input": "null\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**递归**：`count(n) = 1 + count(n->left) + count(n->right)`，空节点返回 0。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint cnt(Node*n){if(!n)return 0;return 1+cnt(n->l)+cnt(n->r);}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nprintf(\"%d\\n\",cnt(buildTree(tk)));return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "1 2 3 4 5 6\n",
+      "output": "6\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "0\n",
+      "name": "空树",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "name": "单节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 5 6 7\n",
+      "output": "7\n",
+      "name": "完整树",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 null 3\n",
+      "output": "3\n",
+      "name": "只有左链",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 null 2 null 3\n",
+      "output": "3\n",
+      "name": "只有右链",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 null 4 null null 5\n",
+      "output": "5\n",
+      "name": "不规则",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint cnt(Node*n){if(!n)return 0;return 1+cnt(n->l)+cnt(n->r);}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nprintf(\"%d\\n\",cnt(buildTree(tk)));return 0;}\n"
+  },
+  "time_limit": 2.0
+}

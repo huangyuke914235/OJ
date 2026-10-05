@@ -1,0 +1,92 @@
+{
+  "id": "list-odd-even",
+  "title": "奇偶链表",
+  "difficulty": "中等",
+  "tags": [
+    "链表",
+    "双指针"
+  ],
+  "source": {
+    "name": "LeetCode 328",
+    "url": "https://leetcode.cn/problems/odd-even-linked-list/"
+  },
+  "statement": "给定单链表，把所有**奇数位置**的节点排在前面、**偶数位置**的节点排在后面，保持各自的相对顺序。\n\n位置从 $1$ 开始计数（第 1 个节点是奇数位置）。\n\n**要求**：原地操作，空间 $O(1)$。",
+  "input_format": "第一行一个整数 $n$（$0 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数，$n=0$ 时为空行。",
+  "output_format": "一行，重排后的节点值序列（空格分隔）。空链表输出空行。",
+  "constraints": [
+    "0 ≤ n ≤ 10^5",
+    "|v| ≤ 10^9",
+    "要求 O(1) 空间"
+  ],
+  "samples": [
+    {
+      "input": "5\n1 2 3 4 5\n",
+      "output": "1 3 5 2 4\n",
+      "explain": ""
+    },
+    {
+      "input": "7\n2 1 3 5 6 4 7\n",
+      "output": "2 3 6 7 1 5 4\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**分成两条链再拼接**：用两个指针分别把奇数位置和偶数位置的节点串起来，最后把偶数链接到奇数链尾部。\n\n> **易错点**：偶数指针前进时要注意 `even->next` 可能为空，需先判空再取 `next`。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nbool first=true;\nfor(int p=0;p<2;++p)for(int i=p;i<n;i+=2){if(!first)printf(\" \");printf(\"%lld\",a[i]);first=false;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n1 2 3 4 5\n",
+      "output": "1 3 5 2 4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "7\n2 1 3 5 6 4 7\n",
+      "output": "2 3 6 7 1 5 4\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n7\n",
+      "output": "7\n",
+      "name": "单节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2\n1 2\n",
+      "output": "1 2\n",
+      "name": "两节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "0\n",
+      "output": "\n",
+      "name": "空链表",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "1 3 2 4\n",
+      "name": "偶数个",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n-1 -2 -3 -4 -5\n",
+      "output": "-1 -3 -5 -2 -4\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nbool first=true;\nfor(int p=0;p<2;++p)for(int i=p;i<n;i+=2){if(!first)printf(\" \");printf(\"%lld\",a[i]);first=false;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -31,7 +31,11 @@
       "problems": [
         "string-valid-anagram",
         "string-first-unique-char",
-        "string-group-anagrams"
+        "string-group-anagrams",
+        "string-first-char-twice",
+        "string-check-pangram",
+        "string-count-matches",
+        "string-count-asterisks"
       ]
     },
     {
@@ -45,7 +49,8 @@
         "空串和单字符串都算回文，边界情况别漏"
       ],
       "problems": [
-        "string-palindrome"
+        "string-palindrome",
+        "string-reverse-vowels"
       ]
     },
     {
@@ -59,7 +64,9 @@
         "原地法注意「先整体反转再单词反转」的顺序，反过来会得到错误结果"
       ],
       "problems": [
-        "string-reverse-words"
+        "string-reverse-words",
+        "string-truncate-sentence",
+        "string-capitalize-title"
       ]
     },
     {

@@ -17,7 +17,14 @@
       "problems": [
         "heap-kth-largest",
         "heap-top-k-frequent",
-        "heap-k-closest-points"
+        "heap-k-closest-points",
+        "heap-kth-smallest",
+        "heap-k-largest-values",
+        "heap-k-smallest-values",
+        "heap-kth-largest-sort",
+        "heap-kth-largest-quickselect",
+        "heap-kth-largest-stream",
+        "heap-kth-smallest-matrix"
       ]
     },
     {
@@ -31,7 +38,9 @@
         "用自定义结构体时需要提供比较器；用 `pair` 时默认按 first 比较，正好可用"
       ],
       "problems": [
-        "heap-merge-k-sorted"
+        "heap-merge-k-sorted",
+        "heap-merge-k-lists",
+        "heap-k-pairs-smallest"
       ]
     },
     {
@@ -45,7 +54,9 @@
         "偶数个元素时中位数是两堆顶的**平均值**，注意返回浮点还是整数"
       ],
       "problems": [
-        "heap-median-stream"
+        "heap-median-stream",
+        "heap-window-median-basic",
+        "heap-window-median"
       ]
     },
     {
@@ -59,7 +70,13 @@
         "建堆用「从最后一个非叶节点往前依次 sift_down」，是 O(n) 而不是 O(n log n)"
       ],
       "problems": [
-        "heap-basic-ops"
+        "heap-basic-ops",
+        "heap-priority-queue-ops",
+        "heap-max-heap-ops",
+        "heap-sort-asc",
+        "heap-sort-desc",
+        "heap-min-heap-check",
+        "heap-max-heap-check"
       ]
     },
     {
@@ -73,7 +90,15 @@
         "要证明贪心的正确性（通常靠交换论证），不要凭感觉"
       ],
       "problems": [
-        "heap-last-stone-weight"
+        "heap-last-stone-weight",
+        "heap-cookies",
+        "heap-task-scheduler",
+        "heap-furthest-building",
+        "heap-halve-array-sum",
+        "heap-meeting-rooms-min",
+        "heap-meeting-rooms-ii",
+        "heap-min-cost-remove",
+        "heap-ugly-number"
       ]
     }
   ],

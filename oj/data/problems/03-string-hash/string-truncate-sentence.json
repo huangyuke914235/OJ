@@ -1,0 +1,85 @@
+{
+  "id": "string-truncate-sentence",
+  "title": "截断句子",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 1816",
+    "url": "https://leetcode.cn/problems/truncate-sentence/"
+  },
+  "statement": "给定一个由空格分隔的单词组成的句子和整数 $k$，输出**前 $k$ 个单词**（用单个空格连接）。",
+  "input_format": "第一行一个句子（单词数 $1 \\le n \\le 500$，单词仅含小写字母，单词间用单个空格分隔）。\n\n第二行一个整数 $k$（$1 \\le k \\le n$）。",
+  "output_format": "一行，前 $k$ 个单词。",
+  "constraints": [
+    "单词数 ≤ 500",
+    "仅小写字母",
+    "单词间单个空格"
+  ],
+  "samples": [
+    {
+      "input": "Hello how are you Contestant\n4\n",
+      "output": "Hello how are you\n",
+      "explain": ""
+    },
+    {
+      "input": "What is the solution to this problem\n4\n",
+      "output": "What is the solution\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**切分后取前 $k$ 个**：用 `stringstream` 或 `split` 切分单词，输出前 $k$ 个并用单空格连接。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string line;getline(cin,line);int k;scanf(\"%d\",&k);\nstringstream ss(line);string w;bool first=true;int c=0;\nwhile(ss>>w&&c<k){if(!first)printf(\" \");printf(\"%s\",w.c_str());first=false;++c;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "Hello how are you Contestant\n4\n",
+      "output": "Hello how are you\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "What is the solution to this problem\n4\n",
+      "output": "What is the solution\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "a b c\n1\n",
+      "output": "a\n",
+      "name": "k = 1",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a b c\n3\n",
+      "output": "a b c\n",
+      "name": "k = n",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "hello\n1\n",
+      "output": "hello\n",
+      "name": "单单词",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "one two three four five\n2\n",
+      "output": "one two\n",
+      "name": "长句",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string line;getline(cin,line);int k;scanf(\"%d\",&k);\nstringstream ss(line);string w;bool first=true;int c=0;\nwhile(ss>>w&&c<k){if(!first)printf(\" \");printf(\"%s\",w.c_str());first=false;++c;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

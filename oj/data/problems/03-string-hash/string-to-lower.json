@@ -1,0 +1,91 @@
+{
+  "id": "string-to-lower",
+  "title": "转换成小写字母",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "字符处理"
+  ],
+  "source": {
+    "name": "LeetCode 709",
+    "url": "https://leetcode.cn/problems/to-lower-case/"
+  },
+  "statement": "把给定字符串中的**所有大写字母**转成小写，其他字符不变，输出结果。",
+  "input_format": "一行一个字符串 $s$（$0 \\le |s| \\le 10^5$），可含大小写字母、数字与空格。",
+  "output_format": "一行，转换后的字符串。",
+  "constraints": [
+    "0 ≤ |s| ≤ 10^5",
+    "可含字母、数字、空格"
+  ],
+  "samples": [
+    {
+      "input": "Hello\n",
+      "output": "hello\n",
+      "explain": ""
+    },
+    {
+      "input": "here\n",
+      "output": "here\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**逐字符判断**：若字符在 `'A'..'Z'` 范围内，就加上 `'a' - 'A'`（即 32）。\n\n时间 $O(n)$。\n\n> **易错点**：输入可能含空格，要用 `getline` 而不是 `cin >>`。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nfor(char&c:s)if(c>='A'&&c<='Z')c=c-'A'+'a';\nprintf(\"%s\\n\",s.c_str());return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "Hello\n",
+      "output": "hello\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "here\n",
+      "output": "here\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "LOVELY\n",
+      "output": "lovely\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "AbC123\n",
+      "output": "abc123\n",
+      "name": "含数字",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "\n",
+      "output": "\n",
+      "name": "空串",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "Hello World\n",
+      "output": "hello world\n",
+      "name": "含空格",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "12345\n",
+      "output": "12345\n",
+      "name": "无字母",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nfor(char&c:s)if(c>='A'&&c<='Z')c=c-'A'+'a';\nprintf(\"%s\\n\",s.c_str());return 0;}\n"
+  },
+  "time_limit": 2.0
+}

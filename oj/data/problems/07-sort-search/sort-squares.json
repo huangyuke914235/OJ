@@ -1,0 +1,94 @@
+{
+  "id": "sort-squares",
+  "title": "有序数组的平方",
+  "difficulty": "简单",
+  "tags": [
+    "数组",
+    "双指针",
+    "排序"
+  ],
+  "source": {
+    "name": "LeetCode 977",
+    "url": "https://leetcode.cn/problems/squares-of-a-sorted-array/"
+  },
+  "statement": "给定一个**非递减**数组（可能含负数），把每个元素**平方**后，按**升序**输出。\n\n**进阶**：用**双指针**在 $O(n)$ 内完成（不用排序）。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^4$）。\n\n第二行 $n$ 个整数（非递减，$|a_i| \\le 10^4$）。",
+  "output_format": "一行 $n$ 个整数，为平方后的升序序列。",
+  "constraints": [
+    "1 ≤ n ≤ 10^4",
+    "数组非递减",
+    "|a_i| ≤ 10^4",
+    "建议 O(n)"
+  ],
+  "samples": [
+    {
+      "input": "5\n-4 -1 0 3 10\n",
+      "output": "0 1 9 16 100\n",
+      "explain": ""
+    },
+    {
+      "input": "5\n-7 -3 2 3 11\n",
+      "output": "4 9 9 49 121\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**双指针从两端向中间**：数组非递减，平方后的最大值一定出现在**两端**（绝对值最大的地方）。\n\n用 `l`、`r` 分别指向两端，每次比较 `|a[l]|` 与 `|a[r]|`，把较大的平方值填到结果数组的**末尾**，然后移动那一侧的指针。\n\n时间 $O(n)$，空间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nvector<long long>res(n);\nint l=0,r=n-1;\nfor(int k=n-1;k>=0;--k){\nif(llabs(a[l])>llabs(a[r])){res[k]=a[l]*a[l];++l;}\nelse{res[k]=a[r]*a[r];--r;}}\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%lld\",res[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n-4 -1 0 3 10\n",
+      "output": "0 1 9 16 100\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n-7 -3 2 3 11\n",
+      "output": "4 9 9 49 121\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n-3 -2 -1\n",
+      "output": "1 4 9\n",
+      "name": "全负",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n1 2 3\n",
+      "output": "1 4 9\n",
+      "name": "全正",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n-5\n",
+      "output": "25\n",
+      "name": "单元素",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n-2 -1 0 1 2\n",
+      "output": "0 1 1 4 4\n",
+      "name": "含零",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n-3 -2 2 3\n",
+      "output": "4 4 9 9\n",
+      "name": "两端对称",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nvector<long long>res(n);\nint l=0,r=n-1;\nfor(int k=n-1;k>=0;--k){\nif(llabs(a[l])>llabs(a[r])){res[k]=a[l]*a[l];++l;}\nelse{res[k]=a[r]*a[r];--r;}}\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%lld\",res[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,93 @@
+{
+  "id": "graph-topo-lex-min",
+  "title": "字典序最小的拓扑序",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "拓扑排序",
+    "优先队列"
+  ],
+  "source": {
+    "name": "拓扑排序变体",
+    "url": "https://www.luogu.com.cn/problem/P1113"
+  },
+  "statement": "给定一个有向图，求它的**字典序最小的拓扑序**。\n\n若图中有环（无法拓扑排序），输出 $-1$。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 10^5$，$0 \\le m \\le 2\\times10^5$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$，表示一条 $u \\to v$ 的边。",
+  "output_format": "一行 $n$ 个整数，为字典序最小的拓扑序；有环则输出 -1。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ m ≤ 2×10^5",
+    "可能有环"
+  ],
+  "samples": [
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "1 2 3 4\n",
+      "explain": ""
+    },
+    {
+      "input": "3 3\n1 2\n2 3\n3 1\n",
+      "output": "-1\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**把队列换成小根堆**：Kahn 算法的骨架完全不变，只需把存放「入度为 0 的点」的**队列换成小根堆**——每次取编号最小的，就得到字典序最小的拓扑序。\n\n时间 $O((n+m)\\log n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);vector<int>indeg(n+1,0);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);g[u].push_back(v);++indeg[v];}\npriority_queue<int,vector<int>,greater<int>>pq;\nfor(int i=1;i<=n;++i)if(indeg[i]==0)pq.push(i);\nvector<int>order;\nwhile(!pq.empty()){int u=pq.top();pq.pop();order.push_back(u);\nfor(int v:g[u])if(--indeg[v]==0)pq.push(v);}\nif((int)order.size()!=n){printf(\"-1\\n\");return 0;}\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%d\",order[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "1 2 3 4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 3\n1 2\n2 3\n3 1\n",
+      "output": "-1\n",
+      "name": "有环",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 0\n",
+      "output": "1 2 3\n",
+      "name": "无边",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 0\n",
+      "output": "1\n",
+      "name": "单点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 2\n1 3\n2 4\n",
+      "output": "1 2 3 4\n",
+      "name": "多入度 0",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 4\n1 2\n1 3\n2 4\n3 4\n",
+      "output": "1 2 3 4\n",
+      "name": "菱形",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 2\n1 3\n2 3\n",
+      "output": "1 2 3\n",
+      "name": "逆序边",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);vector<int>indeg(n+1,0);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);g[u].push_back(v);++indeg[v];}\npriority_queue<int,vector<int>,greater<int>>pq;\nfor(int i=1;i<=n;++i)if(indeg[i]==0)pq.push(i);\nvector<int>order;\nwhile(!pq.empty()){int u=pq.top();pq.pop();order.push_back(u);\nfor(int v:g[u])if(--indeg[v]==0)pq.push(v);}\nif((int)order.size()!=n){printf(\"-1\\n\");return 0;}\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%d\",order[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,86 @@
+{
+  "id": "queue-implement-stack",
+  "title": "用队列实现栈",
+  "difficulty": "简单",
+  "tags": [
+    "队列",
+    "设计",
+    "栈"
+  ],
+  "source": {
+    "name": "LeetCode 225",
+    "url": "https://leetcode.cn/problems/implement-stack-using-queues/"
+  },
+  "statement": "请用**队列**实现一个栈，支持：\n\n- `push x`：压入 $x$；\n- `pop`：弹出并返回栈顶；\n- `top`：返回栈顶（不弹出）；\n- `empty`：若栈为空输出 `YES`，否则 `NO`。\n\n**保证 `pop` / `top` 只在非空栈上调用**。",
+  "input_format": "第一行一个整数 $q$（$1 \\le q \\le 10^5$）。\n\n接下来 $q$ 行，每行一个操作。$|x| \\le 10^9$。",
+  "output_format": "对每个 `pop` / `top` / `empty` 操作输出一行结果。",
+  "constraints": [
+    "1 ≤ q ≤ 10^5",
+    "|x| ≤ 10^9",
+    "pop/top 仅在非空栈上调用"
+  ],
+  "samples": [
+    {
+      "input": "5\npush 1\npush 2\ntop\npop\nempty\n",
+      "output": "2\n2\nNO\n",
+      "explain": ""
+    },
+    {
+      "input": "6\npush 5\npop\npush 7\ntop\npop\nempty\n",
+      "output": "5\n7\n7\nYES\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**用一个队列实现栈**：压入元素后，把队列中**前面的所有元素依次出队再入队**，这样新元素就转到了队首。\n\n于是 `pop` / `top` 都只需操作队首。压入 $O(n)$，弹出 $O(1)$。\n\n> 也可以用**两个队列**：`push` 直接进 `q1`；`pop` 时把 `q1` 前 $n-1$ 个元素搬到 `q2`，弹出剩下的那个，再交换两队列。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int q;scanf(\"%d\",&q);deque<long long>d;char op[16];\nfor(int i=0;i<q;++i){scanf(\"%s\",op);string o=op;\nif(o==\"push\"){long long x;scanf(\"%lld\",&x);d.push_back(x);}\nelse if(o==\"pop\"){printf(\"%lld\\n\",d.back());d.pop_back();}\nelse if(o==\"top\"){printf(\"%lld\\n\",d.back());}\nelse if(o==\"empty\"){printf(\"%s\\n\",d.empty()?\"YES\":\"NO\");}}\nreturn 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\npush 1\npush 2\ntop\npop\nempty\n",
+      "output": "2\n2\nNO\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "6\npush 5\npop\npush 7\ntop\npop\nempty\n",
+      "output": "5\n7\n7\nYES\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2\npush 9\ntop\n",
+      "output": "9\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\npush 1\npush 2\npop\npop\n",
+      "output": "2\n1\n",
+      "name": "全部弹完",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6\npush 1\npop\npush 2\npop\npush 3\nempty\n",
+      "output": "1\n2\nNO\n",
+      "name": "反复操作",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2\npush 1\nempty\n",
+      "output": "NO\n",
+      "name": "只看 empty",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int q;scanf(\"%d\",&q);deque<long long>d;char op[16];\nfor(int i=0;i<q;++i){scanf(\"%s\",op);string o=op;\nif(o==\"push\"){long long x;scanf(\"%lld\",&x);d.push_back(x);}\nelse if(o==\"pop\"){printf(\"%lld\\n\",d.back());d.pop_back();}\nelse if(o==\"top\"){printf(\"%lld\\n\",d.back());}\nelse if(o==\"empty\"){printf(\"%s\\n\",d.empty()?\"YES\":\"NO\");}}\nreturn 0;}\n"
+  },
+  "time_limit": 2.0
+}

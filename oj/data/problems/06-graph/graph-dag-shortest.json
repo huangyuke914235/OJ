@@ -1,0 +1,95 @@
+{
+  "id": "graph-dag-shortest",
+  "title": "DAG 上的单源最短路",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "拓扑排序",
+    "动态规划",
+    "最短路"
+  ],
+  "source": {
+    "name": "DAG 最短路",
+    "url": "https://www.luogu.com.cn/problem/P1113"
+  },
+  "statement": "给定一个**有向无环图（DAG）**，每条边有权值，求从 $s$ 到 $t$ 的**最短路径长度**。\n\n若不可达，输出 $-1$。\n\n**要求**：利用 DAG 的性质，用**拓扑排序 + DP** 做到 $O(n+m)$（比 Dijkstra 更快）。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 10^5$，$0 \\le m \\le 2\\times10^5$）。\n\n接下来 $m$ 行，每行三个整数 $u, v, w$，表示一条从 $u$ 到 $v$ 的边，权值为 $w$（$0 \\le w \\le 10^4$）。\n\n最后一行两个整数 $s, t$。\n\n**保证**图是 DAG。",
+  "output_format": "一行一个整数，表示最短距离；不可达则输出 -1。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ m ≤ 2×10^5",
+    "保证是 DAG",
+    "0 ≤ w ≤ 10^4"
+  ],
+  "samples": [
+    {
+      "input": "4 4\n1 2 1\n2 3 2\n1 3 5\n3 4 1\n1 4\n",
+      "output": "4\n",
+      "explain": ""
+    },
+    {
+      "input": "3 1\n1 2 1\n1 3\n",
+      "output": "-1\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**拓扑排序 + 松弛**：先求出一个拓扑序，然后**按拓扑序**依次处理每个点，用它去松弛所有出边。\n\n因为拓扑序保证「处理 $u$ 时，$u$ 的所有前驱都已处理完」，所以每个点的 `dist` 已经是最终值——这正是 DAG 上最短路能做到 $O(n+m)$ 的原因。\n\n> **对比 Dijkstra**：Dijkstra 需要堆，是 $O(m\\log n)$；DAG 上有更快的线性做法。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<pair<int,int>>>g(n+1);vector<int>indeg(n+1,0);\nfor(int i=0;i<m;++i){int u,v,w;scanf(\"%d %d %d\",&u,&v,&w);\ng[u].push_back({v,w});++indeg[v];}\nint s,t;scanf(\"%d %d\",&s,&t);\nconst long long INF=4e18;\nvector<long long>dist(n+1,INF);dist[s]=0;\nqueue<int>q;for(int i=1;i<=n;++i)if(indeg[i]==0)q.push(i);\nvector<int>order;\nwhile(!q.empty()){int u=q.front();q.pop();order.push_back(u);\nfor(auto&pr:g[u])if(--indeg[pr.first]==0)q.push(pr.first);}\nfor(int u:order){if(dist[u]==INF)continue;\nfor(auto&pr:g[u])dist[pr.first]=min(dist[pr.first],dist[u]+pr.second);}\nprintf(\"%lld\\n\",dist[t]==INF?-1LL:dist[t]);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4 4\n1 2 1\n2 3 2\n1 3 5\n3 4 1\n1 4\n",
+      "output": "4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 1\n1 2 1\n1 3\n",
+      "output": "-1\n",
+      "name": "不可达",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 0\n1 1\n",
+      "output": "0\n",
+      "name": "同一点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 1\n1 2 7\n1 2\n",
+      "output": "7\n",
+      "name": "直达最短",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 4\n1 2 1\n2 4 1\n1 3 1\n3 4 1\n1 4\n",
+      "output": "2\n",
+      "name": "多路径",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 3\n1 2 2\n2 3 3\n3 4 4\n1 4\n",
+      "output": "9\n",
+      "name": "链状",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 3\n1 2 0\n2 3 0\n1 3 5\n1 3\n",
+      "output": "0\n",
+      "name": "含零权边",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<pair<int,int>>>g(n+1);vector<int>indeg(n+1,0);\nfor(int i=0;i<m;++i){int u,v,w;scanf(\"%d %d %d\",&u,&v,&w);\ng[u].push_back({v,w});++indeg[v];}\nint s,t;scanf(\"%d %d\",&s,&t);\nconst long long INF=4e18;\nvector<long long>dist(n+1,INF);dist[s]=0;\nqueue<int>q;for(int i=1;i<=n;++i)if(indeg[i]==0)q.push(i);\nvector<int>order;\nwhile(!q.empty()){int u=q.front();q.pop();order.push_back(u);\nfor(auto&pr:g[u])if(--indeg[pr.first]==0)q.push(pr.first);}\nfor(int u:order){if(dist[u]==INF)continue;\nfor(auto&pr:g[u])dist[pr.first]=min(dist[pr.first],dist[u]+pr.second);}\nprintf(\"%lld\\n\",dist[t]==INF?-1LL:dist[t]);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

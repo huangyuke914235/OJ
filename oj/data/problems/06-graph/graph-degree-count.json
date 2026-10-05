@@ -1,0 +1,93 @@
+{
+  "id": "graph-degree-count",
+  "title": "统计各顶点的度数",
+  "difficulty": "入门",
+  "tags": [
+    "图",
+    "邻接表"
+  ],
+  "source": {
+    "name": "图论基础",
+    "url": "https://leetcode.cn/problems/find-center-of-star-graph/"
+  },
+  "statement": "给定一个**无向图**，输出每个顶点的**度数**（与该顶点相连的边数）。\n\n顶点编号 $1 \\sim n$，输出顺序按编号升序。\n\n**注意**：自环（$u = v$）对度数的贡献为 2。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 10^5$，$0 \\le m \\le 2\\times10^5$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$（$1 \\le u, v \\le n$），表示一条无向边。",
+  "output_format": "一行 $n$ 个整数，依次为各顶点的度数。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ m ≤ 2×10^5",
+    "可能有自环",
+    "无重边"
+  ],
+  "samples": [
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "1 2 2 1\n",
+      "explain": ""
+    },
+    {
+      "input": "3 0\n",
+      "output": "0 0 0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**无向图度数**：每条边 $(u,v)$ 给 $u$ 和 $v$ 各贡献 1 度。\n\n> **易错点**：自环 $(u,u)$ 在无向图中对度数的贡献是 **2**（既算作出发也算作到达），不能只加 1。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);vector<int>d(n+1,0);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);\nif(u==v)d[u]+=2;else{++d[u];++d[v];}}\nfor(int i=1;i<=n;++i){if(i>1)printf(\" \");printf(\"%d\",d[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "1 2 2 1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 0\n",
+      "output": "0 0 0\n",
+      "name": "无边",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 1\n1 1\n",
+      "output": "2 0\n",
+      "name": "自环",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 3\n1 2\n2 3\n1 3\n",
+      "output": "2 2 2\n",
+      "name": "完全图",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 3\n1 2\n1 3\n1 4\n",
+      "output": "3 1 1 1\n",
+      "name": "星形",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 1\n1 1\n",
+      "output": "2\n",
+      "name": "单点自环",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5 4\n1 2\n1 3\n1 4\n1 5\n",
+      "output": "4 1 1 1 1\n",
+      "name": "重边已排除",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);vector<int>d(n+1,0);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);\nif(u==v)d[u]+=2;else{++d[u];++d[v];}}\nfor(int i=1;i<=n;++i){if(i>1)printf(\" \");printf(\"%d\",d[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

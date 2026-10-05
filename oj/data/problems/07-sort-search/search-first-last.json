@@ -1,0 +1,93 @@
+{
+  "id": "search-first-last",
+  "title": "查找元素的第一个和最后一个位置",
+  "difficulty": "中等",
+  "tags": [
+    "二分查找",
+    "数组"
+  ],
+  "source": {
+    "name": "LeetCode 34",
+    "url": "https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/"
+  },
+  "statement": "给定**非递减**数组和目标值 $target$，返回它在数组中**第一次和最后一次出现**的下标。\n\n若不存在，输出 `-1 -1`。\n\n**要求 $O(\\log n)$**。",
+  "input_format": "第一行两个整数 $n, target$（$1 \\le n \\le 10^5$）。\n\n第二行 $n$ 个**非递减**整数（$|a_i| \\le 10^9$）。",
+  "output_format": "一行两个整数，为起始与结束下标；不存在则输出 `-1 -1`。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "数组非递减",
+    "|a_i| ≤ 10^9",
+    "要求 O(log n)"
+  ],
+  "samples": [
+    {
+      "input": "6 8\n5 7 7 8 8 10\n",
+      "output": "3 4\n",
+      "explain": ""
+    },
+    {
+      "input": "6 6\n5 7 7 8 8 10\n",
+      "output": "-1 -1\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**两次二分**：\n\n- `lower_bound(target)` 给出**第一个 $\\ge target$** 的位置，即起点；\n- `upper_bound(target) - 1` 给出**最后一个 $\\le target$** 的位置，即终点。\n\n若起点 > 终点，说明不存在。\n\n时间 $O(\\log n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;long long target;scanf(\"%d %lld\",&n,&target);\nvector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nauto lower=[&](long long x){int lo=0,hi=n;\nwhile(lo<hi){int mid=lo+(hi-lo)/2;if(a[mid]<x)lo=mid+1;else hi=mid;}return lo;};\nauto upper=[&](long long x){int lo=0,hi=n;\nwhile(lo<hi){int mid=lo+(hi-lo)/2;if(a[mid]<=x)lo=mid+1;else hi=mid;}return lo;};\nint l=lower(target),r=upper(target)-1;\nif(l>r)printf(\"-1 -1\\n\");else printf(\"%d %d\\n\",l,r);\nreturn 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "6 8\n5 7 7 8 8 10\n",
+      "output": "3 4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "6 6\n5 7 7 8 8 10\n",
+      "output": "-1 -1\n",
+      "name": "样例 2（不存在）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 5\n5 5 5 5\n",
+      "output": "0 3\n",
+      "name": "全相同命中",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 5\n1 1 1 1\n",
+      "output": "-1 -1\n",
+      "name": "全相同未命中",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 7\n7\n",
+      "output": "0 0\n",
+      "name": "单元素命中",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 7\n8\n",
+      "output": "-1 -1\n",
+      "name": "单元素未命中",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5 1\n1 1 2 3 4\n",
+      "output": "0 1\n",
+      "name": "重复在两端",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;long long target;scanf(\"%d %lld\",&n,&target);\nvector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nauto lower=[&](long long x){int lo=0,hi=n;\nwhile(lo<hi){int mid=lo+(hi-lo)/2;if(a[mid]<x)lo=mid+1;else hi=mid;}return lo;};\nauto upper=[&](long long x){int lo=0,hi=n;\nwhile(lo<hi){int mid=lo+(hi-lo)/2;if(a[mid]<=x)lo=mid+1;else hi=mid;}return lo;};\nint l=lower(target),r=upper(target)-1;\nif(l>r)printf(\"-1 -1\\n\");else printf(\"%d %d\\n\",l,r);\nreturn 0;}\n"
+  },
+  "time_limit": 2.0
+}

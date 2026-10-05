@@ -1,0 +1,93 @@
+{
+  "id": "array-single-number",
+  "title": "只出现一次的数字",
+  "difficulty": "入门",
+  "tags": [
+    "数组",
+    "位运算",
+    "异或"
+  ],
+  "source": {
+    "name": "LeetCode 136",
+    "url": "https://leetcode.cn/problems/single-number/"
+  },
+  "statement": "给定一个数组，除某个元素只出现**一次**外，其余每个元素都出现**两次**。找出这个只出现一次的元素。\n\n**要求**：线性时间、常数空间。",
+  "input_format": "第一行一个奇数 $n$（$1 \\le n \\le 2\\times10^5-1$）。\n\n第二行 $n$ 个整数 $a_i$（$|a_i| \\le 10^9$）。",
+  "output_format": "一行一个整数，表示只出现一次的元素。",
+  "constraints": [
+    "n 为奇数",
+    "|a_i| ≤ 10^9",
+    "要求 O(n) 时间 / O(1) 空间"
+  ],
+  "samples": [
+    {
+      "input": "3\n2 2 1\n",
+      "output": "1\n",
+      "explain": ""
+    },
+    {
+      "input": "5\n4 1 2 1 2\n",
+      "output": "4\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**异或的性质**：`a ^ a = 0`、`a ^ 0 = a`，且异或满足交换律与结合律。\n\n把所有数异或起来，成对出现的元素两两抵消为 0，剩下的就是只出现一次的那个。\n\n时间 $O(n)$，空间 $O(1)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);long long r=0;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);r^=x;}\nprintf(\"%lld\\n\",r);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3\n2 2 1\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n4 1 2 1 2\n",
+      "output": "4\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n7\n",
+      "output": "7\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5\n-3 -3 5\n",
+      "output": "5\n",
+      "name": "含负数",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "7\n0 1 -1 1 -1 0 9\n",
+      "output": "9\n",
+      "name": "零与正负",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1000000000 1000000000 -7\n",
+      "output": "-7\n",
+      "name": "大数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "9\n1 2 3 4 5 4 3 2 1\n",
+      "output": "5\n",
+      "name": "较长",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);long long r=0;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);r^=x;}\nprintf(\"%lld\\n\",r);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,84 @@
+{
+  "id": "array-degree",
+  "title": "数组的度",
+  "difficulty": "简单",
+  "tags": [
+    "数组",
+    "哈希表"
+  ],
+  "source": {
+    "name": "LeetCode 697",
+    "url": "https://leetcode.cn/problems/degree-of-an-array/"
+  },
+  "statement": "数组的**度**定义为「任一元素出现次数的最大值」。\n\n请找出数组中**度相同**的**最短连续子数组**，返回它的长度。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 5\\times10^4$）。\n\n第二行 $n$ 个整数 $a_i$（$|a_i| \\le 5\\times10^4$）。",
+  "output_format": "一行一个整数，表示最短连续子数组的长度。",
+  "constraints": [
+    "1 ≤ n ≤ 5×10^4",
+    "|a_i| ≤ 5×10^4"
+  ],
+  "samples": [
+    {
+      "input": "5\n1 2 2 3 1\n",
+      "output": "2\n",
+      "explain": ""
+    },
+    {
+      "input": "7\n1 2 2 3 1 4 2\n",
+      "output": "6\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**三次统计**：用哈希表分别记录每个值的**出现次数**、**首次位置**、**末次位置**。\n\n先求出度 `deg`，再对所有出现次数等于 `deg` 的值计算 `last - first + 1`，取最小值。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nunordered_map<long long,int>cnt,first;unordered_map<long long,int>last;\nint deg=0;\nfor(int i=0;i<n;++i){scanf(\"%lld\",&a[i]);\nif(!first.count(a[i]))first[a[i]]=i;\nlast[a[i]]=i;deg=max(deg,++cnt[a[i]]);}\nint best=n;\nfor(auto&kv:cnt)if(kv.second==deg)best=min(best,last[kv.first]-first[kv.first]+1);\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n1 2 2 3 1\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "7\n1 2 2 3 1 4 2\n",
+      "output": "6\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n5\n",
+      "output": "1\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n7 7 7 7\n",
+      "output": "4\n",
+      "name": "全部相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6\n-1 -1 2 2 3 3\n",
+      "output": "2\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "8\n1 1 2 2 3 3 4 4\n",
+      "output": "2\n",
+      "name": "两个同度值",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nunordered_map<long long,int>cnt,first;unordered_map<long long,int>last;\nint deg=0;\nfor(int i=0;i<n;++i){scanf(\"%lld\",&a[i]);\nif(!first.count(a[i]))first[a[i]]=i;\nlast[a[i]]=i;deg=max(deg,++cnt[a[i]]);}\nint best=n;\nfor(auto&kv:cnt)if(kv.second==deg)best=min(best,last[kv.first]-first[kv.first]+1);\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

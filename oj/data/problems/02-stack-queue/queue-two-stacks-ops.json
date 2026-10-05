@@ -1,0 +1,86 @@
+{
+  "id": "queue-two-stacks-ops",
+  "title": "用两个栈实现队列（操作模拟）",
+  "difficulty": "中等",
+  "tags": [
+    "栈",
+    "队列",
+    "设计"
+  ],
+  "source": {
+    "name": "LeetCode 232",
+    "url": "https://leetcode.cn/problems/implement-queue-using-stacks/"
+  },
+  "statement": "用两个栈模拟队列，支持 `push x`、`pop`、`peek`。\n\n输出所有 `pop` 和 `peek` 的结果。\n\n**保证** `pop` / `peek` 只在非空队列上调用。",
+  "input_format": "第一行一个整数 $q$（$1 \\le q \\le 10^5$）。\n\n接下来 $q$ 行，每行一个操作（$|x| \\le 10^9$）。",
+  "output_format": "对每个 `pop` / `peek` 输出一行。",
+  "constraints": [
+    "1 ≤ q ≤ 10^5",
+    "|x| ≤ 10^9",
+    "pop/peek 仅在非空队列上调用"
+  ],
+  "samples": [
+    {
+      "input": "5\npush 1\npush 2\npeek\npop\npeek\n",
+      "output": "1\n1\n2\n",
+      "explain": ""
+    },
+    {
+      "input": "4\npush 1\npush 2\npop\npop\n",
+      "output": "1\n2\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**两个栈分工**：`in` 负责入队，`out` 负责出队。\n\n出队时若 `out` 为空，就把 `in` **全部倒入** `out`（顺序自然反转）。\n\n> **摊还分析**：每个元素最多被倒一次，所以 $q$ 次操作总共 $O(q)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int q;scanf(\"%d\",&q);\nvector<long long>in,out;char op[16];\nfor(int i=0;i<q;++i){scanf(\"%s\",op);string o=op;\nif(o==\"push\"){long long x;scanf(\"%lld\",&x);in.push_back(x);}\nelse{if(out.empty()){while(!in.empty()){out.push_back(in.back());in.pop_back();}}\nif(o==\"pop\"){printf(\"%lld\\n\",out.back());out.pop_back();}\nelse printf(\"%lld\\n\",out.back());}}\nreturn 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\npush 1\npush 2\npeek\npop\npeek\n",
+      "output": "1\n1\n2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\npush 1\npush 2\npop\npop\n",
+      "output": "1\n2\n",
+      "name": "连续弹出",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "6\npush 1\npop\npush 2\npop\npush 3\npeek\n",
+      "output": "1\n2\n3\n",
+      "name": "交替",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\npush 5\npush 6\npeek\n",
+      "output": "5\n",
+      "name": "只 peek",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\npush -1\npush -2\npop\npeek\n",
+      "output": "-1\n-2\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "6\npush 1\npush 2\npush 3\npop\npop\npop\n",
+      "output": "1\n2\n3\n",
+      "name": "大量入队",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int q;scanf(\"%d\",&q);\nvector<long long>in,out;char op[16];\nfor(int i=0;i<q;++i){scanf(\"%s\",op);string o=op;\nif(o==\"push\"){long long x;scanf(\"%lld\",&x);in.push_back(x);}\nelse{if(out.empty()){while(!in.empty()){out.push_back(in.back());in.pop_back();}}\nif(o==\"pop\"){printf(\"%lld\\n\",out.back());out.pop_back();}\nelse printf(\"%lld\\n\",out.back());}}\nreturn 0;}\n"
+  },
+  "time_limit": 2.0
+}

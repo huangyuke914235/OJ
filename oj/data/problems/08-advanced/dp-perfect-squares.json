@@ -1,0 +1,91 @@
+{
+  "id": "dp-perfect-squares",
+  "title": "完全平方数",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "完全背包",
+    "数学"
+  ],
+  "source": {
+    "name": "LeetCode 279",
+    "url": "https://leetcode.cn/problems/perfect-squares/"
+  },
+  "statement": "给定正整数 $n$，求**最少**用几个**完全平方数**（如 $1, 4, 9, 16, \\dots$）之和表示出 $n$。\n\n每个平方数**可以重复使用**。",
+  "input_format": "一行一个整数 $n$（$1 \\le n \\le 10^4$）。",
+  "output_format": "一行一个整数，表示最少个数。",
+  "constraints": [
+    "1 ≤ n ≤ 10^4"
+  ],
+  "samples": [
+    {
+      "input": "12\n",
+      "output": "3\n",
+      "explain": ""
+    },
+    {
+      "input": "13\n",
+      "output": "2\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**完全背包求最小值**：`dp[i]` = 表示 $i$ 所需的最少平方数个数。\n\n转移：对所有满足 $j^2 \\le i$ 的 $j$，`dp[i] = min(dp[i], dp[i - j*j] + 1)`。\n\n时间 $O(n\\sqrt{n})$。\n\n> **数学结论（四平方和定理）**：任何正整数都能表示为**至多 4 个**平方数之和，所以答案只会是 1、2、3、4。可以用这个性质做 $O(\\sqrt{n})$ 的判定，但 DP 更通用。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nconst int INF=1e9;\nvector<int>dp(n+1,INF);dp[0]=0;\nfor(int i=1;i<=n;++i)\nfor(int j=1;j*j<=i;++j)dp[i]=min(dp[i],dp[i-j*j]+1);\nprintf(\"%d\\n\",dp[n]);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "12\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "13\n",
+      "output": "2\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "name": "n = 1",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "16\n",
+      "output": "1\n",
+      "name": "完全平方数",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "7\n",
+      "output": "4\n",
+      "name": "质数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "10000\n",
+      "output": "1\n",
+      "name": "较大",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2\n",
+      "output": "2\n",
+      "name": "n = 2",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nconst int INF=1e9;\nvector<int>dp(n+1,INF);dp[0]=0;\nfor(int i=1;i<=n;++i)\nfor(int j=1;j*j<=i;++j)dp[i]=min(dp[i],dp[i-j*j]+1);\nprintf(\"%d\\n\",dp[n]);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

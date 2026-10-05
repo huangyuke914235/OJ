@@ -1,0 +1,94 @@
+{
+  "id": "graph-max-island-area",
+  "title": "岛屿的最大面积",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "DFS",
+    "网格",
+    "连通块"
+  ],
+  "source": {
+    "name": "LeetCode 695",
+    "url": "https://leetcode.cn/problems/max-area-of-island/"
+  },
+  "statement": "给定一个 $0/1$ 矩阵，$1$ 表示陆地。求**面积最大的岛屿**的面积。\n\n**岛屿**由上下左右相邻的陆地组成（**对角不算连通**）。若没有陆地则输出 $0$。",
+  "input_format": "第一行两个整数 $r, c$（$1 \\le r, c \\le 50$）。\n\n接下来 $r$ 行，每行 $c$ 个整数（$0$ 或 $1$）。",
+  "output_format": "一行一个整数，表示最大岛屿面积。",
+  "constraints": [
+    "1 ≤ r, c ≤ 50",
+    "元素为 0 或 1",
+    "上下左右连通"
+  ],
+  "samples": [
+    {
+      "input": "8 13\n0 0 1 0 0 0 0 1 0 0 0 0 0\n0 0 0 0 0 0 0 1 1 1 0 0 0\n0 1 1 0 1 0 0 1 1 1 0 0 0\n0 1 0 0 1 1 0 0 1 0 1 0 0\n0 1 0 0 1 1 0 0 1 1 1 0 0\n0 0 0 0 0 0 0 0 0 0 1 0 0\n0 0 0 0 0 0 0 1 1 1 0 0 0\n0 0 0 0 0 0 0 1 1 0 0 0 0\n",
+      "output": "13\n",
+      "explain": ""
+    },
+    {
+      "input": "2 2\n0 0\n0 0\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**遍历每个陆地格子，做一次 DFS 统计面积**，取最大值。\n\n访问过的陆地直接改成 0，省去 visited 数组。\n\n> **易错点**：面积在**出栈时**累加（每个格子只入栈一次），或在入栈时标记后累加——两种写法都行，但要一致。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<vector<int>>g(r,vector<int>(c));\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)scanf(\"%d\",&g[i][j]);\nint best=0;int dx[4]={1,-1,0,0},dy[4]={0,0,1,-1};\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j){\nif(g[i][j]!=1)continue;\nint area=0;vector<pair<int,int>>st;st.push_back({i,j});g[i][j]=0;\nwhile(!st.empty()){auto pr=st.back();st.pop_back();++area;\nfor(int d=0;d<4;++d){int nx=pr.first+dx[d],ny=pr.second+dy[d];\nif(nx<0||nx>=r||ny<0||ny>=c)continue;\nif(g[nx][ny]==1){g[nx][ny]=0;st.push_back({nx,ny});}}}\nbest=max(best,area);}\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "8 13\n0 0 1 0 0 0 0 1 0 0 0 0 0\n0 0 0 0 0 0 0 1 1 1 0 0 0\n0 1 1 0 1 0 0 1 1 1 0 0 0\n0 1 0 0 1 1 0 0 1 0 1 0 0\n0 1 0 0 1 1 0 0 1 1 1 0 0\n0 0 0 0 0 0 0 0 0 0 1 0 0\n0 0 0 0 0 0 0 1 1 1 0 0 0\n0 0 0 0 0 0 0 1 1 0 0 0 0\n",
+      "output": "13\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 2\n0 0\n0 0\n",
+      "output": "0\n",
+      "name": "全水",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 2\n1 1\n1 1\n",
+      "output": "4\n",
+      "name": "全陆",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 1\n1\n",
+      "output": "1\n",
+      "name": "单格",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 2\n1 0\n0 1\n",
+      "output": "1\n",
+      "name": "对角不算连通",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 5\n1 1 1 1 1\n",
+      "output": "5\n",
+      "name": "一条线",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2 3\n1 1 0\n0 0 1\n",
+      "output": "2\n",
+      "name": "两岛取大",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<vector<int>>g(r,vector<int>(c));\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)scanf(\"%d\",&g[i][j]);\nint best=0;int dx[4]={1,-1,0,0},dy[4]={0,0,1,-1};\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j){\nif(g[i][j]!=1)continue;\nint area=0;vector<pair<int,int>>st;st.push_back({i,j});g[i][j]=0;\nwhile(!st.empty()){auto pr=st.back();st.pop_back();++area;\nfor(int d=0;d<4;++d){int nx=pr.first+dx[d],ny=pr.second+dy[d];\nif(nx<0||nx>=r||ny<0||ny>=c)continue;\nif(g[nx][ny]==1){g[nx][ny]=0;st.push_back({nx,ny});}}}\nbest=max(best,area);}\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,88 @@
+{
+  "id": "graph-all-paths",
+  "title": "所有可能的路径",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "DFS",
+    "回溯",
+    "DAG"
+  ],
+  "source": {
+    "name": "LeetCode 797",
+    "url": "https://leetcode.cn/problems/all-paths-from-source-to-target/"
+  },
+  "statement": "给定一个有向无环图（DAG）和起点 $s$、终点 $t$，输出从 $s$ 到 $t$ 的**所有路径**。\n\n**输出要求**：每条路径占一行，节点编号用 `->` 连接；路径之间按**字典序**升序排列（即 DFS 时邻居按编号升序访问）。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 15$，$0 \\le m \\le 100$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$，表示一条 $u \\to v$ 的边。\n\n最后一行两个整数 $s, t$。\n\n**保证**是 DAG。",
+  "output_format": "每行一条路径；若无路径则输出空行。",
+  "constraints": [
+    "1 ≤ n ≤ 15",
+    "0 ≤ m ≤ 100",
+    "保证是 DAG",
+    "按字典序输出"
+  ],
+  "samples": [
+    {
+      "input": "4 3\n1 2\n3 2\n3 4\n1 4\n",
+      "output": "\n",
+      "explain": ""
+    },
+    {
+      "input": "5 5\n1 2\n1 3\n2 4\n3 4\n4 5\n1 5\n",
+      "output": "1->2->4->5\n1->3->4->5\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**DFS + 回溯**：用 `path` 记录当前路径，访问到 $t$ 就把路径加入结果；否则递归所有邻居，**递归返回后要弹出最后一个节点**（回溯）。\n\n> **排序技巧**：先把每个顶点的邻居**排序**，这样 DFS 得到的路径天然是字典序。\n\n> **为什么不用 visited**：路径可以重复经过同一个点（只要不形成环，DAG 保证不会），所以不需要访问标记。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint n;vector<vector<int>>g;vector<int>path;vector<string>res;\nvoid dfs(int u,int t){\nif(u==t){string s;for(size_t i=0;i<path.size();++i){\nif(i)s+=\"->\";s+=to_string(path[i]);}res.push_back(s);return;}\nfor(int v:g[u]){path.push_back(v);dfs(v,t);path.pop_back();}}\nint main(){int m;scanf(\"%d %d\",&n,&m);g.assign(n+1,{});\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);g[u].push_back(v);}\nfor(int i=1;i<=n;++i)sort(g[i].begin(),g[i].end());\nint s,t;scanf(\"%d %d\",&s,&t);\npath.push_back(s);dfs(s,t);\nfor(auto&x:res)printf(\"%s\\n\",x.c_str());\nif(res.empty())printf(\"\\n\");\nreturn 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4 3\n1 2\n3 2\n3 4\n1 4\n",
+      "output": "\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5 5\n1 2\n1 3\n2 4\n3 4\n4 5\n1 5\n",
+      "output": "1->2->4->5\n1->3->4->5\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 1\n1 2\n1 3\n",
+      "output": "\n",
+      "name": "无路径",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 0\n1 1\n",
+      "output": "1\n",
+      "name": "同一点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 2\n1 2\n2 3\n1 3\n",
+      "output": "1->2->3\n",
+      "name": "唯一路径",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 4\n1 2\n1 3\n2 4\n3 4\n1 4\n",
+      "output": "1->2->4\n1->3->4\n",
+      "name": "菱形",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint n;vector<vector<int>>g;vector<int>path;vector<string>res;\nvoid dfs(int u,int t){\nif(u==t){string s;for(size_t i=0;i<path.size();++i){\nif(i)s+=\"->\";s+=to_string(path[i]);}res.push_back(s);return;}\nfor(int v:g[u]){path.push_back(v);dfs(v,t);path.pop_back();}}\nint main(){int m;scanf(\"%d %d\",&n,&m);g.assign(n+1,{});\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);g[u].push_back(v);}\nfor(int i=1;i<=n;++i)sort(g[i].begin(),g[i].end());\nint s,t;scanf(\"%d %d\",&s,&t);\npath.push_back(s);dfs(s,t);\nfor(auto&x:res)printf(\"%s\\n\",x.c_str());\nif(res.empty())printf(\"\\n\");\nreturn 0;}\n"
+  },
+  "time_limit": 2.0
+}

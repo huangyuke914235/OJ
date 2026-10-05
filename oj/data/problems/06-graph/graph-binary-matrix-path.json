@@ -1,0 +1,93 @@
+{
+  "id": "graph-binary-matrix-path",
+  "title": "二进制矩阵中的最短路径",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "BFS",
+    "网格"
+  ],
+  "source": {
+    "name": "LeetCode 1091",
+    "url": "https://leetcode.cn/problems/shortest-path-in-binary-matrix/"
+  },
+  "statement": "给定 $0/1$ 矩阵，$0$ 表示可通行。\n\n从左上角走到右下角，每步可以走**八个方向**（上下左右 + 四个斜角）。\n\n求最短路径的**格子数**（含起点和终点）；若不可达输出 $-1$。",
+  "input_format": "第一行两个整数 $r, c$（$1 \\le r, c \\le 100$）。\n\n接下来 $r$ 行，每行 $c$ 个整数（$0$ 或 $1$）。",
+  "output_format": "一行一个整数，表示最短路径的格子数；不可达则输出 -1。",
+  "constraints": [
+    "1 ≤ r, c ≤ 100",
+    "元素为 0 或 1",
+    "八方向移动"
+  ],
+  "samples": [
+    {
+      "input": "2 2\n0 1\n1 0\n",
+      "output": "2\n",
+      "explain": ""
+    },
+    {
+      "input": "2 3\n0 0 0\n1 1 0\n",
+      "output": "3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**BFS 求无权图最短路**：八方向的网格也是无权图，BFS 天然给出最短路径。\n\n`dist` 初值为 $-1$（未访问），起点为 $1$（含起点的格子数）。\n\n> **易错点**：**起点或终点是障碍**时要直接输出 $-1$，否则 BFS 会出错。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<vector<int>>g(r,vector<int>(c));\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)scanf(\"%d\",&g[i][j]);\nif(g[0][0]||g[r-1][c-1]){printf(\"-1\\n\");return 0;}\nvector<vector<int>>d(r,vector<int>(c,-1));d[0][0]=1;\nqueue<pair<int,int>>q;q.push({0,0});\nint dx[8]={1,-1,0,0,1,1,-1,-1},dy[8]={0,0,1,-1,1,-1,1,-1};\nwhile(!q.empty()){auto pr=q.front();q.pop();\nif(pr.first==r-1&&pr.second==c-1){printf(\"%d\\n\",d[pr.first][pr.second]);return 0;}\nfor(int k=0;k<8;++k){int nx=pr.first+dx[k],ny=pr.second+dy[k];\nif(nx<0||nx>=r||ny<0||ny>=c)continue;\nif(g[nx][ny]==0&&d[nx][ny]==-1){d[nx][ny]=d[pr.first][pr.second]+1;q.push({nx,ny});}}}\nprintf(\"-1\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "2 2\n0 1\n1 0\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 3\n0 0 0\n1 1 0\n",
+      "output": "3\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 1\n0\n",
+      "output": "1\n",
+      "name": "单格 0",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 1\n1\n",
+      "output": "-1\n",
+      "name": "单格 1",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 3\n0 0 0\n0 0 0\n0 0 0\n",
+      "output": "3\n",
+      "name": "全 0",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2 2\n1 0\n0 0\n",
+      "output": "-1\n",
+      "name": "起点被堵",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 3\n0 0 1\n1 0 1\n1 0 0\n",
+      "output": "3\n",
+      "name": "需绕路",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<vector<int>>g(r,vector<int>(c));\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)scanf(\"%d\",&g[i][j]);\nif(g[0][0]||g[r-1][c-1]){printf(\"-1\\n\");return 0;}\nvector<vector<int>>d(r,vector<int>(c,-1));d[0][0]=1;\nqueue<pair<int,int>>q;q.push({0,0});\nint dx[8]={1,-1,0,0,1,1,-1,-1},dy[8]={0,0,1,-1,1,-1,1,-1};\nwhile(!q.empty()){auto pr=q.front();q.pop();\nif(pr.first==r-1&&pr.second==c-1){printf(\"%d\\n\",d[pr.first][pr.second]);return 0;}\nfor(int k=0;k<8;++k){int nx=pr.first+dx[k],ny=pr.second+dy[k];\nif(nx<0||nx>=r||ny<0||ny>=c)continue;\nif(g[nx][ny]==0&&d[nx][ny]==-1){d[nx][ny]=d[pr.first][pr.second]+1;q.push({nx,ny});}}}\nprintf(\"-1\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

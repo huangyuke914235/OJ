@@ -1,0 +1,93 @@
+{
+  "id": "stack-remove-k-digits",
+  "title": "移掉 K 位数字",
+  "difficulty": "中等",
+  "tags": [
+    "栈",
+    "单调栈",
+    "贪心"
+  ],
+  "source": {
+    "name": "LeetCode 402",
+    "url": "https://leetcode.cn/problems/remove-k-digits/"
+  },
+  "statement": "给定一个以字符串表示的非负整数 $num$ 和整数 $k$，移除其中 $k$ 个数字，使剩下的数字**尽可能小**。\n\n输出这个最小的数。若结果为空或全为前导零，输出 `0`。",
+  "input_format": "第一行一个数字字符串 $num$（长度 $1 \\le |num| \\le 10^5$，无前导零，除非为 \"0\"）。\n\n第二行一个整数 $k$（$0 \\le k \\le |num|$）。",
+  "output_format": "一行，移除 $k$ 位后的最小数字。",
+  "constraints": [
+    "1 ≤ |num| ≤ 10^5",
+    "0 ≤ k ≤ |num|",
+    "num 无多余前导零"
+  ],
+  "samples": [
+    {
+      "input": "1432219\n3\n",
+      "output": "1219\n",
+      "explain": ""
+    },
+    {
+      "input": "10200\n1\n",
+      "output": "200\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**单调栈 + 贪心**：从左到右扫描，只要「栈顶比当前数字大」且「还有删除额度」，就弹出栈顶——因为把更大的高位删掉能让数更小。\n\n扫完后若还有额度，从**末尾**继续删（此时序列已非递减）。\n\n最后**去掉前导零**；若结果为空则输出 `0`。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string num;int k;cin>>num>>k;\nstring st;\nfor(char c:num){while(k>0&&!st.empty()&&st.back()>c){st.pop_back();--k;}st.push_back(c);}\nwhile(k>0&&!st.empty()){st.pop_back();--k;}\nsize_t i=0;while(i<st.size()&&st[i]=='0')++i;\nstring r=st.substr(i);\nprintf(\"%s\\n\",r.empty()?\"0\":r.c_str());return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "1432219\n3\n",
+      "output": "1219\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "10200\n1\n",
+      "output": "200\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "10\n2\n",
+      "output": "0\n",
+      "name": "样例 3（全删）",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "12345\n0\n",
+      "output": "12345\n",
+      "name": "k = 0",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "12345\n2\n",
+      "output": "123\n",
+      "name": "单调递增",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1111\n2\n",
+      "output": "11\n",
+      "name": "全相同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "100200\n1\n",
+      "output": "200\n",
+      "name": "前导零",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string num;int k;cin>>num>>k;\nstring st;\nfor(char c:num){while(k>0&&!st.empty()&&st.back()>c){st.pop_back();--k;}st.push_back(c);}\nwhile(k>0&&!st.empty()){st.pop_back();--k;}\nsize_t i=0;while(i<st.size()&&st[i]=='0')++i;\nstring r=st.substr(i);\nprintf(\"%s\\n\",r.empty()?\"0\":r.c_str());return 0;}\n"
+  },
+  "time_limit": 2.0
+}

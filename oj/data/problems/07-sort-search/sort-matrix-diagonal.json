@@ -1,0 +1,85 @@
+{
+  "id": "sort-matrix-diagonal",
+  "title": "将矩阵对角线排序",
+  "difficulty": "中等",
+  "tags": [
+    "矩阵",
+    "排序",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 1329",
+    "url": "https://leetcode.cn/problems/sort-the-matrix-diagonally/"
+  },
+  "statement": "给定矩阵，把**每条从左上到右下的对角线**上的元素**升序排序**。\n\n输出排序后的矩阵。",
+  "input_format": "第一行两个整数 $r, c$（$1 \\le r, c \\le 100$）。\n\n接下来 $r$ 行，每行 $c$ 个整数（$|v| \\le 100$）。",
+  "output_format": "共 $r$ 行，为排序后的矩阵。",
+  "constraints": [
+    "1 ≤ r, c ≤ 100",
+    "|v| ≤ 100"
+  ],
+  "samples": [
+    {
+      "input": "3 3\n3 3 1\n2 2 1\n1 1 1\n",
+      "output": "3 2 1\n3 1 1\n2 1 1\n",
+      "explain": ""
+    },
+    {
+      "input": "1 1\n5\n",
+      "output": "5\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**按对角线编号分组**：同一条「左上→右下」对角线上的元素满足 `i - j` 为定值，或者用 `i + j` 统一编号。\n\n对每条对角线收集元素、排序、再写回。\n\n时间 $O(rc \\cdot \\log(\\max(r,c)))$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<vector<long long>>g(r,vector<long long>(c));\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)scanf(\"%lld\",&g[i][j]);\nfor(int d=0;d<r+c-1;++d){\nvector<long long>v;vector<pair<int,int>>pos;\nfor(int i=0;i<r;++i){int j=d-i;\nif(j<0||j>=c)continue;\npos.push_back({i,j});v.push_back(g[i][j]);}\nsort(v.begin(),v.end());\nfor(size_t k=0;k<pos.size();++k)g[pos[k].first][pos[k].second]=v[k];}\nfor(int i=0;i<r;++i){for(int j=0;j<c;++j){if(j)printf(\" \");printf(\"%lld\",g[i][j]);}printf(\"\\n\");}\nreturn 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 3\n3 3 1\n2 2 1\n1 1 1\n",
+      "output": "3 2 1\n3 1 1\n2 1 1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 1\n5\n",
+      "output": "5\n",
+      "name": "单元素",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 3\n3 1 2\n",
+      "output": "3 1 2\n",
+      "name": "单行",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 1\n3\n1\n2\n",
+      "output": "3\n1\n2\n",
+      "name": "单列",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 2\n1 2\n3 4\n",
+      "output": "1 2\n3 4\n",
+      "name": "已有序",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2 2\n5 5\n5 5\n",
+      "output": "5 5\n5 5\n",
+      "name": "全相同",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<vector<long long>>g(r,vector<long long>(c));\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)scanf(\"%lld\",&g[i][j]);\nfor(int d=0;d<r+c-1;++d){\nvector<long long>v;vector<pair<int,int>>pos;\nfor(int i=0;i<r;++i){int j=d-i;\nif(j<0||j>=c)continue;\npos.push_back({i,j});v.push_back(g[i][j]);}\nsort(v.begin(),v.end());\nfor(size_t k=0;k<pos.size();++k)g[pos[k].first][pos[k].second]=v[k];}\nfor(int i=0;i<r;++i){for(int j=0;j<c;++j){if(j)printf(\" \");printf(\"%lld\",g[i][j]);}printf(\"\\n\");}\nreturn 0;}\n"
+  },
+  "time_limit": 2.0
+}

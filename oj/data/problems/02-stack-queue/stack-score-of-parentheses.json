@@ -1,0 +1,91 @@
+{
+  "id": "stack-score-of-parentheses",
+  "title": "括号的分数",
+  "difficulty": "中等",
+  "tags": [
+    "栈",
+    "字符串"
+  ],
+  "source": {
+    "name": "LeetCode 856",
+    "url": "https://leetcode.cn/problems/score-of-parentheses/"
+  },
+  "statement": "给定一个**平衡**的括号字符串，按以下规则计算分数：\n\n- `()` 得 $1$ 分；\n- 两个相邻的平衡串 `AB` 得 $A + B$ 分；\n- 嵌套的平衡串 `(A)` 得 $2 \\times A$ 分。\n\n输出总分。",
+  "input_format": "一行一个平衡的括号字符串（$2 \\le |s| \\le 5\\times10^4$）。",
+  "output_format": "一行一个整数，表示分数。",
+  "constraints": [
+    "2 ≤ |s| ≤ 5×10^4",
+    "保证括号平衡"
+  ],
+  "samples": [
+    {
+      "input": "()\n",
+      "output": "1\n",
+      "explain": ""
+    },
+    {
+      "input": "(())\n",
+      "output": "2\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**栈 + 分数累加**：栈中每个元素代表「当前这一层已经累计的分数」。\n\n- 遇到 `(`：压入 $0$，进入新的一层；\n- 遇到 `)`：弹出内层分数 $v$，**若 $v = 0$ 说明是空括号 `()`，得 1 分；否则得 $2v$ 分**，加到外层上。\n\n`max(2*v, 1)` 这个写法正好统一了两种情形。时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;vector<long long>st;st.push_back(0);\nfor(char c:s){\nif(c=='(')st.push_back(0);\nelse{long long v=st.back();st.pop_back();\nst.back()+=max(2*v,1LL);}}\nprintf(\"%lld\\n\",st.back());return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "()\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "(())\n",
+      "output": "2\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "()()\n",
+      "output": "2\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "(()(()))\n",
+      "output": "6\n",
+      "name": "样例 4",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "(((())))\n",
+      "output": "8\n",
+      "name": "深层嵌套",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "()()()()\n",
+      "output": "4\n",
+      "name": "多个并列",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "(())()(()())\n",
+      "output": "7\n",
+      "name": "混合",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;vector<long long>st;st.push_back(0);\nfor(char c:s){\nif(c=='(')st.push_back(0);\nelse{long long v=st.back();st.pop_back();\nst.back()+=max(2*v,1LL);}}\nprintf(\"%lld\\n\",st.back());return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,86 @@
+{
+  "id": "heap-priority-queue-ops",
+  "title": "小根堆的操作模拟",
+  "difficulty": "入门",
+  "tags": [
+    "堆",
+    "优先队列",
+    "模拟"
+  ],
+  "source": {
+    "name": "堆基础",
+    "url": "https://leetcode.cn/problems/kth-largest-element-in-an-array/"
+  },
+  "statement": "模拟一个小根堆（优先队列），支持：\n\n- `push x`：插入 $x$；\n- `pop`：弹出并输出**最小值**；\n- `top`：输出最小值（不弹出）；\n- `size`：输出元素个数。\n\n**保证** `pop` / `top` 只在非空堆上调用。",
+  "input_format": "第一行一个整数 $q$（$1 \\le q \\le 10^5$）。\n\n接下来 $q$ 行，每行一个操作（$|x| \\le 10^9$）。",
+  "output_format": "对每个有输出的操作输出一行。",
+  "constraints": [
+    "1 ≤ q ≤ 10^5",
+    "|x| ≤ 10^9",
+    "pop/top 仅在非空堆上调用"
+  ],
+  "samples": [
+    {
+      "input": "5\npush 3\npush 1\ntop\npop\nsize\n",
+      "output": "1\n1\n1\n",
+      "explain": ""
+    },
+    {
+      "input": "4\npush 1\npush 2\npush 3\npop\n",
+      "output": "1\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**小根堆**：`top()` / `pop()` 得到的都是当前**最小值**。\n\nC++ 用 `priority_queue<T, vector<T>, greater<T>>`；Python 的 `heapq` 本身就是小根堆。\n\n> **大根堆**：C++ 去掉 `greater` 即可；Python 要存**负数**。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int q;scanf(\"%d\",&q);\npriority_queue<long long,vector<long long>,greater<long long>>pq;char op[16];\nfor(int i=0;i<q;++i){scanf(\"%s\",op);string o=op;\nif(o==\"push\"){long long x;scanf(\"%lld\",&x);pq.push(x);}\nelse if(o==\"pop\"){printf(\"%lld\\n\",pq.top());pq.pop();}\nelse if(o==\"top\"){printf(\"%lld\\n\",pq.top());}\nelse if(o==\"size\"){printf(\"%d\\n\",(int)pq.size());}}\nreturn 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\npush 3\npush 1\ntop\npop\nsize\n",
+      "output": "1\n1\n1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\npush 1\npush 2\npush 3\npop\n",
+      "output": "1\n",
+      "name": "递增插入",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\npush 3\npush 2\npush 1\npop\n",
+      "output": "1\n",
+      "name": "递减插入",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\npush 5\ntop\nsize\n",
+      "output": "5\n1\n",
+      "name": "只查询",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\npush -1\npush -2\ntop\npop\n",
+      "output": "-2\n-2\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "6\npush 9\npop\npush 8\ntop\nsize\npop\n",
+      "output": "9\n8\n1\n8\n",
+      "name": "反复操作",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int q;scanf(\"%d\",&q);\npriority_queue<long long,vector<long long>,greater<long long>>pq;char op[16];\nfor(int i=0;i<q;++i){scanf(\"%s\",op);string o=op;\nif(o==\"push\"){long long x;scanf(\"%lld\",&x);pq.push(x);}\nelse if(o==\"pop\"){printf(\"%lld\\n\",pq.top());pq.pop();}\nelse if(o==\"top\"){printf(\"%lld\\n\",pq.top());}\nelse if(o==\"size\"){printf(\"%d\\n\",(int)pq.size());}}\nreturn 0;}\n"
+  },
+  "time_limit": 2.0
+}

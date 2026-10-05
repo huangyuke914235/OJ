@@ -1,0 +1,92 @@
+{
+  "id": "search-peak-element",
+  "title": "寻找峰值",
+  "difficulty": "中等",
+  "tags": [
+    "二分查找",
+    "数组"
+  ],
+  "source": {
+    "name": "LeetCode 162",
+    "url": "https://leetcode.cn/problems/find-peak-element/"
+  },
+  "statement": "**峰值**指**严格大于**左右相邻元素的元素。\n\n给定数组（边界外视为 $-\\infty$），返回**任意一个**峰值的下标。\n\n**要求 $O(\\log n)$**。\n\n> 为保证判题唯一：本题约定返回**最靠左**的峰值下标。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 1000$）。\n\n第二行 $n$ 个**互不相同**的整数（$|a_i| \\le 10^9$）。",
+  "output_format": "一行一个整数，表示峰值下标。",
+  "constraints": [
+    "1 ≤ n ≤ 1000",
+    "元素互不相同",
+    "要求 O(log n)"
+  ],
+  "samples": [
+    {
+      "input": "4\n1 2 3 1\n",
+      "output": "2\n",
+      "explain": ""
+    },
+    {
+      "input": "7\n1 2 1 3 5 6 4\n",
+      "output": "5\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**二分找「上升沿」**：比较 `a[mid]` 与 `a[mid+1]`：\n\n- 若 `a[mid] > a[mid+1]`，说明右侧在下降，**峰值一定在 `mid` 或更左** → `hi = mid`；\n- 否则右侧在上升，**峰值一定在 `mid` 右侧** → `lo = mid + 1`。\n\n> **直觉**：只要沿着「往上走」的方向前进，一定能走到某个峰值（因为边界外是 $-\\infty$）。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nint lo=0,hi=n-1;\nwhile(lo<hi){int mid=lo+(hi-lo)/2;\nif(a[mid]>a[mid+1])hi=mid;else lo=mid+1;}\nprintf(\"%d\\n\",lo);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n1 2 3 1\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "7\n1 2 1 3 5 6 4\n",
+      "output": "5\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n5\n",
+      "output": "0\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "3\n",
+      "name": "递增",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n4 3 2 1\n",
+      "output": "0\n",
+      "name": "递减",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2\n1 2\n",
+      "output": "1\n",
+      "name": "两元素递增",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2\n2 1\n",
+      "output": "0\n",
+      "name": "两元素递减",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nint lo=0,hi=n-1;\nwhile(lo<hi){int mid=lo+(hi-lo)/2;\nif(a[mid]>a[mid+1])hi=mid;else lo=mid+1;}\nprintf(\"%d\\n\",lo);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

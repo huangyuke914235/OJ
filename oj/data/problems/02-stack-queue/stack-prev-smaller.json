@@ -1,0 +1,92 @@
+{
+  "id": "stack-prev-smaller",
+  "title": "上一个更小元素",
+  "difficulty": "简单",
+  "tags": [
+    "栈",
+    "单调栈"
+  ],
+  "source": {
+    "name": "单调栈基础变体",
+    "url": "https://leetcode.cn/problems/next-greater-element-i/"
+  },
+  "statement": "对数组中每个位置 $i$，求**它左侧第一个比它小**的元素值。\n\n若不存在，输出 $-1$。\n\n**要求 $O(n)$**。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 2\\times10^5$）。\n\n第二行 $n$ 个整数 $a_i$（$|a_i| \\le 10^9$）。",
+  "output_format": "一行 $n$ 个整数，为每个位置的答案。",
+  "constraints": [
+    "1 ≤ n ≤ 2×10^5",
+    "|a_i| ≤ 10^9",
+    "要求 O(n)"
+  ],
+  "samples": [
+    {
+      "input": "5\n3 1 4 2 5\n",
+      "output": "-1 -1 1 1 2\n",
+      "explain": ""
+    },
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "-1 1 2 3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**单调栈（从左往右）**：维护一个**递增**的栈（存下标）。处理 `i` 时，先把栈中所有**大于等于** `a[i]` 的元素弹掉——它们不可能再成为后面任何元素的「左小值」。\n\n弹完后，栈顶就是左侧第一个更小的元素。\n\n> **易错点**：这里用 `>=` 弹出，因为要找**严格更小**的元素。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n),res(n,-1);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nvector<int>st;\nfor(int i=0;i<n;++i){\nwhile(!st.empty()&&a[st.back()]>=a[i])st.pop_back();\nres[i]=st.empty()?-1:a[st.back()];\nst.push_back(i);}\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%lld\",res[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n3 1 4 2 5\n",
+      "output": "-1 -1 1 1 2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "-1 1 2 3\n",
+      "name": "递增",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n4 3 2 1\n",
+      "output": "-1 -1 -1 -1\n",
+      "name": "递减",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n5 5 5\n",
+      "output": "-1 -1 -1\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n7\n",
+      "output": "-1\n",
+      "name": "单元素",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n-1 0 -2 3 -5\n",
+      "output": "-1 -1 -1 -2 -1\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "6\n2 5 1 4 3 6\n",
+      "output": "-1 2 -1 1 1 3\n",
+      "name": "锯齿",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n),res(n,-1);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nvector<int>st;\nfor(int i=0;i<n;++i){\nwhile(!st.empty()&&a[st.back()]>=a[i])st.pop_back();\nres[i]=st.empty()?-1:a[st.back()];\nst.push_back(i);}\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%lld\",res[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,92 @@
+{
+  "id": "array-rotate-left",
+  "title": "数组循环左移 k 位",
+  "difficulty": "入门",
+  "tags": [
+    "数组",
+    "模拟"
+  ],
+  "source": {
+    "name": "循环移位变体",
+    "url": "https://leetcode.cn/problems/rotate-array/"
+  },
+  "statement": "把长度为 $n$ 的数组**循环左移** $k$ 位。\n\n循环左移 $k$ 位指：原数组前 $k$ 个元素整体移到末尾，其余元素前移。\n\n例如 `[1,2,3,4,5]` 左移 2 位得到 `[3,4,5,1,2]`。",
+  "input_format": "第一行两个整数 $n, k$（$1 \\le n \\le 10^5$，$0 \\le k \\le 10^9$）。\n\n第二行 $n$ 个整数 $a_i$（$|a_i| \\le 10^9$）。",
+  "output_format": "一行 $n$ 个整数，为左移后的数组。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ k ≤ 10^9",
+    "|a_i| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "5 2\n1 2 3 4 5\n",
+      "output": "3 4 5 1 2\n",
+      "explain": ""
+    },
+    {
+      "input": "3 0\n1 2 3\n",
+      "output": "1 2 3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**取模定位**：先做 `k %= n`，左移后第 $i$ 个位置的元素是原数组的 `a[(i+k) % n]`。\n\n时间 $O(n)$，空间 $O(1)$（直接按新顺序输出，不必真的搬移）。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;long long k;scanf(\"%d %lld\",&n,&k);\nvector<long long>a(n);for(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nk%=n;\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%lld\",a[(i+k)%n]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5 2\n1 2 3 4 5\n",
+      "output": "3 4 5 1 2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 0\n1 2 3\n",
+      "output": "1 2 3\n",
+      "name": "k 为 0",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 3\n1 2 3\n",
+      "output": "1 2 3\n",
+      "name": "k 等于 n",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 7\n1 2 3\n",
+      "output": "2 3 1\n",
+      "name": "k 大于 n",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 5\n9\n",
+      "output": "9\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 3\n1 2 3 4\n",
+      "output": "4 1 2 3\n",
+      "name": "k = n-1",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 1000000000\n1 2 3 4\n",
+      "output": "1 2 3 4\n",
+      "name": "大 k",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;long long k;scanf(\"%d %lld\",&n,&k);\nvector<long long>a(n);for(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nk%=n;\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%lld\",a[(i+k)%n]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

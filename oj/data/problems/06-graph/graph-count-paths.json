@@ -1,0 +1,93 @@
+{
+  "id": "graph-count-paths",
+  "title": "DAG 中两点间的路径数",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "拓扑排序",
+    "动态规划"
+  ],
+  "source": {
+    "name": "DAG 路径计数",
+    "url": "https://www.luogu.com.cn/problem/P1113"
+  },
+  "statement": "给定一个**有向无环图（DAG）**和两个顶点 $s, t$，求从 $s$ 到 $t$ 的**不同路径条数**。\n\n**要求**：用拓扑排序 + DP 做到 $O(n+m)$。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 10^5$，$0 \\le m \\le 2\\times10^5$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$，表示一条从 $u$ 到 $v$ 的有向边。\n\n最后一行两个整数 $s, t$。\n\n**保证**图是 DAG。",
+  "output_format": "一行一个整数，表示路径条数。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ m ≤ 2×10^5",
+    "保证是 DAG"
+  ],
+  "samples": [
+    {
+      "input": "4 4\n1 2\n2 4\n1 3\n3 4\n1 4\n",
+      "output": "2\n",
+      "explain": ""
+    },
+    {
+      "input": "3 1\n1 2\n1 3\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**拓扑排序 + 路径计数 DP**：\n\n- 初值：`dp[s] = 1`（从 $s$ 到自己有 1 条路径）；\n- 按拓扑序处理每个点 $u$，对它的每条出边 $(u,v)$，执行 `dp[v] += dp[u]`。\n\n因为拓扑序保证 $u$ 的 `dp` 在处理它时已完整，所以一次遍历即可。\n\n> **为什么不用 BFS**：BFS 无法保证「先处理完所有前驱」，会导致重复计数。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);vector<int>indeg(n+1,0);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);g[u].push_back(v);++indeg[v];}\nint s,t;scanf(\"%d %d\",&s,&t);\nvector<long long>dp(n+1,0);dp[s]=1;\nqueue<int>q;for(int i=1;i<=n;++i)if(indeg[i]==0)q.push(i);\nvector<int>order;\nwhile(!q.empty()){int u=q.front();q.pop();order.push_back(u);\nfor(int v:g[u])if(--indeg[v]==0)q.push(v);}\nfor(int u:order){if(dp[u]==0)continue;\nfor(int v:g[u])dp[v]+=dp[u];}\nprintf(\"%lld\\n\",dp[t]);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4 4\n1 2\n2 4\n1 3\n3 4\n1 4\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 1\n1 2\n1 3\n",
+      "output": "0\n",
+      "name": "无路径",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 0\n1 1\n",
+      "output": "1\n",
+      "name": "同一点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 2\n1 2\n2 3\n1 3\n",
+      "output": "1\n",
+      "name": "唯一路径",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 5\n1 2\n1 3\n2 4\n3 4\n1 4\n1 4\n",
+      "output": "3\n",
+      "name": "多条路径",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n1 4\n",
+      "output": "1\n",
+      "name": "链状",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 5\n1 2\n2 3\n3 4\n1 3\n2 4\n1 4\n",
+      "output": "3\n",
+      "name": "菱形加直连",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);vector<int>indeg(n+1,0);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);g[u].push_back(v);++indeg[v];}\nint s,t;scanf(\"%d %d\",&s,&t);\nvector<long long>dp(n+1,0);dp[s]=1;\nqueue<int>q;for(int i=1;i<=n;++i)if(indeg[i]==0)q.push(i);\nvector<int>order;\nwhile(!q.empty()){int u=q.front();q.pop();order.push_back(u);\nfor(int v:g[u])if(--indeg[v]==0)q.push(v);}\nfor(int u:order){if(dp[u]==0)continue;\nfor(int v:g[u])dp[v]+=dp[u];}\nprintf(\"%lld\\n\",dp[t]);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

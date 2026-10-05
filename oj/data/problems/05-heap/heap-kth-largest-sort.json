@@ -1,0 +1,85 @@
+{
+  "id": "heap-kth-largest-sort",
+  "title": "第 K 大元素（排序解法）",
+  "difficulty": "入门",
+  "tags": [
+    "堆",
+    "排序",
+    "Top-K"
+  ],
+  "source": {
+    "name": "LeetCode 215",
+    "url": "https://leetcode.cn/problems/kth-largest-element-in-an-array/"
+  },
+  "statement": "给定数组和整数 $k$，求数组中**第 $k$ 大**的元素。\n\n> 本题用于对比：直接排序取第 $k$ 个（$O(n\\log n)$）与用堆（$O(n\\log k)$）的差异。",
+  "input_format": "第一行两个整数 $n, k$（$1 \\le k \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数（$|a_i| \\le 10^9$）。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "1 ≤ k ≤ n ≤ 10^5",
+    "|a_i| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "6 2\n3 2 1 5 6 4\n",
+      "output": "5\n",
+      "explain": ""
+    },
+    {
+      "input": "3 1\n3 2 1\n",
+      "output": "3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**排序解法**：降序排序后取第 $k$ 个。时间 $O(n\\log n)$。\n\n> **堆解法更优**：维护大小为 $k$ 的**小根堆**，时间 $O(n\\log k)$、空间 $O(k)$，适合 $n$ 很大而 $k$ 很小、或数据流场景。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nsort(a.rbegin(),a.rend());\nprintf(\"%lld\\n\",a[k-1]);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "6 2\n3 2 1 5 6 4\n",
+      "output": "5\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 1\n3 2 1\n",
+      "output": "3\n",
+      "name": "k = 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 4\n1 2 3 4\n",
+      "output": "1\n",
+      "name": "k = n",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 2\n5 5 5 5\n",
+      "output": "5\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 3\n-1 -2 -3 -4 -5\n",
+      "output": "-3\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 1\n7\n",
+      "output": "7\n",
+      "name": "单元素",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nsort(a.rbegin(),a.rend());\nprintf(\"%lld\\n\",a[k-1]);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

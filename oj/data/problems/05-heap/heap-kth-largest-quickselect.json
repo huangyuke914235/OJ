@@ -1,0 +1,86 @@
+{
+  "id": "heap-kth-largest-quickselect",
+  "title": "第 K 大元素（快速选择）",
+  "difficulty": "中等",
+  "tags": [
+    "快速选择",
+    "分治",
+    "Top-K"
+  ],
+  "source": {
+    "name": "LeetCode 215",
+    "url": "https://leetcode.cn/problems/kth-largest-element-in-an-array/"
+  },
+  "statement": "给定数组和整数 $k$，求**第 $k$ 大**的元素。\n\n**要求**：用**快速选择**算法，平均时间 $O(n)$，不需要完整排序。",
+  "input_format": "第一行两个整数 $n, k$（$1 \\le k \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数（$|a_i| \\le 10^9$）。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "1 ≤ k ≤ n ≤ 10^5",
+    "|a_i| ≤ 10^9",
+    "平均 O(n)"
+  ],
+  "samples": [
+    {
+      "input": "6 2\n3 2 1 5 6 4\n",
+      "output": "5\n",
+      "explain": ""
+    },
+    {
+      "input": "3 1\n3 2 1\n",
+      "output": "3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**快速选择（Quickselect）**：\n\n1. 选定一个基准，把数组**划分为「小于基准」和「大于基准」两部分**；\n2. 若目标下标落在某一侧，**只递归那一侧**——另一侧完全不用管。\n\n因为每次平均能排除一半，总时间 $O(n)$。\n\n> **易错点**：基准要**随机化**（本题取中间位置），否则有序输入会退化成 $O(n^2)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nint target=n-k,lo=0,hi=n-1;\nwhile(lo<=hi){\nlong long p=a[(lo+hi)/2];\nint i=lo,j=hi;\nwhile(i<=j){\nwhile(a[i]<p)++i;\nwhile(a[j]>p)--j;\nif(i<=j){swap(a[i],a[j]);++i;--j;}}\nif(target<=j)hi=j;else if(target>=i)lo=i;else break;}\nprintf(\"%lld\\n\",a[target]);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "6 2\n3 2 1 5 6 4\n",
+      "output": "5\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 1\n3 2 1\n",
+      "output": "3\n",
+      "name": "k = 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 4\n1 2 3 4\n",
+      "output": "1\n",
+      "name": "k = n",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 2\n5 5 5 5\n",
+      "output": "5\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 3\n-1 -2 -3 -4 -5\n",
+      "output": "-3\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 1\n7\n",
+      "output": "7\n",
+      "name": "单元素",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nint target=n-k,lo=0,hi=n-1;\nwhile(lo<=hi){\nlong long p=a[(lo+hi)/2];\nint i=lo,j=hi;\nwhile(i<=j){\nwhile(a[i]<p)++i;\nwhile(a[j]>p)--j;\nif(i<=j){swap(a[i],a[j]);++i;--j;}}\nif(target<=j)hi=j;else if(target>=i)lo=i;else break;}\nprintf(\"%lld\\n\",a[target]);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

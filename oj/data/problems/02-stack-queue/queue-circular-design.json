@@ -1,0 +1,78 @@
+{
+  "id": "queue-circular-design",
+  "title": "设计循环队列",
+  "difficulty": "中等",
+  "tags": [
+    "队列",
+    "设计",
+    "数组"
+  ],
+  "source": {
+    "name": "LeetCode 622",
+    "url": "https://leetcode.cn/problems/design-circular-queue/"
+  },
+  "statement": "设计一个**循环队列**，容量固定为 $k$，支持：\n\n- `enQueue x`：入队，成功输出 `YES`，队满输出 `NO`；\n- `deQueue`：出队，成功输出 `YES`，队空输出 `NO`；\n- `Front`：返回队首（空返回 `-1`）；\n- `Rear`：返回队尾（空返回 `-1`）；\n- `isEmpty` / `isFull`：输出 `YES` / `NO`。",
+  "input_format": "第一行两个整数 $k, q$（$1 \\le k \\le 1000$，$1 \\le q \\le 3000$）。\n\n接下来 $q$ 行，每行一个操作。",
+  "output_format": "对每个有返回值的操作输出一行。",
+  "constraints": [
+    "1 ≤ k ≤ 1000",
+    "1 ≤ q ≤ 3000"
+  ],
+  "samples": [
+    {
+      "input": "3 12\nenQueue 1\nenQueue 2\nenQueue 3\nenQueue 4\nRear\nisFull\ndeQueue\nenQueue 4\nRear\nFront\nisEmpty\nisFull\n",
+      "output": "YES\nYES\nYES\nNO\n3\nYES\nYES\nYES\n4\n2\nNO\nYES\n",
+      "explain": ""
+    },
+    {
+      "input": "2 4\nFront\nRear\nisEmpty\ndeQueue\n",
+      "output": "-1\n-1\nYES\nNO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**用固定数组 + 双下标实现**：维护 `head`（队首位置）、`tail`（下一个可写位置）和 `size`。\n\n入队：`buf[tail] = x; tail = (tail + 1) % k; size++`；出队：`head = (head + 1) % k; size--`。\n\n> **易错点**：必须单独维护 `size`（或留一个空位），否则「队空」与「队满」时 `head == tail`，无法区分。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int k,q;scanf(\"%d %d\",&k,&q);\ndeque<long long>d;char op[32];\nfor(int i=0;i<q;++i){scanf(\"%s\",op);string o=op;\nif(o==\"enQueue\"){long long x;scanf(\"%lld\",&x);\nif((int)d.size()<k){d.push_back(x);printf(\"YES\\n\");}else printf(\"NO\\n\");}\nelse if(o==\"deQueue\"){if(!d.empty()){d.pop_front();printf(\"YES\\n\");}else printf(\"NO\\n\");}\nelse if(o==\"Front\"){printf(\"%lld\\n\",d.empty()?-1LL:d.front());}\nelse if(o==\"Rear\"){printf(\"%lld\\n\",d.empty()?-1LL:d.back());}\nelse if(o==\"isEmpty\"){printf(\"%s\\n\",d.empty()?\"YES\":\"NO\");}\nelse if(o==\"isFull\"){printf(\"%s\\n\",(int)d.size()==k?\"YES\":\"NO\");}}\nreturn 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 12\nenQueue 1\nenQueue 2\nenQueue 3\nenQueue 4\nRear\nisFull\ndeQueue\nenQueue 4\nRear\nFront\nisEmpty\nisFull\n",
+      "output": "YES\nYES\nYES\nNO\n3\nYES\nYES\nYES\n4\n2\nNO\nYES\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 4\nFront\nRear\nisEmpty\ndeQueue\n",
+      "output": "-1\n-1\nYES\nNO\n",
+      "name": "样例 2（空队列）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 5\nenQueue 5\nenQueue 6\nFront\nRear\nisFull\n",
+      "output": "YES\nNO\n5\n5\nYES\n",
+      "name": "容量 1",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 8\nenQueue 1\nenQueue 2\ndeQueue\nenQueue 3\ndeQueue\ndeQueue\ndeQueue\nisEmpty\n",
+      "output": "YES\nYES\nYES\nYES\nYES\nYES\nNO\nYES\n",
+      "name": "反复进出",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2 3\nisEmpty\nisFull\nFront\n",
+      "output": "YES\nNO\n-1\n",
+      "name": "只查询",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int k,q;scanf(\"%d %d\",&k,&q);\ndeque<long long>d;char op[32];\nfor(int i=0;i<q;++i){scanf(\"%s\",op);string o=op;\nif(o==\"enQueue\"){long long x;scanf(\"%lld\",&x);\nif((int)d.size()<k){d.push_back(x);printf(\"YES\\n\");}else printf(\"NO\\n\");}\nelse if(o==\"deQueue\"){if(!d.empty()){d.pop_front();printf(\"YES\\n\");}else printf(\"NO\\n\");}\nelse if(o==\"Front\"){printf(\"%lld\\n\",d.empty()?-1LL:d.front());}\nelse if(o==\"Rear\"){printf(\"%lld\\n\",d.empty()?-1LL:d.back());}\nelse if(o==\"isEmpty\"){printf(\"%s\\n\",d.empty()?\"YES\":\"NO\");}\nelse if(o==\"isFull\"){printf(\"%s\\n\",(int)d.size()==k?\"YES\":\"NO\");}}\nreturn 0;}\n"
+  },
+  "time_limit": 2.0
+}

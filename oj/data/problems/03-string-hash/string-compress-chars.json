@@ -1,0 +1,93 @@
+{
+  "id": "string-compress-chars",
+  "title": "压缩字符串",
+  "difficulty": "中等",
+  "tags": [
+    "字符串",
+    "双指针",
+    "原地"
+  ],
+  "source": {
+    "name": "LeetCode 443",
+    "url": "https://leetcode.cn/problems/string-compression/"
+  },
+  "statement": "用「字符 + 连续出现次数」的方式压缩字符数组：\n\n- 只出现 1 次的字符后面**不写数字**；\n- 次数为多位数时，**逐位拆开**写入。\n\n例如 `['a','a','b','b','c','c','c']` 压缩为 `['a','2','b','2','c','3']`。\n\n请输出压缩后的序列。",
+  "input_format": "第一行若干个以空格分隔的字符（$1 \\le n \\le 2000$），每个为单个小写字母。",
+  "output_format": "一行，压缩后的字符序列，以空格分隔。",
+  "constraints": [
+    "1 ≤ n ≤ 2000",
+    "仅小写字母",
+    "次数为多位数时逐位拆开"
+  ],
+  "samples": [
+    {
+      "input": "a a b b c c c\n",
+      "output": "a 2 b 2 c 3\n",
+      "explain": ""
+    },
+    {
+      "input": "a b c\n",
+      "output": "a b c\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**读写双指针 + 计数**：用 `i` 指向当前字符组的开头，`j` 向后找组尾。\n\n输出该字符；若组长度 > 1，把长度的**十进制各位**依次追加。\n\n> **易错点**：长度 10 以上要**逐位拆开**（`12` 写成 `'1'` 和 `'2'` 两个字符），不能当成一个整体。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){vector<char>a;char buf[8];\nwhile(scanf(\"%s\",buf)==1)a.push_back(buf[0]);\nvector<char>r;\nint i=0,n=a.size();\nwhile(i<n){int j=i;while(j<n&&a[j]==a[i])++j;\nr.push_back(a[i]);\nif(j-i>1){string num=to_string(j-i);for(char c:num)r.push_back(c);}\ni=j;}\nfor(size_t k=0;k<r.size();++k){if(k)printf(\" \");printf(\"%c\",r[k]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "a a b b c c c\n",
+      "output": "a 2 b 2 c 3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "a b c\n",
+      "output": "a b c\n",
+      "name": "全不同",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "a a a a\n",
+      "output": "a 4\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a\n",
+      "output": "a\n",
+      "name": "单个",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a a a a a a a a a a a a\n",
+      "output": "a 1 2\n",
+      "name": "次数为两位数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "a a a b b\n",
+      "output": "a 3 b 2\n",
+      "name": "两段",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x\n",
+      "output": "x 1 0 0\n",
+      "name": "次数为三位数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){vector<char>a;char buf[8];\nwhile(scanf(\"%s\",buf)==1)a.push_back(buf[0]);\nvector<char>r;\nint i=0,n=a.size();\nwhile(i<n){int j=i;while(j<n&&a[j]==a[i])++j;\nr.push_back(a[i]);\nif(j-i>1){string num=to_string(j-i);for(char c:num)r.push_back(c);}\ni=j;}\nfor(size_t k=0;k<r.size();++k){if(k)printf(\" \");printf(\"%c\",r[k]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

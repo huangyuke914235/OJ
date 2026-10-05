@@ -1,0 +1,92 @@
+{
+  "id": "string-roman-to-int",
+  "title": "罗马数字转整数",
+  "difficulty": "简单",
+  "tags": [
+    "字符串",
+    "哈希表",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 13",
+    "url": "https://leetcode.cn/problems/roman-integer/"
+  },
+  "statement": "把给定的罗马数字转换为整数。\n\n罗马数字规则：\n\n- `I=1, V=5, X=10, L=50, C=100, D=500, M=1000`；\n- 通常从左到右**从大到小**排列并相加；\n- 特殊规则：若**小值在大值左边**，则表示**相减**（如 `IV=4`、`IX=9`、`XL=40`）。\n\n输入保证是合法的罗马数字（范围 $1 \\sim 3999$）。",
+  "input_format": "一行一个罗马数字字符串（$1 \\le |s| \\le 15$），仅含 `IVXLCDM`。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "1 ≤ 结果 ≤ 3999",
+    "仅含 IVXLCDM"
+  ],
+  "samples": [
+    {
+      "input": "III\n",
+      "output": "3\n",
+      "explain": ""
+    },
+    {
+      "input": "LVIII\n",
+      "output": "58\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**从左往右扫描**：若当前字符的值**小于**右边字符的值，说明构成减法组合，**减去**它；否则**加上**它。\n\n时间 $O(n)$。\n\n> **直觉**：`IV` 中 `I < V`，所以 `-1 + 5 = 4`。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;\nunordered_map<char,int>v={{'I',1},{'V',5},{'X',10},{'L',50},{'C',100},{'D',500},{'M',1000}};\nint r=0;\nfor(int i=0;i<(int)s.size();++i){\nif(i+1<(int)s.size()&&v[s[i]]<v[s[i+1]])r-=v[s[i]];else r+=v[s[i]];}\nprintf(\"%d\\n\",r);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "III\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "LVIII\n",
+      "output": "58\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "MCMXCIV\n",
+      "output": "1994\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "I\n",
+      "output": "1\n",
+      "name": "最小",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "MMMCMXCIX\n",
+      "output": "3999\n",
+      "name": "最大",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "IV\n",
+      "output": "4\n",
+      "name": "减法规则",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "CMXCIX\n",
+      "output": "999\n",
+      "name": "纯减法组合",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;\nunordered_map<char,int>v={{'I',1},{'V',5},{'X',10},{'L',50},{'C',100},{'D',500},{'M',1000}};\nint r=0;\nfor(int i=0;i<(int)s.size();++i){\nif(i+1<(int)s.size()&&v[s[i]]<v[s[i+1]])r-=v[s[i]];else r+=v[s[i]];}\nprintf(\"%d\\n\",r);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,86 @@
+{
+  "id": "array-harmonious",
+  "title": "最长和谐子序列",
+  "difficulty": "简单",
+  "tags": [
+    "数组",
+    "哈希表",
+    "计数"
+  ],
+  "source": {
+    "name": "LeetCode 594",
+    "url": "https://leetcode.cn/problems/longest-harmonious-subsequence/"
+  },
+  "statement": "**和谐子序列**指元素**最大值与最小值之差恰好为 1** 的子序列（不要求连续）。\n\n求最长的和谐子序列的**长度**；不存在则输出 $0$。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 2\\times10^4$）。\n\n第二行 $n$ 个整数 $a_i$（$-10^9 \\le a_i \\le 10^9$）。",
+  "output_format": "一行一个整数，表示最长和谐子序列的长度。",
+  "constraints": [
+    "1 ≤ n ≤ 2×10^4",
+    "|a_i| ≤ 10^9",
+    "子序列不要求连续"
+  ],
+  "samples": [
+    {
+      "input": "5\n1 3 2 2 5 2 3 7\n",
+      "output": "3\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n1 1 1 1\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**计数 + 相邻配对**：因为子序列不要求连续，只需关心「每个值有多少个」。\n\n统计频次后，对每个值 $v$ 检查 $v+1$ 是否存在，若存在则候选长度为 `cnt[v] + cnt[v+1]`，取最大值。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);unordered_map<long long,int>c;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);++c[x];}\nint best=0;\nfor(auto&kv:c)if(c.count(kv.first+1))best=max(best,kv.second+c[kv.first+1]);\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n1 3 2 2 5 2 3 7\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 1 1 1\n",
+      "output": "0\n",
+      "name": "样例 2（无和谐）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n5\n",
+      "output": "0\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2\n1 2\n",
+      "output": "2\n",
+      "name": "恰好一对",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6\n-1 0 0 1 1 1\n",
+      "output": "5\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "8\n1 1 2 2 2 3 3 4\n",
+      "output": "5\n",
+      "name": "多组相邻值",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);unordered_map<long long,int>c;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);++c[x];}\nint best=0;\nfor(auto&kv:c)if(c.count(kv.first+1))best=max(best,kv.second+c[kv.first+1]);\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

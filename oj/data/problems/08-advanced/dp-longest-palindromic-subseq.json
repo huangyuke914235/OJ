@@ -1,0 +1,93 @@
+{
+  "id": "dp-longest-palindromic-subseq",
+  "title": "最长回文子序列",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "区间DP",
+    "字符串"
+  ],
+  "source": {
+    "name": "LeetCode 516",
+    "url": "https://leetcode.cn/problems/longest-palindromic-subsequence/"
+  },
+  "statement": "给定一个字符串，求它的**最长回文子序列**的长度。\n\n**子序列**不要求连续，但不能改变字符的相对顺序。",
+  "input_format": "一行一个字符串 $s$（$0 \\le |s| \\le 1000$），仅含小写英文字母。",
+  "output_format": "一行一个整数，表示最长回文子序列的长度。",
+  "constraints": [
+    "0 ≤ |s| ≤ 1000",
+    "仅小写字母",
+    "子序列不要求连续"
+  ],
+  "samples": [
+    {
+      "input": "bbbab\n",
+      "output": "4\n",
+      "explain": ""
+    },
+    {
+      "input": "cbbd\n",
+      "output": "2\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**区间 DP**：`dp[i][j]` = 子串 $s[i..j]$ 的最长回文子序列长度。\n\n转移：\n\n- 若 `s[i] == s[j]`：`dp[i][j] = dp[i+1][j-1] + 2`；\n- 否则：`dp[i][j] = max(dp[i+1][j], dp[i][j-1])`（舍弃一端）。\n\n按**区间长度**从小到大枚举。\n\n> **易错点**：长度为 2 时 `dp[i+1][j-1]` 是空区间（应视为 0），代码里用 `len > 2` 判断处理。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nint n=s.size();\nif(n==0){printf(\"0\\n\");return 0;}\nvector<vector<int>>dp(n,vector<int>(n,0));\nfor(int i=0;i<n;++i)dp[i][i]=1;\nfor(int len=2;len<=n;++len)for(int i=0;i+len-1<n;++i){\nint j=i+len-1;\nif(s[i]==s[j])dp[i][j]=(len>2?dp[i+1][j-1]:0)+2;\nelse dp[i][j]=max(dp[i+1][j],dp[i][j-1]);}\nprintf(\"%d\\n\",dp[0][n-1]);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "bbbab\n",
+      "output": "4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "cbbd\n",
+      "output": "2\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "a\n",
+      "output": "1\n",
+      "name": "单字符",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "\n",
+      "output": "0\n",
+      "name": "空串",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aaaa\n",
+      "output": "4\n",
+      "name": "全相同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "abcba\n",
+      "output": "5\n",
+      "name": "已回文",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "abcd\n",
+      "output": "1\n",
+      "name": "无回文长度 2",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nint n=s.size();\nif(n==0){printf(\"0\\n\");return 0;}\nvector<vector<int>>dp(n,vector<int>(n,0));\nfor(int i=0;i<n;++i)dp[i][i]=1;\nfor(int len=2;len<=n;++len)for(int i=0;i+len-1<n;++i){\nint j=i+len-1;\nif(s[i]==s[j])dp[i][j]=(len>2?dp[i+1][j-1]:0)+2;\nelse dp[i][j]=max(dp[i+1][j],dp[i][j-1]);}\nprintf(\"%d\\n\",dp[0][n-1]);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

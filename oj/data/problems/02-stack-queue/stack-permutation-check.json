@@ -1,0 +1,91 @@
+{
+  "id": "stack-permutation-check",
+  "title": "栈序列合法性判断",
+  "difficulty": "中等",
+  "tags": [
+    "栈",
+    "模拟"
+  ],
+  "source": {
+    "name": "经典栈判断题",
+    "url": "https://leetcode.cn/problems/validate-stack-sequences/"
+  },
+  "statement": "把 $1, 2, \\dots, n$ 依次压入一个栈（压入顺序固定），在任意时刻可以弹出栈顶。\n\n给定一个弹出序列，判断它**是否可能是合法的出栈序列**。是则输出 `YES`，否则 `NO`。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数，为 $1 \\sim n$ 的一个排列（出栈序列）。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "给定序列是 1..n 的排列"
+  ],
+  "samples": [
+    {
+      "input": "5\n4 5 3 2 1\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "5\n4 3 5 1 2\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**贪心模拟**：用一个变量 `nxt` 表示「下一个待压入的数」（从 $1$ 开始）。\n\n对出栈序列中的每个目标值 $x$：\n1. 不断把 `nxt` 压栈并递增，直到 `nxt > x`；\n2. 此时若栈顶恰好是 $x$，弹出（合法）；否则说明无法产生该出栈序列，判定 `NO`。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<int>a(n);\nfor(int i=0;i<n;++i)scanf(\"%d\",&a[i]);\nvector<int>st;int nxt=1;bool ok=true;\nfor(int x:a){\nwhile(nxt<=x)st.push_back(nxt++);\nif(!st.empty()&&st.back()==x)st.pop_back();\nelse{ok=false;break;}}\nprintf(\"%s\\n\",ok?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n4 5 3 2 1\n",
+      "output": "YES\n",
+      "name": "样例 1（合法）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n4 3 5 1 2\n",
+      "output": "NO\n",
+      "name": "样例 2（非法）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "YES\n",
+      "name": "升序",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n4 3 2 1\n",
+      "output": "YES\n",
+      "name": "降序",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n1\n",
+      "output": "YES\n",
+      "name": "单元素",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n2 1 4 3\n",
+      "output": "YES\n",
+      "name": "交替",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n3 1 2\n",
+      "output": "NO\n",
+      "name": "另一个非法",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<int>a(n);\nfor(int i=0;i<n;++i)scanf(\"%d\",&a[i]);\nvector<int>st;int nxt=1;bool ok=true;\nfor(int x:a){\nwhile(nxt<=x)st.push_back(nxt++);\nif(!st.empty()&&st.back()==x)st.pop_back();\nelse{ok=false;break;}}\nprintf(\"%s\\n\",ok?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

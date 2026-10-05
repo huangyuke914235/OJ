@@ -1,0 +1,83 @@
+{
+  "id": "dp-integer-break",
+  "title": "整数拆分",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "数学"
+  ],
+  "source": {
+    "name": "LeetCode 343",
+    "url": "https://leetcode.cn/problems/integer-break/"
+  },
+  "statement": "给定正整数 $n$，把它拆成**至少两个**正整数之和，使它们的**乘积最大**。\n\n输出最大乘积。",
+  "input_format": "一行一个整数 $n$（$2 \\le n \\le 58$）。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "2 ≤ n ≤ 58"
+  ],
+  "samples": [
+    {
+      "input": "2\n",
+      "output": "1\n",
+      "explain": ""
+    },
+    {
+      "input": "10\n",
+      "output": "36\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**线性 DP**：`dp[i]` = 把 $i$ 拆分后的最大乘积。\n\n转移：`dp[i] = max(dp[j] * (i - j))`，$j$ 从 $1$ 到 $i-1$。\n\n> **数学结论**：最优拆法是**尽量拆成 3**（余 1 时把 3+1 换成 2+2）。所以 $n \\le 3$ 时答案是 $n-1$，否则按此规律可直接算出。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nif(n<=3){printf(\"%d\\n\",n-1);return 0;}\nvector<long long>dp(n+1,0);dp[1]=1;\nfor(int i=2;i<=n;++i){long long best=i;\nfor(int j=1;j<i;++j)best=max(best,dp[j]*(i-j));\ndp[i]=best;}\nprintf(\"%lld\\n\",dp[n]);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "2\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "10\n",
+      "output": "36\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n",
+      "output": "2\n",
+      "name": "n = 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n",
+      "output": "4\n",
+      "name": "n = 4",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "20\n",
+      "output": "1458\n",
+      "name": "n = 20",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "58\n",
+      "output": "1549681956\n",
+      "name": "n = 58",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nif(n<=3){printf(\"%d\\n\",n-1);return 0;}\nvector<long long>dp(n+1,0);dp[1]=1;\nfor(int i=2;i<=n;++i){long long best=i;\nfor(int j=1;j<i;++j)best=max(best,dp[j]*(i-j));\ndp[i]=best;}\nprintf(\"%lld\\n\",dp[n]);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

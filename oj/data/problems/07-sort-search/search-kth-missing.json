@@ -1,0 +1,92 @@
+{
+  "id": "search-kth-missing",
+  "title": "第 K 个缺失的正整数",
+  "difficulty": "简单",
+  "tags": [
+    "二分查找",
+    "数组"
+  ],
+  "source": {
+    "name": "LeetCode 1539",
+    "url": "https://leetcode.cn/problems/kth-missing-positive-number/"
+  },
+  "statement": "给定一个**严格递增**的正整数数组，找出其中**第 $k$ 个缺失的正整数**。\n\n例如 `[2,3,4,7,11]` 中缺失的正整数依次是 `1,5,6,8,9,...`，第 2 个是 5。",
+  "input_format": "第一行两个整数 $n, k$（$1 \\le n \\le 1000$，$1 \\le k \\le 1000$）。\n\n第二行 $n$ 个**严格递增**的正整数（$1 \\le a_i \\le 1000$）。",
+  "output_format": "一行一个整数，表示第 $k$ 个缺失的正整数。",
+  "constraints": [
+    "1 ≤ n, k ≤ 1000",
+    "数组严格递增",
+    "元素为正整数"
+  ],
+  "samples": [
+    {
+      "input": "5 2\n2 3 4 7 11\n",
+      "output": "5\n",
+      "explain": ""
+    },
+    {
+      "input": "4 5\n1 2 3 4\n",
+      "output": "9\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**关键观察**：在排好序的数组中，下标 `i` 处**前面缺失的正整数个数**是 `a[i] - i - 1`（因为前 $i+1$ 个数本该是 $1 \\sim a[i]$，实际有 $i+1$ 个）。\n\n用二分找**第一个**满足 `a[i] - i - 1 >= k` 的位置 `lo`，答案就是 `lo + k`。\n\n> **直觉**：到 `lo` 为止已有 `lo` 个不缺失的数，所以第 $k$ 个缺失值就是 `lo + k`。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);vector<int>a(n);\nfor(int i=0;i<n;++i)scanf(\"%d\",&a[i]);\nint lo=0,hi=n;\nwhile(lo<hi){int mid=lo+(hi-lo)/2;\nif(a[mid]-mid-1<k)lo=mid+1;else hi=mid;}\nprintf(\"%d\\n\",lo+k);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5 2\n2 3 4 7 11\n",
+      "output": "5\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 5\n1 2 3 4\n",
+      "output": "9\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 3\n1 2\n",
+      "output": "5\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 1\n1 2 3\n",
+      "output": "4\n",
+      "name": "从 1 开始无缺失",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 1\n2 3 4\n",
+      "output": "1\n",
+      "name": "首位缺失",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 1000\n1 2 3\n",
+      "output": "1003\n",
+      "name": "k 很大",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 1\n2\n",
+      "output": "1\n",
+      "name": "单元素",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);vector<int>a(n);\nfor(int i=0;i<n;++i)scanf(\"%d\",&a[i]);\nint lo=0,hi=n;\nwhile(lo<hi){int mid=lo+(hi-lo)/2;\nif(a[mid]-mid-1<k)lo=mid+1;else hi=mid;}\nprintf(\"%d\\n\",lo+k);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,93 @@
+{
+  "id": "array-third-max",
+  "title": "第三大的数",
+  "difficulty": "简单",
+  "tags": [
+    "数组",
+    "排序",
+    "去重"
+  ],
+  "source": {
+    "name": "LeetCode 414",
+    "url": "https://leetcode.cn/problems/third-maximum-number/"
+  },
+  "statement": "给定一个数组，返回其中**第三大的数**（按**去重后**的降序计）。\n\n若不同值的个数不足 3 个，则返回**最大的那个数**。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^4$）。\n\n第二行 $n$ 个整数 $a_i$（$|a_i| \\le 2^{31}-1$）。",
+  "output_format": "一行一个整数，为第三大的数（不足三个不同值时返回最大值）。",
+  "constraints": [
+    "1 ≤ n ≤ 10^4",
+    "|a_i| ≤ 2^31−1",
+    "按去重后的降序计"
+  ],
+  "samples": [
+    {
+      "input": "3\n3 2 1\n",
+      "output": "1\n",
+      "explain": ""
+    },
+    {
+      "input": "2\n1 2\n",
+      "output": "2\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**去重 + 排序**：用 `set` 自动去重并保持有序，再从大到小取第 3 个。\n\n> **易错点**：必须**先去重**再数——`[2,2,3,1]` 去重后是 `{1,2,3}`，第三大是 1，而不是 2。\n> 另外「不足三个不同值」时要返回**最大值**，不是返回 0 或报错。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);set<long long>s;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);s.insert(x);}\nauto it=s.rbegin();\nif(s.size()<3)printf(\"%lld\\n\",*it);\nelse{advance(it,2);printf(\"%lld\\n\",*it);}\nreturn 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3\n3 2 1\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2\n1 2\n",
+      "output": "2\n",
+      "name": "样例 2（不足三个）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n2 2 3 1\n",
+      "output": "1\n",
+      "name": "样例 3（有重复）",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n5 5 5\n",
+      "output": "5\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n7\n",
+      "output": "7\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n-1 -2 -3 -4\n",
+      "output": "-3\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n10 20 30\n",
+      "output": "10\n",
+      "name": "正好三个",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);set<long long>s;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);s.insert(x);}\nauto it=s.rbegin();\nif(s.size()<3)printf(\"%lld\\n\",*it);\nelse{advance(it,2);printf(\"%lld\\n\",*it);}\nreturn 0;}\n"
+  },
+  "time_limit": 2.0
+}

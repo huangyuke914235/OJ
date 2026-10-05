@@ -1,0 +1,91 @@
+{
+  "id": "string-buddy-strings",
+  "title": "亲密字符串",
+  "difficulty": "简单",
+  "tags": [
+    "字符串",
+    "哈希表"
+  ],
+  "source": {
+    "name": "LeetCode 859",
+    "url": "https://leetcode.cn/problems/buddy-strings/"
+  },
+  "statement": "判断能否**恰好交换** $s$ 中的**两个字符**，使得结果等于 $goal$。\n\n可以交换任意两个位置（包括内容相同的位置）。\n\n能则输出 `YES`，否则 `NO`。\n\n> 注意：若 $s == goal$，则必须存在**至少一个重复字符**，否则交换后必然不相等。",
+  "input_format": "第一行一个字符串 $s$。\n\n第二行一个字符串 $goal$。\n\n长度均不超过 $2\\times10^4$，仅含小写字母。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "|s|, |goal| ≤ 2×10^4",
+    "仅小写字母"
+  ],
+  "samples": [
+    {
+      "input": "ab\nba\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "ab\nab\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**分两种情况**：\n\n**情况一：`s == goal`** —— 必须存在**重复字符**（交换两个相同的字符，结果不变），否则不可能。\n\n**情况二：`s != goal`** —— 找出所有不同的位置，**必须恰好 2 处**，且交换后能对应上（即 `s[i]==goal[j]` 且 `s[j]==goal[i]`）。\n\n> **最易漏的点**：`s == goal` 时的「重复字符」判断——很多解法只处理了不同位置的情况。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s,g;cin>>s>>g;\nif(s==g){int c[26]={0};for(char x:s)++c[x-'a'];\nfor(int i=0;i<26;++i)if(c[i]>1){printf(\"YES\\n\");return 0;}\nprintf(\"NO\\n\");return 0;}\nif(s.size()!=g.size()){printf(\"NO\\n\");return 0;}\nvector<int>d;\nfor(size_t i=0;i<s.size();++i)if(s[i]!=g[i])d.push_back(i);\nif(d.size()!=2){printf(\"NO\\n\");return 0;}\nprintf(\"%s\\n\",(s[d[0]]==g[d[1]]&&s[d[1]]==g[d[0]])?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "ab\nba\n",
+      "output": "YES\n",
+      "name": "样例 1（可以）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "ab\nab\n",
+      "output": "NO\n",
+      "name": "样例 2（不行）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "aa\naa\n",
+      "output": "YES\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "ab\nabc\n",
+      "output": "NO\n",
+      "name": "长度不等",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abc\ncba\n",
+      "output": "YES\n",
+      "name": "三处不同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "aab\n aab\n",
+      "output": "YES\n",
+      "name": "完全一致且有重复",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "abc\nabc\n",
+      "output": "NO\n",
+      "name": "完全一致且无重复",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s,g;cin>>s>>g;\nif(s==g){int c[26]={0};for(char x:s)++c[x-'a'];\nfor(int i=0;i<26;++i)if(c[i]>1){printf(\"YES\\n\");return 0;}\nprintf(\"NO\\n\");return 0;}\nif(s.size()!=g.size()){printf(\"NO\\n\");return 0;}\nvector<int>d;\nfor(size_t i=0;i<s.size();++i)if(s[i]!=g[i])d.push_back(i);\nif(d.size()!=2){printf(\"NO\\n\");return 0;}\nprintf(\"%s\\n\",(s[d[0]]==g[d[1]]&&s[d[1]]==g[d[0]])?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

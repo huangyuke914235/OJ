@@ -1,0 +1,91 @@
+{
+  "id": "stack-simplify-path",
+  "title": "简化路径",
+  "difficulty": "中等",
+  "tags": [
+    "栈",
+    "字符串"
+  ],
+  "source": {
+    "name": "LeetCode 71",
+    "url": "https://leetcode.cn/problems/simplify-path/"
+  },
+  "statement": "给定一个 Unix 风格绝对路径，把它简化为**规范路径**。规则：\n\n- 以 `/` 开头，且目录之间只有一个 `/`；\n- `.` 表示当前目录（忽略）；\n- `..` 表示上级目录（若已在根则忽略）；\n- 结果**不以 `/` 结尾**（除非就是根 `/`）。",
+  "input_format": "一行一个字符串（长度 $1 \\le |s| \\le 3000$），为合法路径。",
+  "output_format": "一行，简化后的规范路径。",
+  "constraints": [
+    "1 ≤ |s| ≤ 3000",
+    "输入为合法路径"
+  ],
+  "samples": [
+    {
+      "input": "/home/\n",
+      "output": "/home\n",
+      "explain": ""
+    },
+    {
+      "input": "/../\n",
+      "output": "/\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**栈按段处理**：把路径按 `/` 切成若干段，逐段判断：\n\n- 空段或 `.`：忽略；\n- `..`：弹出栈顶（栈非空时）；\n- 其他：压栈。\n\n最后用 `/` 连接栈中所有段，并在最前面补一个 `/`。\n\n> **易错点**：`...` 是合法目录名，不是 `..`——只能精确匹配。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string p;cin>>p;vector<string>st;\nstring cur;\nauto flush=[&](){if(cur==\"..\"){if(!st.empty())st.pop_back();}\nelse if(cur!=\"\"&&cur!=\".\")st.push_back(cur);cur=\"\";};\nfor(char c:p){if(c=='/')flush();else cur+=c;}\nflush();\nstring r;\nfor(auto&x:st)r+=\"/\"+x;\nif(r.empty())r=\"/\";\nprintf(\"%s\\n\",r.c_str());return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "/home/\n",
+      "output": "/home\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "/../\n",
+      "output": "/\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "/home//foo/\n",
+      "output": "/home/foo\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "/a/./b/../../c/\n",
+      "output": "/c\n",
+      "name": "样例 4",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "/\n",
+      "output": "/\n",
+      "name": "根目录",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "/...\n",
+      "output": "/...\n",
+      "name": "多点",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "/a/b/c/../../../..\n",
+      "output": "/\n",
+      "name": "连续上级",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string p;cin>>p;vector<string>st;\nstring cur;\nauto flush=[&](){if(cur==\"..\"){if(!st.empty())st.pop_back();}\nelse if(cur!=\"\"&&cur!=\".\")st.push_back(cur);cur=\"\";};\nfor(char c:p){if(c=='/')flush();else cur+=c;}\nflush();\nstring r;\nfor(auto&x:st)r+=\"/\"+x;\nif(r.empty())r=\"/\";\nprintf(\"%s\\n\",r.c_str());return 0;}\n"
+  },
+  "time_limit": 2.0
+}

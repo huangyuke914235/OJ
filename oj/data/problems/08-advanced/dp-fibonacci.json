@@ -1,0 +1,91 @@
+{
+  "id": "dp-fibonacci",
+  "title": "斐波那契数列",
+  "difficulty": "入门",
+  "tags": [
+    "动态规划",
+    "递推"
+  ],
+  "source": {
+    "name": "LeetCode 509",
+    "url": "https://leetcode.cn/problems/fibonacci-number/"
+  },
+  "statement": "斐波那契数列定义为 $F(0)=0$、$F(1)=1$，且 $F(n) = F(n-1) + F(n-2)$。\n\n给定 $n$，求 $F(n)$。\n\n**要求**：用**滚动变量**把空间压到 $O(1)$。",
+  "input_format": "一行一个整数 $n$（$0 \\le n \\le 90$）。",
+  "output_format": "一行一个整数，表示 $F(n)$。",
+  "constraints": [
+    "0 ≤ n ≤ 90",
+    "结果可能超出 int 范围，需用 long long"
+  ],
+  "samples": [
+    {
+      "input": "2\n",
+      "output": "1\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n",
+      "output": "2\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**滚动变量**：只保留 `F(n-2)` 和 `F(n-1)` 两个变量，每步更新。\n\n时间 $O(n)$，空间 $O(1)$。\n\n> **易错点**：$F(90) \\approx 2.88 \\times 10^{18}$，接近 `long long` 上限（约 $9.2 \\times 10^{18}$），所以 $n \\le 90$ 是安全的；再大就需要高精度。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nlong long a=0,b=1;\nfor(int i=0;i<n;++i){long long t=a+b;a=b;b=t;}\nprintf(\"%lld\\n\",a);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "2\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n",
+      "output": "2\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n",
+      "output": "3\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "0\n",
+      "output": "0\n",
+      "name": "n = 0",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "name": "n = 1",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "30\n",
+      "output": "832040\n",
+      "name": "n = 30",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "90\n",
+      "output": "2880067194370816120\n",
+      "name": "n = 90",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nlong long a=0,b=1;\nfor(int i=0;i<n;++i){long long t=a+b;a=b;b=t;}\nprintf(\"%lld\\n\",a);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,92 @@
+{
+  "id": "string-repeated-substring",
+  "title": "重复的子字符串",
+  "difficulty": "简单",
+  "tags": [
+    "字符串",
+    "KMP",
+    "枚举"
+  ],
+  "source": {
+    "name": "LeetCode 459",
+    "url": "https://leetcode.cn/problems/repeated-substring-pattern/"
+  },
+  "statement": "判断一个非空字符串**能否由它的某个子串重复多次构成**。\n\n例如 `abab` 可以由 `ab` 重复两次构成；`aba` 不行。\n\n是则输出 `YES`，否则 `NO`。",
+  "input_format": "一行一个字符串 $s$（$1 \\le |s| \\le 10^4$），仅含小写英文字母。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ |s| ≤ 10^4",
+    "仅小写字母"
+  ],
+  "samples": [
+    {
+      "input": "abab\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "aba\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**枚举周期长度**：只需枚举 $L$ 从 $1$ 到 $n/2$，且 $L$ 必须**整除** $n$。\n\n对每个候选 $L$，检查是否所有 `s[i] == s[i-L]`。\n\n时间 $O(n \\cdot \\text{约数个数})$，最坏 $O(n\\sqrt{n})$。\n\n> **更优解法**：用 **KMP 求前缀函数** `pi[n-1]`，若 `n % (n - pi[n-1]) == 0` 则说明存在周期，做到 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;int n=s.size();bool ok=false;\nfor(int L=1;L<=n/2;++L){if(n%L)continue;\nbool good=true;\nfor(int i=L;i<n&&good;++i)if(s[i]!=s[i-L])good=false;\nif(good){ok=true;break;}}\nprintf(\"%s\\n\",ok?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "abab\n",
+      "output": "YES\n",
+      "name": "样例 1（可以）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "aba\n",
+      "output": "NO\n",
+      "name": "样例 2（不行）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abcabcabcabc\n",
+      "output": "YES\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a\n",
+      "output": "NO\n",
+      "name": "单字符",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aa\n",
+      "output": "YES\n",
+      "name": "两字符相同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "ab\n",
+      "output": "NO\n",
+      "name": "两字符不同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "abcabc\n",
+      "output": "YES\n",
+      "name": "周期为 3",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;int n=s.size();bool ok=false;\nfor(int L=1;L<=n/2;++L){if(n%L)continue;\nbool good=true;\nfor(int i=L;i<n&&good;++i)if(s[i]!=s[i-L])good=false;\nif(good){ok=true;break;}}\nprintf(\"%s\\n\",ok?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

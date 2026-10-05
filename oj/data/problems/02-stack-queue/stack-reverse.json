@@ -1,0 +1,84 @@
+{
+  "id": "stack-reverse",
+  "title": "逆序输出栈中元素",
+  "difficulty": "入门",
+  "tags": [
+    "栈",
+    "数组"
+  ],
+  "source": {
+    "name": "栈基础",
+    "url": "https://leetcode.cn/problems/valid-parentheses/"
+  },
+  "statement": "给定一个栈（按**从栈底到栈顶**的顺序给出元素），请**从栈顶到栈底**依次输出所有元素。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数，按**栈底到栈顶**顺序给出（$|a_i| \\le 10^9$）。",
+  "output_format": "一行 $n$ 个整数，按**栈顶到栈底**顺序。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "|a_i| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "3\n1 2 3\n",
+      "output": "3 2 1\n",
+      "explain": ""
+    },
+    {
+      "input": "1\n7\n",
+      "output": "7\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**栈顶就是数组末尾**：按栈底到栈顶给出的序列，逆序输出即可得到栈顶到栈底。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nfor(int i=n-1;i>=0;--i){if(i<n-1)printf(\" \");printf(\"%lld\",a[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3\n1 2 3\n",
+      "output": "3 2 1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n7\n",
+      "output": "7\n",
+      "name": "单元素",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n-1 0 1 2\n",
+      "output": "2 1 0 -1\n",
+      "name": "含负数",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n5 5 5\n",
+      "output": "5 5 5\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2\n1 2\n",
+      "output": "2 1\n",
+      "name": "两元素",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n1 2 3 4 5\n",
+      "output": "5 4 3 2 1\n",
+      "name": "大数组",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nfor(int i=n-1;i>=0;--i){if(i<n-1)printf(\" \");printf(\"%lld\",a[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

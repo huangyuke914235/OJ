@@ -1,0 +1,85 @@
+{
+  "id": "matrix-diagonal-sum",
+  "title": "矩阵对角线元素的和",
+  "difficulty": "入门",
+  "tags": [
+    "矩阵",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 1572",
+    "url": "https://leetcode.cn/problems/matrix-diagonal-sum/"
+  },
+  "statement": "给定一个 $n \\times n$ 方阵，求**主对角线**与**副对角线**上所有元素之和。\n\n若某元素同时位于两条对角线上（即矩阵中心），**只计算一次**。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 500$）。\n\n接下来 $n$ 行，每行 $n$ 个整数（$|v| \\le 10^9$）。",
+  "output_format": "一行一个整数，表示两条对角线元素之和。",
+  "constraints": [
+    "1 ≤ n ≤ 500",
+    "|v| ≤ 10^9",
+    "中心元素只算一次"
+  ],
+  "samples": [
+    {
+      "input": "3\n1 2 3\n4 5 6\n7 8 9\n",
+      "output": "25\n",
+      "explain": ""
+    },
+    {
+      "input": "1\n5\n",
+      "output": "5\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**边读边累加**：主对角线元素满足 `i == j`，副对角线满足 `i + j == n - 1`。\n\n> **易错点**：当 $n$ 为奇数时中心元素被两条对角线同时覆盖，要加 `i != j` 条件避免重复计算。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);long long s=0;\nfor(int i=0;i<n;++i)for(int j=0;j<n;++j){long long x;scanf(\"%lld\",&x);\nif(i==j)s+=x; if(i+j==n-1&&i!=j)s+=x;}\nprintf(\"%lld\\n\",s);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3\n1 2 3\n4 5 6\n7 8 9\n",
+      "output": "25\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n5\n",
+      "output": "5\n",
+      "name": "单元素",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2\n1 2\n3 4\n",
+      "output": "10\n",
+      "name": "2 阶",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n1 1 1 1\n1 1 1 1\n1 1 1 1\n1 1 1 1\n",
+      "output": "8\n",
+      "name": "4 阶",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n-1 2 3\n4 -5 6\n7 8 -9\n",
+      "output": "-5\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n1 2 3 4 5\n6 7 8 9 10\n11 12 13 14 15\n16 17 18 19 20\n21 22 23 24 25\n",
+      "output": "117\n",
+      "name": "5 阶",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);long long s=0;\nfor(int i=0;i<n;++i)for(int j=0;j<n;++j){long long x;scanf(\"%lld\",&x);\nif(i==j)s+=x; if(i+j==n-1&&i!=j)s+=x;}\nprintf(\"%lld\\n\",s);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

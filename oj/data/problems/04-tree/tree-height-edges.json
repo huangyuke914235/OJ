@@ -1,0 +1,86 @@
+{
+  "id": "tree-height-edges",
+  "title": "二叉树的高度（按边数）",
+  "difficulty": "入门",
+  "tags": [
+    "树",
+    "二叉树",
+    "递归"
+  ],
+  "source": {
+    "name": "树的高度",
+    "url": "https://leetcode.cn/problems/maximum-depth-of-binary-tree/"
+  },
+  "statement": "求二叉树的高度，定义为**根到最远叶子的边数**。\n\n> 注意与「最大深度」的区别：最大深度按**节点数**计，高度按**边数**计，两者相差 1。\n\n空树高度为 $0$。",
+  "input_format": "一行，二叉树的层序序列（`null` 表示空节点）。节点数 $\\le 10^5$。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "节点数 ≤ 10^5",
+    "高度按边数计",
+    "空树高度为 0"
+  ],
+  "samples": [
+    {
+      "input": "1 2 3\n",
+      "output": "1\n",
+      "explain": ""
+    },
+    {
+      "input": "null\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**递归求高度**：空节点返回 $-1$，叶子返回 $0$，其余返回 `1 + max(左高, 右高)`。\n\n> **关键点**：空节点返回 $-1$（而不是 0）才能让**叶子高度为 0**。若想求「最大深度」（节点数），空节点返回 0 即可。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint h(Node*n){if(!n)return -1;return 1+max(h(n->l),h(n->r));}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nNode*root=buildTree(tk);\nif(!root){printf(\"0\\n\");return 0;}     // 空树高度为 0\nprintf(\"%d\\n\",h(root));return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "1 2 3\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "0\n",
+      "name": "空树",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n",
+      "output": "0\n",
+      "name": "单节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 null 3 null 4\n",
+      "output": "3\n",
+      "name": "链状",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 5 6 7\n",
+      "output": "2\n",
+      "name": "完整树",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2\n",
+      "output": "1\n",
+      "name": "两节点",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint h(Node*n){if(!n)return -1;return 1+max(h(n->l),h(n->r));}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nNode*root=buildTree(tk);\nif(!root){printf(\"0\\n\");return 0;}     // 空树高度为 0\nprintf(\"%d\\n\",h(root));return 0;}\n"
+  },
+  "time_limit": 2.0
+}

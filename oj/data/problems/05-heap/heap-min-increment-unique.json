@@ -1,0 +1,92 @@
+{
+  "id": "heap-min-increment-unique",
+  "title": "使数组唯一的最小增量",
+  "difficulty": "中等",
+  "tags": [
+    "数组",
+    "排序",
+    "贪心"
+  ],
+  "source": {
+    "name": "LeetCode 945",
+    "url": "https://leetcode.cn/problems/minimum-increment-to-make-array-unique/"
+  },
+  "statement": "每次操作可以让数组中**任意一个元素加 1**。\n\n求使数组中所有元素**互不相同**所需的**最少操作次数**。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数 $a_i$（$0 \\le a_i \\le 10^5$）。",
+  "output_format": "一行一个整数，表示最少操作次数。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ a_i ≤ 10^5"
+  ],
+  "samples": [
+    {
+      "input": "3\n1 2 2\n",
+      "output": "1\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n3 2 1 2 1 7\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**排序后贪心**：把数组升序排序，从左往右扫描。\n\n若 `a[i] <= a[i-1]`，就把它提升到 `a[i-1] + 1`，并累加代价。\n\n> **为什么排序有效**：排序后相同的值聚在一起，处理顺序天然保证「只增不减」，避免来回调整。\n\n时间 $O(n\\log n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nsort(a.begin(),a.end());\nlong long ops=0;\nfor(int i=1;i<n;++i)if(a[i]<=a[i-1]){ops+=a[i-1]+1-a[i];a[i]=a[i-1]+1;}\nprintf(\"%lld\\n\",ops);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3\n1 2 2\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n3 2 1 2 1 7\n",
+      "output": "0\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 2 3\n",
+      "output": "0\n",
+      "name": "已互异",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n5 5 5 5\n",
+      "output": "6\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n5\n",
+      "output": "0\n",
+      "name": "单元素",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n0 0 0\n",
+      "output": "3\n",
+      "name": "含零",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2\n3 3\n",
+      "output": "1\n",
+      "name": "两个相同",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nsort(a.begin(),a.end());\nlong long ops=0;\nfor(int i=1;i<n;++i)if(a[i]<=a[i-1]){ops+=a[i-1]+1-a[i];a[i]=a[i-1]+1;}\nprintf(\"%lld\\n\",ops);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

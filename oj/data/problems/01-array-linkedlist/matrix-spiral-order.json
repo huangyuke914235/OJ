@@ -1,0 +1,92 @@
+{
+  "id": "matrix-spiral-order",
+  "title": "螺旋矩阵",
+  "difficulty": "中等",
+  "tags": [
+    "矩阵",
+    "模拟",
+    "边界"
+  ],
+  "source": {
+    "name": "LeetCode 54",
+    "url": "https://leetcode.cn/problems/spiral-matrix/"
+  },
+  "statement": "给定一个 $r \\times c$ 的矩阵，按**顺时针螺旋顺序**返回其中所有元素。\n\n螺旋顺序：先从左到右走完顶行，再从上到下走完右列，再从右到左走完底行，再从下到上走完左列，然后向内收缩，重复直到取完。",
+  "input_format": "第一行两个整数 $r, c$（$1 \\le r, c \\le 500$）。\n\n接下来 $r$ 行，每行 $c$ 个整数（$|v| \\le 10^9$）。",
+  "output_format": "一行，按螺旋顺序输出全部元素，以空格分隔。",
+  "constraints": [
+    "1 ≤ r, c ≤ 500",
+    "|v| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "3 3\n1 2 3\n4 5 6\n7 8 9\n",
+      "output": "1 2 3 6 9 8 7 4 5\n",
+      "explain": ""
+    },
+    {
+      "input": "3 4\n1 2 3 4\n5 6 7 8\n9 10 11 12\n",
+      "output": "1 2 3 4 8 12 11 10 9 5 6 7\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**四边界收缩法**：维护 `top / bot / left / right` 四个边界。\n\n依次走「顶行 → 右列 → 底行 → 左列」，每走完一条边就收缩对应边界。\n\n> **最关键的易错点**：走完顶行后**必须判断 `top <= bot` 再走底行**，否则在「单行」或「非方阵」时会把同一行重复输出。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<vector<long long>>g(r,vector<long long>(c));\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)scanf(\"%lld\",&g[i][j]);\nint top=0,bot=r-1,left=0,right=c-1;bool first=true;\nauto pr=[&](long long v){if(!first)printf(\" \");printf(\"%lld\",v);first=false;};\nwhile(top<=bot&&left<=right){\nfor(int j=left;j<=right;++j)pr(g[top][j]); ++top;\nfor(int i=top;i<=bot;++i)pr(g[i][right]); --right;\nif(top<=bot){for(int j=right;j>=left;--j)pr(g[bot][j]); --bot;}\nif(left<=right){for(int i=bot;i>=top;--i)pr(g[i][left]); ++left;}\n}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 3\n1 2 3\n4 5 6\n7 8 9\n",
+      "output": "1 2 3 6 9 8 7 4 5\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 4\n1 2 3 4\n5 6 7 8\n9 10 11 12\n",
+      "output": "1 2 3 4 8 12 11 10 9 5 6 7\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 4\n1 2 3 4\n",
+      "output": "1 2 3 4\n",
+      "name": "单行",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 1\n1\n2\n3\n4\n",
+      "output": "1 2 3 4\n",
+      "name": "单列",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 1\n9\n",
+      "output": "9\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 4\n1 2 3 4\n5 6 7 8\n9 10 11 12\n13 14 15 16\n",
+      "output": "1 2 3 4 8 12 16 15 14 13 9 5 6 7 11 10\n",
+      "name": "方阵 4",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2 3\n1 2 3\n4 5 6\n",
+      "output": "1 2 3 6 5 4\n",
+      "name": "2 行 3 列",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<vector<long long>>g(r,vector<long long>(c));\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)scanf(\"%lld\",&g[i][j]);\nint top=0,bot=r-1,left=0,right=c-1;bool first=true;\nauto pr=[&](long long v){if(!first)printf(\" \");printf(\"%lld\",v);first=false;};\nwhile(top<=bot&&left<=right){\nfor(int j=left;j<=right;++j)pr(g[top][j]); ++top;\nfor(int i=top;i<=bot;++i)pr(g[i][right]); --right;\nif(top<=bot){for(int j=right;j>=left;--j)pr(g[bot][j]); --bot;}\nif(left<=right){for(int i=bot;i>=top;--i)pr(g[i][left]); ++left;}\n}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

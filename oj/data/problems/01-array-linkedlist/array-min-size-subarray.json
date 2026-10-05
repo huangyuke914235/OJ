@@ -1,0 +1,94 @@
+{
+  "id": "array-min-size-subarray",
+  "title": "长度最小的子数组",
+  "difficulty": "中等",
+  "tags": [
+    "数组",
+    "滑动窗口",
+    "双指针"
+  ],
+  "source": {
+    "name": "LeetCode 209",
+    "url": "https://leetcode.cn/problems/minimum-size-subarray-sum/"
+  },
+  "statement": "给定一个**正整数**数组和目标值 $target$，找出**和 $\\ge target$** 的**最短连续子数组**，返回其长度。\n\n若不存在这样的子数组，返回 $0$。\n\n**要求 $O(n)$**。",
+  "input_format": "第一行两个整数 $n, target$（$1 \\le n \\le 10^5$，$1 \\le target \\le 10^9$）。\n\n第二行 $n$ 个正整数 $a_i$（$1 \\le a_i \\le 10^4$）。",
+  "output_format": "一行一个整数，表示最短长度；不存在则输出 0。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "1 ≤ a_i ≤ 10^4",
+    "1 ≤ target ≤ 10^9",
+    "要求 O(n)"
+  ],
+  "samples": [
+    {
+      "input": "6 7\n2 3 1 2 4 3\n",
+      "output": "2\n",
+      "explain": ""
+    },
+    {
+      "input": "3 100\n1 1 1\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**滑动窗口**：右指针扩张累加和；当和 $\\ge target$ 时，用 while 收缩左指针并**同时更新答案**。\n\n因为元素都是正整数，窗口和关于左右端点单调，所以 $O(n)$。\n\n> **易错点**：答案是「收缩时」更新，且要取最小长度。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;long long target;scanf(\"%d %lld\",&n,&target);\nvector<long long>a(n);for(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nint left=0,best=1e9;long long s=0;\nfor(int right=0;right<n;++right){s+=a[right];\nwhile(s>=target){best=min(best,right-left+1);s-=a[left++];}}\nprintf(\"%d\\n\",best==1e9?0:best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "6 7\n2 3 1 2 4 3\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 100\n1 1 1\n",
+      "output": "0\n",
+      "name": "样例 2（不存在）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 5\n5\n",
+      "output": "1\n",
+      "name": "单元素命中",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 3\n5\n",
+      "output": "1\n",
+      "name": "单元素未命中",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 10\n1 2 3 4\n",
+      "output": "4\n",
+      "name": "整个数组才够",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5 4\n1 1 1 1 4\n",
+      "output": "1\n",
+      "name": "最短在末尾",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 6\n1 2 3\n",
+      "output": "3\n",
+      "name": "含等于",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;long long target;scanf(\"%d %lld\",&n,&target);\nvector<long long>a(n);for(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nint left=0,best=1e9;long long s=0;\nfor(int right=0;right<n;++right){s+=a[right];\nwhile(s>=target){best=min(best,right-left+1);s-=a[left++];}}\nprintf(\"%d\\n\",best==1e9?0:best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

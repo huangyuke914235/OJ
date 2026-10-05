@@ -1,0 +1,85 @@
+{
+  "id": "search-sqrt-practice",
+  "title": "平方根（二分答案练习）",
+  "difficulty": "简单",
+  "tags": [
+    "二分答案",
+    "数学"
+  ],
+  "source": {
+    "name": "LeetCode 69",
+    "url": "https://leetcode.cn/problems/sqrtx/"
+  },
+  "statement": "给定非负整数 $n$，求 $\\lfloor\\sqrt{n}\\rfloor$（平方根的整数部分）。\n\n**禁止**使用 `sqrt` 等库函数。\n\n**要求 $O(\\log n)$**。",
+  "input_format": "一行一个整数 $n$（$0 \\le n \\le 2^{31}-1$）。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "0 ≤ n ≤ 2^31−1",
+    "禁止使用 sqrt",
+    "要求 O(log n)"
+  ],
+  "samples": [
+    {
+      "input": "4\n",
+      "output": "2\n",
+      "explain": ""
+    },
+    {
+      "input": "8\n",
+      "output": "2\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**二分答案**：答案 $x$ 满足「$x^2 \\le n$」单调，在 $[0, n]$ 上二分。\n\n> **两个易错点**：\n> 1. 中点要**上取整**（`(lo+hi+1)/2`），否则会死循环；\n> 2. $n$ 可达 $2^{31}-1$，`mid*mid` 会溢出 `int`，**必须用 `long long`**。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){long long n;scanf(\"%lld\",&n);\nif(n<2){printf(\"%lld\\n\",n);return 0;}\nlong long lo=1,hi=n;\nwhile(lo<hi){long long mid=lo+(hi-lo+1)/2;\nif(mid*mid<=n)lo=mid;else hi=mid-1;}\nprintf(\"%lld\\n\",lo);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "8\n",
+      "output": "2\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "0\n",
+      "output": "0\n",
+      "name": "零",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "name": "一",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "144\n",
+      "output": "12\n",
+      "name": "完全平方",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2147483647\n",
+      "output": "46340\n",
+      "name": "大数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){long long n;scanf(\"%lld\",&n);\nif(n<2){printf(\"%lld\\n\",n);return 0;}\nlong long lo=1,hi=n;\nwhile(lo<hi){long long mid=lo+(hi-lo+1)/2;\nif(mid*mid<=n)lo=mid;else hi=mid-1;}\nprintf(\"%lld\\n\",lo);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

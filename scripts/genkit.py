@@ -99,6 +99,7 @@ def finalize(problem: dict, out_path: Path, samples_from: int = 0) -> Path:
 CPP_HEADER = """#include <cstdio>
 #include <cstring>
 #include <cmath>
+#include <cstdlib>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -111,6 +112,7 @@ CPP_HEADER = """#include <cstdio>
 #include <unordered_set>
 #include <functional>
 #include <numeric>
+#include <sstream>
 #include <iostream>
 using namespace std;
 """

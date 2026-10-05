@@ -1,0 +1,86 @@
+{
+  "id": "graph-max-network-rank",
+  "title": "最大网络秩",
+  "difficulty": "简单",
+  "tags": [
+    "图",
+    "度数",
+    "枚举"
+  ],
+  "source": {
+    "name": "LeetCode 1615",
+    "url": "https://leetcode.cn/problems/maximal-network-rank/"
+  },
+  "statement": "给定 $n$ 个城市和若干**无向道路**。\n\n两个不同城市的**网络秩** = 「与城市 A 直接相连的城市数」+「与城市 B 直接相连的城市数」− 「A 与 B 之间是否有直接道路（有则减 1）」。\n\n求所有城市对中的**最大网络秩**。",
+  "input_format": "第一行两个整数 $n, m$（$2 \\le n \\le 100$，$0 \\le m \\le n(n-1)/2$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$，表示 $u$ 与 $v$ 之间有道路。",
+  "output_format": "一行一个整数，表示最大网络秩。",
+  "constraints": [
+    "2 ≤ n ≤ 100",
+    "0 ≤ m ≤ n(n−1)/2",
+    "无自环、无重边"
+  ],
+  "samples": [
+    {
+      "input": "4 4\n1 2\n2 3\n3 4\n4 1\n",
+      "output": "4\n",
+      "explain": ""
+    },
+    {
+      "input": "3 0\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**枚举所有城市对**：$n \\le 100$，直接 $O(n^2)$ 枚举即可。\n\n用度数数组快速得到「相连城市数」，再用集合判断两点之间是否有直接道路。\n\n时间 $O(n^2)$。\n\n> **优化思路**：只需考虑度数最大的那些城市对，但本题规模下没必要。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<int>deg(n+1,0);set<pair<int,int>>es;\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);\n++deg[u];++deg[v];es.insert({min(u,v),max(u,v)});}\nint best=0;\nfor(int i=1;i<=n;++i)for(int j=i+1;j<=n;++j){\nint r=deg[i]+deg[j]-(es.count({i,j})?1:0);\nbest=max(best,r);}\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4 4\n1 2\n2 3\n3 4\n4 1\n",
+      "output": "4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 0\n",
+      "output": "0\n",
+      "name": "无边",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 3\n1 2\n2 3\n1 3\n",
+      "output": "3\n",
+      "name": "完全图",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 1\n1 2\n",
+      "output": "1\n",
+      "name": "两城一道路",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 3\n1 2\n1 3\n1 4\n",
+      "output": "3\n",
+      "name": "星形",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "3\n",
+      "name": "链状",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<int>deg(n+1,0);set<pair<int,int>>es;\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);\n++deg[u];++deg[v];es.insert({min(u,v),max(u,v)});}\nint best=0;\nfor(int i=1;i<=n;++i)for(int j=i+1;j<=n;++j){\nint r=deg[i]+deg[j]-(es.count({i,j})?1:0);\nbest=max(best,r);}\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

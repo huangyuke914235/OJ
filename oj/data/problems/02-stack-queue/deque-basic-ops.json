@@ -1,0 +1,86 @@
+{
+  "id": "deque-basic-ops",
+  "title": "双端队列的基本操作",
+  "difficulty": "入门",
+  "tags": [
+    "队列",
+    "双端队列",
+    "模拟"
+  ],
+  "source": {
+    "name": "双端队列",
+    "url": "https://leetcode.cn/problems/design-circular-deque/"
+  },
+  "statement": "模拟一个**双端队列**，支持：\n\n- `push_front x` / `push_back x`：在队首 / 队尾插入 $x$；\n- `pop_front` / `pop_back`：从队首 / 队尾删除并输出；\n- `front` / `back`：输出队首 / 队尾；\n- `size`：输出元素个数。\n\n**保证**删除与查询操作只在非空队列上调用。",
+  "input_format": "第一行一个整数 $q$（$1 \\le q \\le 10^5$）。\n\n接下来 $q$ 行，每行一个操作（$|x| \\le 10^9$）。",
+  "output_format": "对每个有输出的操作输出一行。",
+  "constraints": [
+    "1 ≤ q ≤ 10^5",
+    "|x| ≤ 10^9",
+    "删除/查询仅在非空队列上调用"
+  ],
+  "samples": [
+    {
+      "input": "6\npush_back 1\npush_front 2\nfront\nback\npop_front\npop_back\n",
+      "output": "2\n1\n2\n1\n",
+      "explain": ""
+    },
+    {
+      "input": "4\npush_front 1\npush_front 2\nfront\nsize\n",
+      "output": "2\n2\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**双端队列**两端都能高效插入删除。\n\nC++ 用 `std::deque`；Python 用 `collections.deque`。\n\n> **用途**：单调队列（滑动窗口最值）就依赖双端队列的两端操作。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int q;scanf(\"%d\",&q);deque<long long>d;char op[16];\nfor(int i=0;i<q;++i){scanf(\"%s\",op);string o=op;\nif(o==\"push_front\"){long long x;scanf(\"%lld\",&x);d.push_front(x);}\nelse if(o==\"push_back\"){long long x;scanf(\"%lld\",&x);d.push_back(x);}\nelse if(o==\"pop_front\"){printf(\"%lld\\n\",d.front());d.pop_front();}\nelse if(o==\"pop_back\"){printf(\"%lld\\n\",d.back());d.pop_back();}\nelse if(o==\"front\"){printf(\"%lld\\n\",d.front());}\nelse if(o==\"back\"){printf(\"%lld\\n\",d.back());}\nelse if(o==\"size\"){printf(\"%d\\n\",(int)d.size());}}\nreturn 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "6\npush_back 1\npush_front 2\nfront\nback\npop_front\npop_back\n",
+      "output": "2\n1\n2\n1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\npush_front 1\npush_front 2\nfront\nsize\n",
+      "output": "2\n2\n",
+      "name": "只从前面操作",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\npush_back 1\npush_back 2\nback\nsize\n",
+      "output": "2\n2\n",
+      "name": "只从后面操作",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\npush_back 1\npush_front 2\npop_back\npop_front\n",
+      "output": "1\n2\n",
+      "name": "交替插入",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\npush_back 5\nfront\nback\n",
+      "output": "5\n5\n",
+      "name": "单元素",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\npush_front -1\npush_back -2\nfront\nback\n",
+      "output": "-1\n-2\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int q;scanf(\"%d\",&q);deque<long long>d;char op[16];\nfor(int i=0;i<q;++i){scanf(\"%s\",op);string o=op;\nif(o==\"push_front\"){long long x;scanf(\"%lld\",&x);d.push_front(x);}\nelse if(o==\"push_back\"){long long x;scanf(\"%lld\",&x);d.push_back(x);}\nelse if(o==\"pop_front\"){printf(\"%lld\\n\",d.front());d.pop_front();}\nelse if(o==\"pop_back\"){printf(\"%lld\\n\",d.back());d.pop_back();}\nelse if(o==\"front\"){printf(\"%lld\\n\",d.front());}\nelse if(o==\"back\"){printf(\"%lld\\n\",d.back());}\nelse if(o==\"size\"){printf(\"%d\\n\",(int)d.size());}}\nreturn 0;}\n"
+  },
+  "time_limit": 2.0
+}

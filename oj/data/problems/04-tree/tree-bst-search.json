@@ -1,0 +1,93 @@
+{
+  "id": "tree-bst-search",
+  "title": "二叉搜索树中的搜索",
+  "difficulty": "入门",
+  "tags": [
+    "树",
+    "二叉搜索树",
+    "查找"
+  ],
+  "source": {
+    "name": "LeetCode 700",
+    "url": "https://leetcode.cn/problems/search-in-a-binary-search-tree/"
+  },
+  "statement": "在二叉搜索树（BST）中查找值为 $target$ 的节点。\n\n找到输出 `YES`，否则 `NO`。\n\n**要求**：利用 BST 的大小性质，时间复杂度 $O(h)$（$h$ 为树高）。",
+  "input_format": "第一行，BST 的层序序列（`null` 表示空节点）。\n\n第二行一个整数 $target$。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "节点数 ≤ 5000",
+    "|v|, |target| ≤ 10^9",
+    "输入保证是合法 BST"
+  ],
+  "samples": [
+    {
+      "input": "4 2 7 1 3\n2\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "4 2 7 1 3\n5\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**利用 BST 性质**：从根出发，`target` 比当前值小就往左走，大就往右走，相等就找到。\n\n不需要遍历整棵树，时间 $O(h)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint main(){string line;getline(cin,line);\nstringstream ss(line);vector<string>tk;string x;\nwhile(ss>>x)tk.push_back(x);\nif(tk.empty())tk.push_back(\"null\");\nlong long target;scanf(\"%lld\",&target);\nNode*cur=buildTree(tk);bool found=false;\nwhile(cur){if(cur->v==target){found=true;break;}\ncur=(target<cur->v)?cur->l:cur->r;}\nprintf(\"%s\\n\",found?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4 2 7 1 3\n2\n",
+      "output": "YES\n",
+      "name": "样例 1（找到）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 2 7 1 3\n5\n",
+      "output": "NO\n",
+      "name": "样例 2（未找到）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n1\n",
+      "output": "NO\n",
+      "name": "空树",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 3 8\n5\n",
+      "output": "YES\n",
+      "name": "根命中",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 3 8 1\n1\n",
+      "output": "YES\n",
+      "name": "最小值",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5 3 8 9\n9\n",
+      "output": "NO\n",
+      "name": "最大值",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5 4 null 3\n3\n",
+      "output": "YES\n",
+      "name": "左链",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint main(){string line;getline(cin,line);\nstringstream ss(line);vector<string>tk;string x;\nwhile(ss>>x)tk.push_back(x);\nif(tk.empty())tk.push_back(\"null\");\nlong long target;scanf(\"%lld\",&target);\nNode*cur=buildTree(tk);bool found=false;\nwhile(cur){if(cur->v==target){found=true;break;}\ncur=(target<cur->v)?cur->l:cur->r;}\nprintf(\"%s\\n\",found?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

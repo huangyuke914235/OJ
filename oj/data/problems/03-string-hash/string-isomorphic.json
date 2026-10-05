@@ -1,0 +1,91 @@
+{
+  "id": "string-isomorphic",
+  "title": "同构字符串",
+  "difficulty": "简单",
+  "tags": [
+    "字符串",
+    "哈希表"
+  ],
+  "source": {
+    "name": "LeetCode 205",
+    "url": "https://leetcode.cn/problems/isomorphic-strings/"
+  },
+  "statement": "两个字符串**同构**指：$s$ 中每个字符都能被**唯一地**替换成 $t$ 中的对应字符，且不同字符不能映射到同一字符。\n\n字符的**顺序必须保持一致**。\n\n同构输出 `YES`，否则 `NO`。",
+  "input_format": "第一行一个字符串 $s$。\n\n第二行一个字符串 $t$。\n\n长度均不超过 $5\\times10^4$，仅含小写字母。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "|s|, |t| ≤ 5×10^4",
+    "仅小写字母"
+  ],
+  "samples": [
+    {
+      "input": "egg\nadd\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "foo\nbar\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**双向映射**：维护两个哈希表 `s→t` 和 `t→s`。\n\n遍历时若发现「已有映射但不一致」就判 `NO`。\n\n> **易错点**：**必须双向检查**！只检查 `s→t` 会漏掉 `ab → aa` 这种情况（两个不同字符映射到同一个）。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s,t;cin>>s>>t;\nif(s.size()!=t.size()){printf(\"NO\\n\");return 0;}\nint m1[256],m2[256];memset(m1,-1,sizeof(m1));memset(m2,-1,sizeof(m2));\nfor(size_t i=0;i<s.size();++i){\nint x=s[i],y=t[i];\nif(m1[x]==-1)m1[x]=y;else if(m1[x]!=y){printf(\"NO\\n\");return 0;}\nif(m2[y]==-1)m2[y]=x;else if(m2[y]!=x){printf(\"NO\\n\");return 0;}}\nprintf(\"YES\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "egg\nadd\n",
+      "output": "YES\n",
+      "name": "样例 1（同构）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "foo\nbar\n",
+      "output": "NO\n",
+      "name": "样例 2（不同构）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "paper\ntitle\n",
+      "output": "YES\n",
+      "name": "样例 3（同构）",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "ab\nabc\n",
+      "output": "NO\n",
+      "name": "长度不等",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a\nb\n",
+      "output": "YES\n",
+      "name": "单字符",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "aaa\nbbb\n",
+      "output": "YES\n",
+      "name": "全相同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "ab\naa\n",
+      "output": "NO\n",
+      "name": "多对一",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s,t;cin>>s>>t;\nif(s.size()!=t.size()){printf(\"NO\\n\");return 0;}\nint m1[256],m2[256];memset(m1,-1,sizeof(m1));memset(m2,-1,sizeof(m2));\nfor(size_t i=0;i<s.size();++i){\nint x=s[i],y=t[i];\nif(m1[x]==-1)m1[x]=y;else if(m1[x]!=y){printf(\"NO\\n\");return 0;}\nif(m2[y]==-1)m2[y]=x;else if(m2[y]!=x){printf(\"NO\\n\");return 0;}}\nprintf(\"YES\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

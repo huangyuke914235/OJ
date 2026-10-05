@@ -16,7 +16,9 @@
       ],
       "problems": [
         "array-two-sum-sorted",
-        "array-reverse"
+        "array-reverse",
+        "array-two-sum-hash",
+        "sort-squares"
       ]
     },
     {
@@ -34,7 +36,14 @@
         "array-rotate-right",
         "array-remove-duplicates",
         "array-move-zeroes",
-        "list-middle-node"
+        "list-middle-node",
+        "array-remove-element",
+        "array-move-negatives",
+        "array-duplicate-zeros",
+        "list-odd-even",
+        "list-swap-pairs",
+        "list-remove-duplicates",
+        "list-palindrome"
       ]
     },
     {
@@ -50,7 +59,9 @@
       "problems": [
         "array-reverse",
         "array-rotate-right",
-        "list-reverse"
+        "list-reverse",
+        "array-rotate-left",
+        "string-reverse-vowels"
       ]
     },
     {
@@ -65,7 +76,8 @@
       ],
       "problems": [
         "list-remove-nth-from-end",
-        "list-merge-sorted"
+        "list-merge-sorted",
+        "list-middle-node"
       ]
     },
     {
@@ -79,7 +91,11 @@
         "全负数数组时 Kadane 应返回最大的那个负数，初值不能设为 0"
       ],
       "problems": [
-        "array-max-subarray"
+        "array-max-subarray",
+        "array-max-average-subarray",
+        "array-min-size-subarray",
+        "array-pivot-index",
+        "array-degree"
       ]
     },
     {
@@ -93,7 +109,9 @@
         "更新右端点要取 `max`，不能直接赋值——新区间可能完全被包含"
       ],
       "problems": [
-        "array-merge-intervals"
+        "array-merge-intervals",
+        "array-summary-ranges",
+        "sort-non-overlapping"
       ]
     },
     {
@@ -107,7 +125,9 @@
         "计数归零时换候选者，不要写成只在第一个元素时初始化"
       ],
       "problems": [
-        "array-majority-element"
+        "array-majority-element",
+        "array-single-number",
+        "array-missing-number"
       ]
     }
   ],

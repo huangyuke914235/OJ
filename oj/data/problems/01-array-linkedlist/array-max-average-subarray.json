@@ -1,0 +1,84 @@
+{
+  "id": "array-max-average-subarray",
+  "title": "长度为 k 的子数组最大平均数",
+  "difficulty": "简单",
+  "tags": [
+    "数组",
+    "滑动窗口"
+  ],
+  "source": {
+    "name": "LeetCode 643",
+    "url": "https://leetcode.cn/problems/maximum-average-subarray-i/"
+  },
+  "statement": "给定数组和整数 $k$，找出**长度恰好为 $k$** 的连续子数组，使其**平均数最大**，输出这个最大平均数。\n\n结果保留 **5 位小数**。",
+  "input_format": "第一行两个整数 $n, k$（$1 \\le k \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数 $a_i$（$|a_i| \\le 10^4$）。",
+  "output_format": "一行，最大平均数，保留 5 位小数。",
+  "constraints": [
+    "1 ≤ k ≤ n ≤ 10^5",
+    "|a_i| ≤ 10^4"
+  ],
+  "samples": [
+    {
+      "input": "6 4\n1 12 -5 -6 50 3\n",
+      "output": "12.75000\n",
+      "explain": ""
+    },
+    {
+      "input": "1 1\n5\n",
+      "output": "5.00000\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**定长滑动窗口**：先算出前 $k$ 个元素的和，之后每次右移一格：`s += a[i] - a[i-k]`。\n\n用**整数求和**再最后除，避免浮点误差累积。时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nlong long s=0;for(int i=0;i<k;++i)s+=a[i];\nlong long best=s;\nfor(int i=k;i<n;++i){s+=a[i]-a[i-k];best=max(best,s);}\nprintf(\"%.5f\\n\",(double)best/k);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "6 4\n1 12 -5 -6 50 3\n",
+      "output": "12.75000\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 1\n5\n",
+      "output": "5.00000\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 2\n3 3 3 3\n",
+      "output": "3.00000\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 2\n-1 -2 -3 -4 -5\n",
+      "output": "-1.50000\n",
+      "name": "含负数",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 3\n1 2 3\n",
+      "output": "2.00000\n",
+      "name": "k = n",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5 2\n1 1 1 1 100\n",
+      "output": "50.50000\n",
+      "name": "最大在末尾",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nlong long s=0;for(int i=0;i<k;++i)s+=a[i];\nlong long best=s;\nfor(int i=k;i<n;++i){s+=a[i]-a[i-k];best=max(best,s);}\nprintf(\"%.5f\\n\",(double)best/k);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

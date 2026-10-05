@@ -1,0 +1,85 @@
+{
+  "id": "sort-dedupe-sorted",
+  "title": "有序数组去重（输出结果）",
+  "difficulty": "入门",
+  "tags": [
+    "数组",
+    "双指针",
+    "排序"
+  ],
+  "source": {
+    "name": "LeetCode 26",
+    "url": "https://leetcode.cn/problems/remove-duplicates-from-sorted-array/"
+  },
+  "statement": "给定**非递减**数组，输出去重后的数组（每个值只保留一次，保持升序）。",
+  "input_format": "第一行一个整数 $n$（$0 \\le n \\le 10^5$）。\n\n第二行 $n$ 个**非递减**整数（$|a_i| \\le 10^9$），$n=0$ 时为空行。",
+  "output_format": "一行，去重后的数组；空数组输出空行。",
+  "constraints": [
+    "0 ≤ n ≤ 10^5",
+    "数组非递减"
+  ],
+  "samples": [
+    {
+      "input": "5\n1 1 2 2 3\n",
+      "output": "1 2 3\n",
+      "explain": ""
+    },
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "1 2 3 4\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**边读边去重**：因为数组有序，相同的值必然相邻，只需保留「与上一个不同」的元素。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>r;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);\nif(r.empty()||r.back()!=x)r.push_back(x);}\nfor(size_t i=0;i<r.size();++i){if(i)printf(\" \");printf(\"%lld\",r[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n1 1 2 2 3\n",
+      "output": "1 2 3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "1 2 3 4\n",
+      "name": "无重复",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n7 7 7 7\n",
+      "output": "7\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "0\n",
+      "output": "\n",
+      "name": "空数组",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n5\n",
+      "output": "5\n",
+      "name": "单元素",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n-3 -3 -1 0 0\n",
+      "output": "-3 -1 0\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>r;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);\nif(r.empty()||r.back()!=x)r.push_back(x);}\nfor(size_t i=0;i<r.size();++i){if(i)printf(\" \");printf(\"%lld\",r[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

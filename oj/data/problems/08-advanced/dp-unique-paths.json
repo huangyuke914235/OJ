@@ -1,0 +1,91 @@
+{
+  "id": "dp-unique-paths",
+  "title": "不同路径",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "矩阵",
+    "组合数学"
+  ],
+  "source": {
+    "name": "LeetCode 62",
+    "url": "https://leetcode.cn/problems/unique-paths/"
+  },
+  "statement": "一个机器人位于 $r \\times c$ 网格的左上角，每次只能**向右或向下**移动一格。\n\n求到达右下角的**不同路径数**。",
+  "input_format": "一行两个整数 $r, c$（$1 \\le r, c \\le 20$）。",
+  "output_format": "一行一个整数，表示路径数。",
+  "constraints": [
+    "1 ≤ r, c ≤ 20"
+  ],
+  "samples": [
+    {
+      "input": "3 7\n",
+      "output": "28\n",
+      "explain": ""
+    },
+    {
+      "input": "3 2\n",
+      "output": "3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**二维 DP（滚动成一维）**：`dp[i][j]` = 到达 $(i,j)$ 的路径数 = `dp[i-1][j] + dp[i][j-1]`（只能从上面或左边来）。\n\n用一维数组滚动：初始全为 1（第一行只有一种走法），之后 `dp[j] += dp[j-1]`。\n\n> **组合解法**：总共要走 $r-1$ 步向下、$c-1$ 步向右，答案是 $\\binom{r+c-2}{r-1}$。\n\n> **注意**：$20 \\times 20$ 时结果约 $3.5 \\times 10^{10}$，要用 `long long`。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<long long>dp(c,1);\nfor(int i=1;i<r;++i)for(int j=1;j<c;++j)dp[j]+=dp[j-1];\nprintf(\"%lld\\n\",dp[c-1]);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 7\n",
+      "output": "28\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 2\n",
+      "output": "3\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 5\n",
+      "output": "1\n",
+      "name": "单行",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 1\n",
+      "output": "1\n",
+      "name": "单列",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 1\n",
+      "output": "1\n",
+      "name": "单格",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5 5\n",
+      "output": "70\n",
+      "name": "方阵 5",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "20 20\n",
+      "output": "35345263800\n",
+      "name": "最大",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<long long>dp(c,1);\nfor(int i=1;i<r;++i)for(int j=1;j<c;++j)dp[j]+=dp[j-1];\nprintf(\"%lld\\n\",dp[c-1]);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

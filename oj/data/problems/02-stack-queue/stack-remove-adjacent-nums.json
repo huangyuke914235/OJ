@@ -1,0 +1,84 @@
+{
+  "id": "stack-remove-adjacent-nums",
+  "title": "删除相邻重复的数字",
+  "difficulty": "入门",
+  "tags": [
+    "栈",
+    "数组"
+  ],
+  "source": {
+    "name": "栈的应用",
+    "url": "https://leetcode.cn/problems/remove-all-adjacent-duplicates-in-string/"
+  },
+  "statement": "给定一个整数数组，**反复删除相邻且相等**的一对元素，直到无法继续。\n\n输出最终剩下的数组（保持原顺序）。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数（$|a_i| \\le 10^9$）。",
+  "output_format": "一行，剩余元素（空格分隔）。若全部删完则输出空行。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "|a_i| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "5\n1 2 2 3 3\n",
+      "output": "1\n",
+      "explain": ""
+    },
+    {
+      "input": "4\n1 1 2 2\n",
+      "output": "\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**栈**：从左到右扫描，若**栈顶与当前元素相同**就弹出（消除一对），否则压入。\n\n> **为什么正确**：消除后新的栈顶会自动与前缀的下一个元素比较，从而处理连锁消除。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>st;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);\nif(!st.empty()&&st.back()==x)st.pop_back();else st.push_back(x);}\nfor(size_t i=0;i<st.size();++i){if(i)printf(\" \");printf(\"%lld\",st[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n1 2 2 3 3\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n1 1 2 2\n",
+      "output": "\n",
+      "name": "全删完",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 2 3\n",
+      "output": "1 2 3\n",
+      "name": "无相邻重复",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n5\n",
+      "output": "5\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6\n1 1 1 2 2 1\n",
+      "output": "\n",
+      "name": "连锁删除",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n-1 -1 2 2\n",
+      "output": "\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>st;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);\nif(!st.empty()&&st.back()==x)st.pop_back();else st.push_back(x);}\nfor(size_t i=0;i<st.size();++i){if(i)printf(\" \");printf(\"%lld\",st[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

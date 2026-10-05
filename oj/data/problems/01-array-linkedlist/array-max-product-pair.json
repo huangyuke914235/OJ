@@ -1,0 +1,85 @@
+{
+  "id": "array-max-product-pair",
+  "title": "数组中两元素的最大乘积",
+  "difficulty": "入门",
+  "tags": [
+    "数组",
+    "排序",
+    "贪心"
+  ],
+  "source": {
+    "name": "LeetCode 1464",
+    "url": "https://leetcode.cn/problems/maximum-product-of-two-elements-in-an-array/"
+  },
+  "statement": "给定一个整数数组，选出**两个不同的元素**使它们的乘积最大，输出这个乘积。",
+  "input_format": "第一行一个整数 $n$（$2 \\le n \\le 500$）。\n\n第二行 $n$ 个整数 $a_i$（$1 \\le a_i \\le 1000$）。",
+  "output_format": "一行一个整数，表示最大乘积。",
+  "constraints": [
+    "2 ≤ n ≤ 500",
+    "1 ≤ a_i ≤ 1000"
+  ],
+  "samples": [
+    {
+      "input": "4\n3 4 5 2\n",
+      "output": "20\n",
+      "explain": ""
+    },
+    {
+      "input": "4\n1 5 4 5\n",
+      "output": "25\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**只需找出最大的两个数**。可以排序后取前两个，也可以一次遍历维护「最大值」和「次大值」。\n\n时间 $O(n)$（不排序），空间 $O(1)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nlong long m1=0,m2=0;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);\nif(x>m1){m2=m1;m1=x;}else if(x>m2)m2=x;}\nprintf(\"%lld\\n\",m1*m2);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n3 4 5 2\n",
+      "output": "20\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n1 5 4 5\n",
+      "output": "25\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2\n3 7\n",
+      "output": "21\n",
+      "name": "两元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n5 5 5\n",
+      "output": "25\n",
+      "name": "全部相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5\n1 2 3 4 1000\n",
+      "output": "4000\n",
+      "name": "最小值组合",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n1000 999 1 2\n",
+      "output": "999000\n",
+      "name": "含大值",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nlong long m1=0,m2=0;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);\nif(x>m1){m2=m1;m1=x;}else if(x>m2)m2=x;}\nprintf(\"%lld\\n\",m1*m2);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

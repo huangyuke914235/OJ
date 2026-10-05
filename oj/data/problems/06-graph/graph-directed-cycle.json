@@ -1,0 +1,95 @@
+{
+  "id": "graph-directed-cycle",
+  "title": "有向图判环",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "DFS",
+    "拓扑排序",
+    "判环"
+  ],
+  "source": {
+    "name": "LeetCode 207",
+    "url": "https://leetcode.cn/problems/course-schedule/"
+  },
+  "statement": "判断一个**有向图**中是否存在**环**。\n\n有环输出 `YES`，否则 `NO`。\n\n图不一定连通。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 10^5$，$0 \\le m \\le 2\\times10^5$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$，表示一条**从 $u$ 指向 $v$** 的有向边。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ m ≤ 2×10^5",
+    "有向图",
+    "可能不连通"
+  ],
+  "samples": [
+    {
+      "input": "3 3\n1 2\n2 3\n3 1\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**三色标记 DFS**：\n\n- **白色（0）**：未访问；\n- **灰色（1）**：正在当前 DFS 栈中；\n- **黑色（2）**：已完成。\n\n若遇到一个**灰色**节点，说明它还在当前递归路径上 → 存在环。\n\n> **另解（Kahn 拓扑排序）**：不断删除入度为 0 的点，若最终删掉的点数少于 $n$，说明有环。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);g[u].push_back(v);}\nvector<int>color(n+1,0);bool cyc=false;\nfor(int s=1;s<=n&&!cyc;++s){\nif(color[s])continue;\nvector<pair<int,int>>st;st.push_back({s,0});color[s]=1;\nwhile(!st.empty()&&!cyc){\nauto&pr=st.back();\nint u=pr.first;\nif(pr.second<(int)g[u].size()){\nint v=g[u][pr.second];++pr.second;\nif(color[v]==1){cyc=true;break;}\nif(color[v]==0){color[v]=1;st.push_back({v,0});}}\nelse{color[u]=2;st.pop_back();}}}\nprintf(\"%s\\n\",cyc?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 3\n1 2\n2 3\n3 1\n",
+      "output": "YES\n",
+      "name": "样例 1（有环）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "NO\n",
+      "name": "样例 2（无环）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 0\n",
+      "output": "NO\n",
+      "name": "单点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 2\n1 2\n3 4\n",
+      "output": "NO\n",
+      "name": "两条独立链",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 1\n1 1\n",
+      "output": "YES\n",
+      "name": "自环",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5 4\n1 2\n1 3\n2 4\n3 5\n",
+      "output": "NO\n",
+      "name": "DAG",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "6 4\n1 2\n2 3\n3 1\n4 5\n",
+      "output": "YES\n",
+      "name": "不连通含环",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);g[u].push_back(v);}\nvector<int>color(n+1,0);bool cyc=false;\nfor(int s=1;s<=n&&!cyc;++s){\nif(color[s])continue;\nvector<pair<int,int>>st;st.push_back({s,0});color[s]=1;\nwhile(!st.empty()&&!cyc){\nauto&pr=st.back();\nint u=pr.first;\nif(pr.second<(int)g[u].size()){\nint v=g[u][pr.second];++pr.second;\nif(color[v]==1){cyc=true;break;}\nif(color[v]==0){color[v]=1;st.push_back({v,0});}}\nelse{color[u]=2;st.pop_back();}}}\nprintf(\"%s\\n\",cyc?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

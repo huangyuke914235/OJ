@@ -1,0 +1,93 @@
+{
+  "id": "graph-tree-check",
+  "title": "判断无向图是否为树",
+  "difficulty": "简单",
+  "tags": [
+    "图",
+    "连通性",
+    "树"
+  ],
+  "source": {
+    "name": "树的性质",
+    "url": "https://leetcode.cn/problems/redundant-connection/"
+  },
+  "statement": "判断一个无向图是否是**树**。\n\n**树**的两个条件：\n\n1. **连通**（任意两点可达）；\n2. **无环**。\n\n等价地：边数恰好为 $n-1$ **且**图连通。\n\n是树输出 `YES`，否则 `NO`。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 10^5$，$0 \\le m \\le 2\\times10^5$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$（$u \\ne v$）。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ m ≤ 2×10^5",
+    "无自环"
+  ],
+  "samples": [
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "3 3\n1 2\n2 3\n3 1\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**两步判断**：\n\n1. **边数必须恰好 $n-1$**（不满足直接 `NO`）；\n2. **从 1 号点 BFS，能访问到全部 $n$ 个点**（保证连通）。\n\n> **为什么这样就够了**：对于无向图，「连通 + 边数 $n-1$」等价于「无环 + 连通」，正是树的定义。\n\n> 也可以直接用**并查集**：加边时若两端已连通则成环，最终再看是否所有点同属一个集合。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);\ng[u].push_back(v);g[v].push_back(u);}\nif(m!=n-1){printf(\"NO\\n\");return 0;}\nvector<bool>vis(n+1,false);queue<int>q;q.push(1);vis[1]=true;int cnt=1;\nwhile(!q.empty()){int u=q.front();q.pop();\nfor(int v:g[u])if(!vis[v]){vis[v]=true;++cnt;q.push(v);}}\nprintf(\"%s\\n\",cnt==n?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "YES\n",
+      "name": "样例 1（是树）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 3\n1 2\n2 3\n3 1\n",
+      "output": "NO\n",
+      "name": "样例 2（有环）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 0\n",
+      "output": "YES\n",
+      "name": "单点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 2\n1 2\n3 4\n",
+      "output": "NO\n",
+      "name": "不连通",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 2\n1 2\n2 3\n",
+      "output": "NO\n",
+      "name": "边数不足",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 5\n1 2\n2 3\n3 4\n4 1\n1 3\n",
+      "output": "NO\n",
+      "name": "边数过多",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2 1\n1 2\n",
+      "output": "YES\n",
+      "name": "两点的树",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);\ng[u].push_back(v);g[v].push_back(u);}\nif(m!=n-1){printf(\"NO\\n\");return 0;}\nvector<bool>vis(n+1,false);queue<int>q;q.push(1);vis[1]=true;int cnt=1;\nwhile(!q.empty()){int u=q.front();q.pop();\nfor(int v:g[u])if(!vis[v]){vis[v]=true;++cnt;q.push(v);}}\nprintf(\"%s\\n\",cnt==n?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

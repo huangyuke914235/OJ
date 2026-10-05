@@ -1,0 +1,94 @@
+{
+  "id": "graph-course-schedule",
+  "title": "课程表（能否完成所有课程）",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "拓扑排序",
+    "BFS",
+    "判环"
+  ],
+  "source": {
+    "name": "LeetCode 207",
+    "url": "https://leetcode.cn/problems/course-schedule/"
+  },
+  "statement": "有 $n$ 门课程，编号 $1 \\sim n$。给定若干**先修关系** $(a, b)$，表示修 $b$ 之前必须先修 $a$。\n\n判断是否**能修完所有课程**（即依赖关系无环）。\n\n能则输出 `YES`，否则 `NO`。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 10^5$，$0 \\le m \\le 2\\times10^5$）。\n\n接下来 $m$ 行，每行两个整数 $a, b$，表示 $a$ 是 $b$ 的先修课。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ m ≤ 2×10^5",
+    "无重复边"
+  ],
+  "samples": [
+    {
+      "input": "2 1\n1 2\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "2 2\n1 2\n2 1\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**Kahn 拓扑排序**：统计入度，把入度为 0 的课入队，逐个「修完」并把它指向的课入度减 1。\n\n若最终修完的课程数等于 $n$，说明无环，可以全部修完。\n\n> **直觉**：有环的依赖关系意味着「互相是对方的先修课」，永远无法开始。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);vector<int>indeg(n+1,0);\nfor(int i=0;i<m;++i){int a,b;scanf(\"%d %d\",&a,&b);g[a].push_back(b);++indeg[b];}\nqueue<int>q;for(int i=1;i<=n;++i)if(indeg[i]==0)q.push(i);\nint cnt=0;\nwhile(!q.empty()){int u=q.front();q.pop();++cnt;\nfor(int v:g[u])if(--indeg[v]==0)q.push(v);}\nprintf(\"%s\\n\",cnt==n?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "2 1\n1 2\n",
+      "output": "YES\n",
+      "name": "样例 1（可以）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 2\n1 2\n2 1\n",
+      "output": "NO\n",
+      "name": "样例 2（有环）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 0\n",
+      "output": "YES\n",
+      "name": "无先修关系",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 0\n",
+      "output": "YES\n",
+      "name": "单课程",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "YES\n",
+      "name": "链式依赖",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 3\n1 2\n2 3\n3 1\n",
+      "output": "NO\n",
+      "name": "长环",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 3\n1 2\n2 3\n3 2\n",
+      "output": "NO\n",
+      "name": "不连通有环",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);vector<int>indeg(n+1,0);\nfor(int i=0;i<m;++i){int a,b;scanf(\"%d %d\",&a,&b);g[a].push_back(b);++indeg[b];}\nqueue<int>q;for(int i=1;i<=n;++i)if(indeg[i]==0)q.push(i);\nint cnt=0;\nwhile(!q.empty()){int u=q.front();q.pop();++cnt;\nfor(int v:g[u])if(--indeg[v]==0)q.push(v);}\nprintf(\"%s\\n\",cnt==n?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

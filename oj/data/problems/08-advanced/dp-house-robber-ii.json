@@ -1,0 +1,92 @@
+{
+  "id": "dp-house-robber-ii",
+  "title": "打家劫舍 II（环形）",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "线性DP",
+    "环形"
+  ],
+  "source": {
+    "name": "LeetCode 213",
+    "url": "https://leetcode.cn/problems/house-robber-ii/"
+  },
+  "statement": "房屋排成**一个环**（第一间和最后一间相邻），仍然不能偷相邻的两间。\n\n求最大金额。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 100$）。\n\n第二行 $n$ 个非负整数（$0 \\le a_i \\le 1000$）。",
+  "output_format": "一行一个整数，表示最大金额。",
+  "constraints": [
+    "1 ≤ n ≤ 100",
+    "0 ≤ a_i ≤ 1000"
+  ],
+  "samples": [
+    {
+      "input": "3\n2 3 2\n",
+      "output": "3\n",
+      "explain": ""
+    },
+    {
+      "input": "4\n1 2 3 1\n",
+      "output": "4\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**拆环成两个线性问题**：\n\n因为第一间和最后一间相邻，它们**不能同时偷**。于是分两种情况：\n\n1. **不偷最后一间** → 问题退化为 $a[0..n-2]$ 的线性打家劫舍；\n2. **不偷第一间** → 问题退化为 $a[1..n-1]$ 的线性打家劫舍。\n\n答案取两者最大值。\n\n> **易错点**：$n = 1$ 时要特判（只有一间房，直接偷）。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nlong long rob(vector<long long>&v){long long p2=0,p1=0;\nfor(long long x:v){long long c=max(p1,p2+x);p2=p1;p1=c;}return p1;}\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nif(n==1){printf(\"%lld\\n\",a[0]);return 0;}\nvector<long long>x(a.begin(),a.end()-1),y(a.begin()+1,a.end());\nprintf(\"%lld\\n\",max(rob(x),rob(y)));return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3\n2 3 2\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n1 2 3 1\n",
+      "output": "4\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n5\n",
+      "output": "5\n",
+      "name": "单间",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2\n1 2\n",
+      "output": "2\n",
+      "name": "两间",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n5 5 5\n",
+      "output": "5\n",
+      "name": "三间全同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n2 7 9 3\n",
+      "output": "11\n",
+      "name": "四间",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n0 0 0\n",
+      "output": "0\n",
+      "name": "全零",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nlong long rob(vector<long long>&v){long long p2=0,p1=0;\nfor(long long x:v){long long c=max(p1,p2+x);p2=p1;p1=c;}return p1;}\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nif(n==1){printf(\"%lld\\n\",a[0]);return 0;}\nvector<long long>x(a.begin(),a.end()-1),y(a.begin()+1,a.end());\nprintf(\"%lld\\n\",max(rob(x),rob(y)));return 0;}\n"
+  },
+  "time_limit": 2.0
+}

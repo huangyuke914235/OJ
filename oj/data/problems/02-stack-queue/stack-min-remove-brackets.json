@@ -1,0 +1,84 @@
+{
+  "id": "stack-min-remove-brackets",
+  "title": "最少需要删除的括号数",
+  "difficulty": "简单",
+  "tags": [
+    "栈",
+    "字符串"
+  ],
+  "source": {
+    "name": "LeetCode 1249",
+    "url": "https://leetcode.cn/problems/minimum-remove-to-make-valid-parentheses/"
+  },
+  "statement": "给定一个只含 `(` 和 `)` 的字符串，求**最少需要删除多少个字符**才能使它成为合法的括号序列。",
+  "input_format": "一行一个字符串 $s$（$0 \\le |s| \\le 10^5$），仅含 `(` 和 `)`。",
+  "output_format": "一行一个整数，表示最少删除数。",
+  "constraints": [
+    "0 ≤ |s| ≤ 10^5",
+    "仅含圆括号"
+  ],
+  "samples": [
+    {
+      "input": "())\n",
+      "output": "1\n",
+      "explain": ""
+    },
+    {
+      "input": "(((\n",
+      "output": "3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**贪心计数**：\n\n- 遇到 `(`：`open++`；\n- 遇到 `)`：若 `open > 0` 则配对（`open--`），否则这个右括号**必须删除**（`ans++`）。\n\n扫描结束后，**剩余的未配对左括号也要删除**，所以答案是 `ans + open`。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nint open=0,ans=0;\nfor(char c:s){\nif(c=='(')++open;\nelse if(c==')'){if(open)--open;else ++ans;}}\nprintf(\"%d\\n\",ans+open);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "())\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "(((\n",
+      "output": "3\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "\n",
+      "output": "0\n",
+      "name": "空串",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "()()\n",
+      "output": "0\n",
+      "name": "已合法",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": ")))\n",
+      "output": "3\n",
+      "name": "全右括号",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "())(()\n",
+      "output": "2\n",
+      "name": "交错",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nint open=0,ans=0;\nfor(char c:s){\nif(c=='(')++open;\nelse if(c==')'){if(open)--open;else ++ans;}}\nprintf(\"%d\\n\",ans+open);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

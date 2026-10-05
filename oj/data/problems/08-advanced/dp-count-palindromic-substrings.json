@@ -1,0 +1,85 @@
+{
+  "id": "dp-count-palindromic-substrings",
+  "title": "回文子串数目",
+  "difficulty": "中等",
+  "tags": [
+    "字符串",
+    "中心扩展",
+    "动态规划"
+  ],
+  "source": {
+    "name": "LeetCode 647",
+    "url": "https://leetcode.cn/problems/palindromic-substrings/"
+  },
+  "statement": "给定一个字符串，统计其中**回文子串**的个数。\n\n**位置不同**的子串即使内容相同也分别计数。",
+  "input_format": "一行一个字符串 $s$（$1 \\le |s| \\le 1000$），仅含小写字母。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "1 ≤ |s| ≤ 1000",
+    "仅小写字母"
+  ],
+  "samples": [
+    {
+      "input": "abc\n",
+      "output": "3\n",
+      "explain": ""
+    },
+    {
+      "input": "aaa\n",
+      "output": "6\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**中心扩展法**：回文子串的中心有 $2n-1$ 个（$n$ 个单字符中心 + $n-1$ 个双字符中心）。\n\n对每个中心向两侧扩展，只要字符相同就计数并继续。\n\n> **编码技巧**：用 `center` 从 $0$ 到 $2n-2$，令 `l = center/2`、`r = l + center%2`——`center` 为偶数时是单字符中心，奇数时是双字符中心。\n\n时间 $O(n^2)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;int n=s.size();\nlong long cnt=0;\nfor(int c=0;c<2*n-1;++c){\nint l=c/2,r=l+c%2;\nwhile(l>=0&&r<n&&s[l]==s[r]){++cnt;--l;++r;}}\nprintf(\"%lld\\n\",cnt);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "abc\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "aaa\n",
+      "output": "6\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "a\n",
+      "output": "1\n",
+      "name": "单字符",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aa\n",
+      "output": "3\n",
+      "name": "两相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aaaa\n",
+      "output": "10\n",
+      "name": "全相同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "ababa\n",
+      "output": "9\n",
+      "name": "混合",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;int n=s.size();\nlong long cnt=0;\nfor(int c=0;c<2*n-1;++c){\nint l=c/2,r=l+c%2;\nwhile(l>=0&&r<n&&s[l]==s[r]){++cnt;--l;++r;}}\nprintf(\"%lld\\n\",cnt);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

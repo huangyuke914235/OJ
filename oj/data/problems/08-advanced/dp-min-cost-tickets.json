@@ -1,0 +1,85 @@
+{
+  "id": "dp-min-cost-tickets",
+  "title": "最低票价",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "线性DP"
+  ],
+  "source": {
+    "name": "LeetCode 983",
+    "url": "https://leetcode.cn/problems/minimum-cost-for-tickets/"
+  },
+  "statement": "你要在指定的日期出行。有三种票：\n\n- 1 日票 `costs[0]`；\n- 7 日票 `costs[1]`；\n- 30 日票 `costs[2]`。\n\n票在**购买当天起**的对应天数内有效。求完成所有出行日的**最低总花费**。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 365$），表示出行天数。\n\n第二行 $n$ 个**严格递增**的整数，表示出行日期（$1 \\le d \\le 365$）。\n\n第三行三个整数 $costs_1, costs_7, costs_{30}$（$1 \\le \\cdot \\le 1000$）。",
+  "output_format": "一行一个整数，表示最低总花费。",
+  "constraints": [
+    "1 ≤ n ≤ 365",
+    "日期严格递增",
+    "票价 ≤ 1000"
+  ],
+  "samples": [
+    {
+      "input": "6\n1 4 6 7 8 20\n2 7 15\n",
+      "output": "11\n",
+      "explain": ""
+    },
+    {
+      "input": "10\n1 2 3 4 5 6 7 8 9 10\n2 7 15\n",
+      "output": "13\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**按天递推**：`dp[d]` = 覆盖到第 $d$ 天的最低花费。\n\n- 若第 $d$ 天不出行：`dp[d] = dp[d-1]`；\n- 否则：`dp[d] = min(dp[d-1] + cost1, dp[d-7] + cost7, dp[d-30] + cost30)`（下标取 $\\max(0, \\cdot)$）。\n\n时间 $O(\\text{最后一天})$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<int>days(n);for(int i=0;i<n;++i)scanf(\"%d\",&days[i]);\nint c1,c7,c30;scanf(\"%d %d %d\",&c1,&c7,&c30);\nint last=days[n-1];\nvector<bool>travel(last+1,false);\nfor(int d:days)travel[d]=true;\nvector<long long>dp(last+1,0);\nfor(int d=1;d<=last;++d){\nif(!travel[d]){dp[d]=dp[d-1];continue;}\ndp[d]=min({dp[d-1]+c1,dp[max(0,d-7)]+c7,dp[max(0,d-30)]+c30});}\nprintf(\"%lld\\n\",dp[last]);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "6\n1 4 6 7 8 20\n2 7 15\n",
+      "output": "11\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "10\n1 2 3 4 5 6 7 8 9 10\n2 7 15\n",
+      "output": "13\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n1\n2 7 15\n",
+      "output": "2\n",
+      "name": "单日",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n1 200 365\n5 20 50\n",
+      "output": "15\n",
+      "name": "全年",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5\n1 2 3 4 5\n3 10 30\n",
+      "output": "10\n",
+      "name": "连续多日",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1 100 365\n10 50 100\n",
+      "output": "30\n",
+      "name": "稀疏出行",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<int>days(n);for(int i=0;i<n;++i)scanf(\"%d\",&days[i]);\nint c1,c7,c30;scanf(\"%d %d %d\",&c1,&c7,&c30);\nint last=days[n-1];\nvector<bool>travel(last+1,false);\nfor(int d:days)travel[d]=true;\nvector<long long>dp(last+1,0);\nfor(int d=1;d<=last;++d){\nif(!travel[d]){dp[d]=dp[d-1];continue;}\ndp[d]=min({dp[d-1]+c1,dp[max(0,d-7)]+c7,dp[max(0,d-30)]+c30});}\nprintf(\"%lld\\n\",dp[last]);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

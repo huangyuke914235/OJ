@@ -1,0 +1,86 @@
+{
+  "id": "graph-reverse-edges",
+  "title": "反转有向图的所有边",
+  "difficulty": "入门",
+  "tags": [
+    "图",
+    "有向图",
+    "邻接表"
+  ],
+  "source": {
+    "name": "图的存储",
+    "url": "https://leetcode.cn/problems/find-center-of-star-graph/"
+  },
+  "statement": "给定一个有向图，把**所有边的方向反转**，输出反转后的邻接表。\n\n每行输出一个顶点的**出边**：先输出出度，再按**编号升序**输出所有出边指向的顶点。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 1000$，$0 \\le m \\le 5000$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$，表示一条 $u \\to v$ 的边。",
+  "output_format": "共 $n$ 行，第 $i$ 行为顶点 $i$ 的出度与出边（升序）。没有出边时只输出 `0`。",
+  "constraints": [
+    "1 ≤ n ≤ 1000",
+    "0 ≤ m ≤ 5000",
+    "可能有重边"
+  ],
+  "samples": [
+    {
+      "input": "3 2\n1 2\n2 3\n",
+      "output": "0\n1 1\n1 2\n",
+      "explain": ""
+    },
+    {
+      "input": "2 0\n",
+      "output": "0\n0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**建反向图**：读边 $(u,v)$ 时，把它加进 `rev[v]` 而不是 `g[u]`。\n\n时间 $O(n + m)$。\n\n> **用途**：求「有多少点能到达 $t$」时，建反向图从 $t$ 出发做一次 BFS 即可。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>rev(n+1);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);rev[v].push_back(u);}\nfor(int i=1;i<=n;++i){sort(rev[i].begin(),rev[i].end());\nprintf(\"%d\",(int)rev[i].size());\nfor(int v:rev[i])printf(\" %d\",v);\nprintf(\"\\n\");}\nreturn 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 2\n1 2\n2 3\n",
+      "output": "0\n1 1\n1 2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 0\n",
+      "output": "0\n0\n",
+      "name": "无边",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 1\n1 1\n",
+      "output": "1 1\n",
+      "name": "单点自环",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 2\n1 2\n2 1\n",
+      "output": "1 2\n1 1\n",
+      "name": "双向边",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 3\n1 2\n1 3\n1 4\n",
+      "output": "0\n1 1\n1 1\n1 1\n",
+      "name": "星形",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "0\n1 1\n1 2\n1 3\n",
+      "name": "链状",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>rev(n+1);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);rev[v].push_back(u);}\nfor(int i=1;i<=n;++i){sort(rev[i].begin(),rev[i].end());\nprintf(\"%d\",(int)rev[i].size());\nfor(int v:rev[i])printf(\" %d\",v);\nprintf(\"\\n\");}\nreturn 0;}\n"
+  },
+  "time_limit": 2.0
+}

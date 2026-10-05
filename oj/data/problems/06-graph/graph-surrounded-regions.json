@@ -1,0 +1,94 @@
+{
+  "id": "graph-surrounded-regions",
+  "title": "被围绕的区域",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "DFS",
+    "BFS",
+    "网格"
+  ],
+  "source": {
+    "name": "LeetCode 130",
+    "url": "https://leetcode.cn/problems/surrounded-regions/"
+  },
+  "statement": "给定一个由 `'X'` 和 `'O'` 组成的矩阵，把**所有被 `'X'` 完全围绕的 `'O'`** 改成 `'X'`。\n\n**边界上的 `'O'` 及其连通的 `'O'` 不会被围绕**，应保持为 `'O'`。\n\n**连通**指上下左右相邻。",
+  "input_format": "第一行两个整数 $r, c$（$1 \\le r, c \\le 200$）。\n\n接下来 $r$ 行，每行一个长度为 $c$ 的字符串（仅含 `X` 和 `O`）。",
+  "output_format": "共 $r$ 行，为修改后的矩阵。",
+  "constraints": [
+    "1 ≤ r, c ≤ 200",
+    "仅含 X 和 O",
+    "上下左右连通"
+  ],
+  "samples": [
+    {
+      "input": "4 4\nXXXX\nXOOX\nXXOX\nXOXX\n",
+      "output": "XXXX\nXXXX\nXXXX\nXOXX\n",
+      "explain": ""
+    },
+    {
+      "input": "2 2\nXX\nXX\n",
+      "output": "XX\nXX\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**反向思考（从边界出发）**：\n\n**正着想很难**（要判断一个 `O` 是否被完全包围）。**反着想很简单**：\n\n1. 把所有**边界上的 `O`** 及其**连通区域**标记为「安全」（临时改成 `#`）；\n2. 剩下还是 `O` 的，就是被完全围绕的 → 改成 `X`；\n3. 把临时的 `#` 改回 `O`。\n\n时间 $O(rc)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<string>g(r);\nfor(int i=0;i<r;++i)cin>>g[i];\nqueue<pair<int,int>>q;\nfor(int i=0;i<r;++i)for(int j:{0,c-1})\nif(g[i][j]=='O'){g[i][j]='#';q.push({i,j});}\nfor(int j=0;j<c;++j)for(int i:{0,r-1})\nif(g[i][j]=='O'){g[i][j]='#';q.push({i,j});}\nint dx[4]={1,-1,0,0},dy[4]={0,0,1,-1};\nwhile(!q.empty()){auto pr=q.front();q.pop();\nfor(int d=0;d<4;++d){int nx=pr.first+dx[d],ny=pr.second+dy[d];\nif(nx<0||nx>=r||ny<0||ny>=c)continue;\nif(g[nx][ny]=='O'){g[nx][ny]='#';q.push({nx,ny});}}}\nfor(int i=0;i<r;++i){for(int j=0;j<c;++j)\nprintf(\"%c\",g[i][j]=='#'?'O':'X');printf(\"\\n\");}\nreturn 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4 4\nXXXX\nXOOX\nXXOX\nXOXX\n",
+      "output": "XXXX\nXXXX\nXXXX\nXOXX\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 2\nXX\nXX\n",
+      "output": "XX\nXX\n",
+      "name": "全 X",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 2\nOO\nOO\n",
+      "output": "OO\nOO\n",
+      "name": "全 O",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 1\nO\n",
+      "output": "O\n",
+      "name": "单格 O",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 1\nX\n",
+      "output": "X\n",
+      "name": "单格 X",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 3\nXXX\nXOX\nXXX\n",
+      "output": "XXX\nXXX\nXXX\n",
+      "name": "中心被围",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 3\nOXO\nXXX\nOXO\n",
+      "output": "OXO\nXXX\nOXO\n",
+      "name": "边界连通",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<string>g(r);\nfor(int i=0;i<r;++i)cin>>g[i];\nqueue<pair<int,int>>q;\nfor(int i=0;i<r;++i)for(int j:{0,c-1})\nif(g[i][j]=='O'){g[i][j]='#';q.push({i,j});}\nfor(int j=0;j<c;++j)for(int i:{0,r-1})\nif(g[i][j]=='O'){g[i][j]='#';q.push({i,j});}\nint dx[4]={1,-1,0,0},dy[4]={0,0,1,-1};\nwhile(!q.empty()){auto pr=q.front();q.pop();\nfor(int d=0;d<4;++d){int nx=pr.first+dx[d],ny=pr.second+dy[d];\nif(nx<0||nx>=r||ny<0||ny>=c)continue;\nif(g[nx][ny]=='O'){g[nx][ny]='#';q.push({nx,ny});}}}\nfor(int i=0;i<r;++i){for(int j=0;j<c;++j)\nprintf(\"%c\",g[i][j]=='#'?'O':'X');printf(\"\\n\");}\nreturn 0;}\n"
+  },
+  "time_limit": 2.0
+}

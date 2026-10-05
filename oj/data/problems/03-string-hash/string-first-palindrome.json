@@ -1,0 +1,92 @@
+{
+  "id": "string-first-palindrome",
+  "title": "数组中的第一个回文串",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "双指针"
+  ],
+  "source": {
+    "name": "LeetCode 2108",
+    "url": "https://leetcode.cn/problems/find-first-palindromic-string-in-the-array/"
+  },
+  "statement": "给定一组单词，找出其中**第一个回文单词**并输出。\n\n若不存在回文单词，输出空行。",
+  "input_format": "一行若干个以空格分隔的单词（$1 \\le$ 单词数 $\\le 100$），每个仅含小写字母，长度不超过 $100$。",
+  "output_format": "一行，第一个回文单词；不存在则输出空行。",
+  "constraints": [
+    "单词数 ≤ 100",
+    "仅小写字母",
+    "单词长度 ≤ 100"
+  ],
+  "samples": [
+    {
+      "input": "abc car ada racecar cool\n",
+      "output": "ada\n",
+      "explain": ""
+    },
+    {
+      "input": "notapalindrome racecar\n",
+      "output": "racecar\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**逐个判断**：按顺序检查每个单词是否回文（`w == reverse(w)`），**第一个**满足的就是答案。\n\n时间 $O(总字符数)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string w;\nwhile(cin>>w){string r=w;reverse(r.begin(),r.end());\nif(r==w){printf(\"%s\\n\",w.c_str());return 0;}}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "abc car ada racecar cool\n",
+      "output": "ada\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "notapalindrome racecar\n",
+      "output": "racecar\n",
+      "name": "样例 2（无回文）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "def ghi\n",
+      "output": "\n",
+      "name": "样例 3（无回文）",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aba xyz\n",
+      "output": "aba\n",
+      "name": "第一个就是",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a\n",
+      "output": "a\n",
+      "name": "单字符",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "ab\n",
+      "output": "\n",
+      "name": "单个非回文",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "aa bb cc\n",
+      "output": "aa\n",
+      "name": "多个回文",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string w;\nwhile(cin>>w){string r=w;reverse(r.begin(),r.end());\nif(r==w){printf(\"%s\\n\",w.c_str());return 0;}}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

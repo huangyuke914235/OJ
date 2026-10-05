@@ -1,0 +1,84 @@
+{
+  "id": "stack-validate-sequence",
+  "title": "验证栈序列",
+  "difficulty": "中等",
+  "tags": [
+    "栈",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 946",
+    "url": "https://leetcode.cn/problems/validate-stack-sequences/"
+  },
+  "statement": "给定两个序列 $pushed$（入栈顺序）和 $popped$（出栈顺序），判断 $popped$ 是否**可能是** $pushed$ 的合法出栈序列。\n\n是则输出 `YES`，否则 `NO`。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 1000$）。\n\n第二行 $n$ 个整数（入栈顺序）。\n\n第三行 $n$ 个整数（出栈顺序）。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ n ≤ 1000",
+    "两序列都是同一组数的排列"
+  ],
+  "samples": [
+    {
+      "input": "5\n1 2 3 4 5\n4 5 3 2 1\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "5\n1 2 3 4 5\n4 3 5 1 2\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**模拟入栈过程**：按 $pushed$ 的顺序入栈，**每入栈一个就检查栈顶是否等于 $popped$ 的下一个待出元素**——是就不断弹出。\n\n最后若 $popped$ 全部被匹配完，说明合法。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<int>a(n),b(n);\nfor(int i=0;i<n;++i)scanf(\"%d\",&a[i]);\nfor(int i=0;i<n;++i)scanf(\"%d\",&b[i]);\nvector<int>st;int j=0;\nfor(int x:a){st.push_back(x);\nwhile(!st.empty()&&j<n&&st.back()==b[j]){st.pop_back();++j;}}\nprintf(\"%s\\n\",j==n?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n1 2 3 4 5\n4 5 3 2 1\n",
+      "output": "YES\n",
+      "name": "样例 1（合法）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n1 2 3 4 5\n4 3 5 1 2\n",
+      "output": "NO\n",
+      "name": "样例 2（非法）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 2 3\n1 2 3\n",
+      "output": "YES\n",
+      "name": "升序出栈",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n1 2 3\n3 2 1\n",
+      "output": "YES\n",
+      "name": "降序出栈",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n1\n1\n",
+      "output": "YES\n",
+      "name": "单元素",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1 2 3\n3 1 2\n",
+      "output": "NO\n",
+      "name": "非法",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<int>a(n),b(n);\nfor(int i=0;i<n;++i)scanf(\"%d\",&a[i]);\nfor(int i=0;i<n;++i)scanf(\"%d\",&b[i]);\nvector<int>st;int j=0;\nfor(int x:a){st.push_back(x);\nwhile(!st.empty()&&j<n&&st.back()==b[j]){st.pop_back();++j;}}\nprintf(\"%s\\n\",j==n?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

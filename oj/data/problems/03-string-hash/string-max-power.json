@@ -1,0 +1,84 @@
+{
+  "id": "string-max-power",
+  "title": "连续字符",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "遍历"
+  ],
+  "source": {
+    "name": "LeetCode 1446",
+    "url": "https://leetcode.cn/problems/consecutive-characters/"
+  },
+  "statement": "求字符串中**只含一种字符的最长连续子串**的长度。",
+  "input_format": "一行一个字符串 $s$（$1 \\le |s| \\le 10^5$），仅含小写字母。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "1 ≤ |s| ≤ 10^5",
+    "仅小写字母"
+  ],
+  "samples": [
+    {
+      "input": "leetcode\n",
+      "output": "2\n",
+      "explain": ""
+    },
+    {
+      "input": "abbcccddddeeeeedcba\n",
+      "output": "5\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**一次遍历**：维护当前连续长度 `cur` 和最大值 `best`。\n\n遇到相同字符 `cur++`，否则重置为 1。时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;int best=1,cur=1;\nfor(size_t i=1;i<s.size();++i){\nif(s[i]==s[i-1]){++cur;best=max(best,cur);}else cur=1;}\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "leetcode\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abbcccddddeeeeedcba\n",
+      "output": "5\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "a\n",
+      "output": "1\n",
+      "name": "单字符",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aaaa\n",
+      "output": "4\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aabbbbaa\n",
+      "output": "4\n",
+      "name": "两段",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "abcccccc\n",
+      "output": "6\n",
+      "name": "最长在末尾",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;int best=1,cur=1;\nfor(size_t i=1;i<s.size();++i){\nif(s[i]==s[i-1]){++cur;best=max(best,cur);}else cur=1;}\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

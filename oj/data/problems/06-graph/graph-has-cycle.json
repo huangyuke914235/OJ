@@ -1,0 +1,94 @@
+{
+  "id": "graph-has-cycle",
+  "title": "无向图判环",
+  "difficulty": "简单",
+  "tags": [
+    "图",
+    "DFS",
+    "判环"
+  ],
+  "source": {
+    "name": "图论基础",
+    "url": "https://leetcode.cn/problems/redundant-connection/"
+  },
+  "statement": "判断一个**无向图**中是否存在**环**。\n\n有环输出 `YES`，否则 `NO`。\n\n**注意**：图不一定连通。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 10^5$，$0 \\le m \\le 2\\times10^5$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$（$u \\ne v$）。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ m ≤ 2×10^5",
+    "无自环",
+    "可能不连通"
+  ],
+  "samples": [
+    {
+      "input": "3 3\n1 2\n2 3\n3 1\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**DFS 记录父节点**：遍历时若遇到**已访问且不是父节点**的邻居，说明存在环。\n\n> **易错点**：\n> 1. 必须跳过**父节点**，否则无向图的每条边都会被误判成环；\n> 2. 外层要遍历**所有**顶点，图不一定连通。\n\n> **另解**：用**并查集**——加边时若两端已属同一集合，说明成环。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);\ng[u].push_back(v);g[v].push_back(u);}\nvector<bool>vis(n+1,false);bool cyc=false;\nfor(int s=1;s<=n&&!cyc;++s){\nif(vis[s])continue;\nvector<pair<int,int>>st;st.push_back({s,0});vis[s]=true;\nwhile(!st.empty()&&!cyc){\nauto pr=st.back();st.pop_back();\nint u=pr.first,par=pr.second;\nfor(int v:g[u]){\nif(!vis[v]){vis[v]=true;st.push_back({v,u});}\nelse if(v!=par){cyc=true;break;}}}}\nprintf(\"%s\\n\",cyc?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 3\n1 2\n2 3\n3 1\n",
+      "output": "YES\n",
+      "name": "样例 1（有环）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "NO\n",
+      "name": "样例 2（无环）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 0\n",
+      "output": "NO\n",
+      "name": "单点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 0\n",
+      "output": "NO\n",
+      "name": "两个孤立点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6 4\n1 2\n2 3\n3 1\n4 5\n",
+      "output": "YES\n",
+      "name": "含环且不连通",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "6 3\n1 2\n3 4\n5 6\n",
+      "output": "NO\n",
+      "name": "多个分量都无环",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 4\n1 2\n2 3\n3 4\n4 1\n",
+      "output": "YES\n",
+      "name": "偶环",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);\nfor(int i=0;i<m;++i){int u,v;scanf(\"%d %d\",&u,&v);\ng[u].push_back(v);g[v].push_back(u);}\nvector<bool>vis(n+1,false);bool cyc=false;\nfor(int s=1;s<=n&&!cyc;++s){\nif(vis[s])continue;\nvector<pair<int,int>>st;st.push_back({s,0});vis[s]=true;\nwhile(!st.empty()&&!cyc){\nauto pr=st.back();st.pop_back();\nint u=pr.first,par=pr.second;\nfor(int v:g[u]){\nif(!vis[v]){vis[v]=true;st.push_back({v,u});}\nelse if(v!=par){cyc=true;break;}}}}\nprintf(\"%s\\n\",cyc?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

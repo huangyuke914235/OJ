@@ -1,0 +1,93 @@
+{
+  "id": "heap-window-median",
+  "title": "滑动窗口中位数",
+  "difficulty": "困难",
+  "tags": [
+    "堆",
+    "滑动窗口",
+    "对顶堆"
+  ],
+  "source": {
+    "name": "LeetCode 480",
+    "url": "https://leetcode.cn/problems/sliding-window-median/"
+  },
+  "statement": "给定数组和窗口大小 $k$，窗口从左向右滑动，求**每个窗口的中位数**（下中位数，即排序后第 $\\lceil k/2 \\rceil$ 个）。\n\n输出为整数。",
+  "input_format": "第一行两个整数 $n, k$（$1 \\le k \\le n \\le 2000$）。\n\n第二行 $n$ 个整数（$|a_i| \\le 10^9$）。",
+  "output_format": "一行 $n-k+1$ 个整数，依次为各窗口的中位数。",
+  "constraints": [
+    "1 ≤ k ≤ n ≤ 2000",
+    "|a_i| ≤ 10^9",
+    "取排序后第 ceil(k/2) 个"
+  ],
+  "samples": [
+    {
+      "input": "8 3\n1 3 -1 -3 5 3 6 7\n",
+      "output": "1 -1 -1 3 5 6\n",
+      "explain": ""
+    },
+    {
+      "input": "3 1\n2 1 3\n",
+      "output": "2 1 3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**暴力（本题数据够用）**：对每个窗口排序后取中间元素。时间 $O(n k \\log k)$。\n\n**标准解法：对顶堆 + 惰性删除**——用大根堆和小根堆分别维护窗口的较小半与较大半，每滑动一格就插入新元素、标记过期元素，再平衡两堆。时间 $O(n\\log k)$。\n\n> **易错点**：对顶堆在滑动窗口场景下必须处理**过期元素的惰性删除**（堆顶若已滑出窗口就弹出），这是本题的最大难点。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nbool first=true;\nfor(int i=0;i+k<=n;++i){\nvector<long long>w(a.begin()+i,a.begin()+i+k);\nsort(w.begin(),w.end());\nif(!first)printf(\" \");printf(\"%lld\",w[(k-1)/2]);first=false;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "8 3\n1 3 -1 -3 5 3 6 7\n",
+      "output": "1 -1 -1 3 5 6\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 1\n2 1 3\n",
+      "output": "2 1 3\n",
+      "name": "k = 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5 5\n1 2 3 4 5\n",
+      "output": "3\n",
+      "name": "k = n 奇数",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 4\n1 2 3 4\n",
+      "output": "2\n",
+      "name": "k = n 偶数",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 2\n5 5 5 5\n",
+      "output": "5 5 5\n",
+      "name": "全相同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5 3\n-1 -2 -3 -4 -5\n",
+      "output": "-2 -3 -4\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5 3\n1 2 3 4 5\n",
+      "output": "2 3 4\n",
+      "name": "递增",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nbool first=true;\nfor(int i=0;i+k<=n;++i){\nvector<long long>w(a.begin()+i,a.begin()+i+k);\nsort(w.begin(),w.end());\nif(!first)printf(\" \");printf(\"%lld\",w[(k-1)/2]);first=false;}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

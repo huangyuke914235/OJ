@@ -1,0 +1,86 @@
+{
+  "id": "dp-longest-common-substring",
+  "title": "最长公共子串",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "字符串",
+    "二维DP"
+  ],
+  "source": {
+    "name": "最长公共子串",
+    "url": "https://leetcode.cn/problems/maximum-length-of-repeated-subarray/"
+  },
+  "statement": "给定两个字符串，求它们的**最长公共子串**（**必须连续**）的长度。",
+  "input_format": "第一行一个字符串 $a$。\n\n第二行一个字符串 $b$。\n\n长度均不超过 $1000$，仅含小写字母。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "|a|, |b| ≤ 1000",
+    "仅小写字母",
+    "子串必须连续"
+  ],
+  "samples": [
+    {
+      "input": "abcde\nabfde\n",
+      "output": "2\n",
+      "explain": ""
+    },
+    {
+      "input": "abc\ndef\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**与 LCS 的区别**：最长公共**子串**要求**连续**。\n\n`dp[i][j]` = 「以 $a[i-1]$ 和 $b[j-1]$ **结尾**」的最长公共子串长度。\n\n- 若 `a[i-1] == b[j-1]`：`dp[i][j] = dp[i-1][j-1] + 1`；\n- **否则 `dp[i][j] = 0`**（关键区别！LCS 那里是取 max）。\n\n答案要取**整个过程中的最大值**，不是 `dp[n][m]`。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string a,b;cin>>a>>b;\nint n=a.size(),m=b.size();\nvector<int>prev(m+1,0),cur(m+1,0);int best=0;\nfor(int i=1;i<=n;++i){\nfill(cur.begin(),cur.end(),0);\nfor(int j=1;j<=m;++j)if(a[i-1]==b[j-1]){\ncur[j]=prev[j-1]+1;best=max(best,cur[j]);}\nprev=cur;}\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "abcde\nabfde\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abc\ndef\n",
+      "output": "0\n",
+      "name": "无公共",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abc\nabc\n",
+      "output": "3\n",
+      "name": "完全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a\nab\n",
+      "output": "1\n",
+      "name": "单字符匹配",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abcdefg\nxyzcdef\n",
+      "output": "4\n",
+      "name": "长匹配",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "aaaa\naa\n",
+      "output": "2\n",
+      "name": "重复字符",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string a,b;cin>>a>>b;\nint n=a.size(),m=b.size();\nvector<int>prev(m+1,0),cur(m+1,0);int best=0;\nfor(int i=1;i<=n;++i){\nfill(cur.begin(),cur.end(),0);\nfor(int j=1;j<=m;++j)if(a[i-1]==b[j-1]){\ncur[j]=prev[j-1]+1;best=max(best,cur[j]);}\nprev=cur;}\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

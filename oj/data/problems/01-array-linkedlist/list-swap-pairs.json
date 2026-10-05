@@ -1,0 +1,91 @@
+{
+  "id": "list-swap-pairs",
+  "title": "两两交换链表中的节点",
+  "difficulty": "中等",
+  "tags": [
+    "链表",
+    "指针操作"
+  ],
+  "source": {
+    "name": "LeetCode 24",
+    "url": "https://leetcode.cn/problems/swap-nodes-in-pairs/"
+  },
+  "statement": "给定单链表，**两两交换**其中相邻的节点，返回交换后的链表。\n\n若节点总数为奇数，最后一个节点保持不动。\n\n**要求**：不能只交换节点内的值，必须实际调整指针（本题以序列形式给出结果）。",
+  "input_format": "第一行一个整数 $n$（$0 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数，$n=0$ 时为空行。",
+  "output_format": "一行，交换后的节点值序列（空格分隔）。空链表输出空行。",
+  "constraints": [
+    "0 ≤ n ≤ 10^5",
+    "|v| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "2 1 4 3\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n1 2 3\n",
+      "output": "2 1 3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**哑结点 + 三指针**：加 `dummy` 消除头结点特判，每轮用 `prev / first / second` 三个指针完成一次交换：\n\n```\nprev->next = second;\nfirst->next = second->next;\nsecond->next = first;\nprev = first;\n```\n\n> **易错点**：交换顺序不能乱——必须先让 `prev` 指向 `second`，否则链会断。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nfor(int i=0;i+1<n;i+=2)swap(a[i],a[i+1]);\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%lld\",a[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "2 1 4 3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 2 3\n",
+      "output": "2 1 3\n",
+      "name": "奇数个",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n1\n",
+      "output": "1\n",
+      "name": "单节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2\n1 2\n",
+      "output": "2 1\n",
+      "name": "两节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "0\n",
+      "output": "\n",
+      "name": "空链表",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n1 2 3 4 5\n",
+      "output": "2 1 4 3 5\n",
+      "name": "五节点",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n-1 -2 -3 -4\n",
+      "output": "-2 -1 -4 -3\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nfor(int i=0;i+1<n;i+=2)swap(a[i],a[i+1]);\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%lld\",a[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

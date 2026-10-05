@@ -1,0 +1,91 @@
+{
+  "id": "string-int-to-roman",
+  "title": "整数转罗马数字",
+  "difficulty": "中等",
+  "tags": [
+    "字符串",
+    "贪心",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 12",
+    "url": "https://leetcode.cn/problems/integer-to-roman/"
+  },
+  "statement": "把 $1 \\sim 3999$ 的整数转换为罗马数字。\n\n需要用到 13 个「值-符号」对，包括 6 个减法组合：`CM(900) CD(400) XC(90) XL(40) IX(9) IV(4)`。",
+  "input_format": "一行一个整数 $n$（$1 \\le n \\le 3999$）。",
+  "output_format": "一行，罗马数字表示。",
+  "constraints": [
+    "1 ≤ n ≤ 3999"
+  ],
+  "samples": [
+    {
+      "input": "3\n",
+      "output": "III\n",
+      "explain": ""
+    },
+    {
+      "input": "58\n",
+      "output": "LVIII\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**贪心 + 13 个值表**：把值从大到小排列，每次能减就减，并追加对应符号。\n\n> **关键**：必须把 6 个减法组合（900、400、90、40、9、4）也放进表里，否则 `4` 会输出 `IIII` 而不是 `IV`。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<pair<int,string>>v={{1000,\"M\"},{900,\"CM\"},{500,\"D\"},{400,\"CD\"},{100,\"C\"},{90,\"XC\"},\n{50,\"L\"},{40,\"XL\"},{10,\"X\"},{9,\"IX\"},{5,\"V\"},{4,\"IV\"},{1,\"I\"}};\nstring r;\nfor(auto&pr:v)while(n>=pr.first){r+=pr.second;n-=pr.first;}\nprintf(\"%s\\n\",r.c_str());return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3\n",
+      "output": "III\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "58\n",
+      "output": "LVIII\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1994\n",
+      "output": "MCMXCIV\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n",
+      "output": "I\n",
+      "name": "最小",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3999\n",
+      "output": "MMMCMXCIX\n",
+      "name": "最大",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2000\n",
+      "output": "MM\n",
+      "name": "整千",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "944\n",
+      "output": "CMXLIV\n",
+      "name": "含减法组合",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<pair<int,string>>v={{1000,\"M\"},{900,\"CM\"},{500,\"D\"},{400,\"CD\"},{100,\"C\"},{90,\"XC\"},\n{50,\"L\"},{40,\"XL\"},{10,\"X\"},{9,\"IX\"},{5,\"V\"},{4,\"IV\"},{1,\"I\"}};\nstring r;\nfor(auto&pr:v)while(n>=pr.first){r+=pr.second;n-=pr.first;}\nprintf(\"%s\\n\",r.c_str());return 0;}\n"
+  },
+  "time_limit": 2.0
+}

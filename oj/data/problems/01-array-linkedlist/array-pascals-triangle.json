@@ -1,0 +1,84 @@
+{
+  "id": "array-pascals-triangle",
+  "title": "杨辉三角",
+  "difficulty": "入门",
+  "tags": [
+    "数组",
+    "递推",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 118",
+    "url": "https://leetcode.cn/problems/pascals-triangle/"
+  },
+  "statement": "给定行数 $n$，输出杨辉三角的前 $n$ 行。\n\n杨辉三角的规则：每行首尾都是 $1$，中间每个数等于它**左上方**与**正上方**两数之和。",
+  "input_format": "一行一个整数 $n$（$0 \\le n \\le 30$）。",
+  "output_format": "共 $n$ 行，第 $i$ 行有 $i$ 个数，以空格分隔。$n=0$ 时输出空行。",
+  "constraints": [
+    "0 ≤ n ≤ 30"
+  ],
+  "samples": [
+    {
+      "input": "5\n",
+      "output": "1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1\n",
+      "explain": ""
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**逐行递推**：第 $i$ 行有 $i$ 个元素，首尾为 1，中间 `r[j] = 上一行[j-1] + 上一行[j]`。\n\n时间 $O(n^2)$。\n\n> **易错点**：$n=0$ 时要输出一个空行，不能什么都不输出。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<vector<long long>>t;\nfor(int i=0;i<n;++i){vector<long long>r(i+1,1);\nfor(int j=1;j<i;++j)r[j]=t[i-1][j-1]+t[i-1][j];\nt.push_back(r);}\nfor(auto&r:t){for(size_t j=0;j<r.size();++j){if(j)printf(\" \");printf(\"%lld\",r[j]);}printf(\"\\n\");}\nif(n==0)printf(\"\\n\");\nreturn 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n",
+      "output": "1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "0\n",
+      "output": "\n",
+      "name": "0 行",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2\n",
+      "output": "1\n1 1\n",
+      "name": "2 行",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "10\n",
+      "output": "1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1\n1 5 10 10 5 1\n1 6 15 20 15 6 1\n1 7 21 35 35 21 7 1\n1 8 28 56 70 56 28 8 1\n1 9 36 84 126 126 84 36 9 1\n",
+      "name": "10 行",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "30\n",
+      "output": "1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1\n1 5 10 10 5 1\n1 6 15 20 15 6 1\n1 7 21 35 35 21 7 1\n1 8 28 56 70 56 28 8 1\n1 9 36 84 126 126 84 36 9 1\n1 10 45 120 210 252 210 120 45 10 1\n1 11 55 165 330 462 462 330 165 55 11 1\n1 12 66 220 495 792 924 792 495 220 66 12 1\n1 13 78 286 715 1287 1716 1716 1287 715 286 78 13 1\n1 14 91 364 1001 2002 3003 3432 3003 2002 1001 364 91 14 1\n1 15 105 455 1365 3003 5005 6435 6435 5005 3003 1365 455 105 15 1\n1 16 120 560 1820 4368 8008 11440 12870 11440 8008 4368 1820 560 120 16 1\n1 17 136 680 2380 6188 12376 19448 24310 24310 19448 12376 6188 2380 680 136 17 1\n1 18 153 816 3060 8568 18564 31824 43758 48620 43758 31824 18564 8568 3060 816 153 18 1\n1 19 171 969 3876 11628 27132 50388 75582 92378 92378 75582 50388 27132 11628 3876 969 171 19 1\n1 20 190 1140 4845 15504 38760 77520 125970 167960 184756 167960 125970 77520 38760 15504 4845 1140 190 20 1\n1 21 210 1330 5985 20349 54264 116280 203490 293930 352716 352716 293930 203490 116280 54264 20349 5985 1330 210 21 1\n1 22 231 1540 7315 26334 74613 170544 319770 497420 646646 705432 646646 497420 319770 170544 74613 26334 7315 1540 231 22 1\n1 23 253 1771 8855 33649 100947 245157 490314 817190 1144066 1352078 1352078 1144066 817190 490314 245157 100947 33649 8855 1771 253 23 1\n1 24 276 2024 10626 42504 134596 346104 735471 1307504 1961256 2496144 2704156 2496144 1961256 1307504 735471 346104 134596 42504 10626 2024 276 24 1\n1 25 300 2300 12650 53130 177100 480700 1081575 2042975 3268760 4457400 5200300 5200300 4457400 3268760 2042975 1081575 480700 177100 53130 12650 2300 300 25 1\n1 26 325 2600 14950 65780 230230 657800 1562275 3124550 5311735 7726160 9657700 10400600 9657700 7726160 5311735 3124550 1562275 657800 230230 65780 14950 2600 325 26 1\n1 27 351 2925 17550 80730 296010 888030 2220075 4686825 8436285 13037895 17383860 20058300 20058300 17383860 13037895 8436285 4686825 2220075 888030 296010 80730 17550 2925 351 27 1\n1 28 378 3276 20475 98280 376740 1184040 3108105 6906900 13123110 21474180 30421755 37442160 40116600 37442160 30421755 21474180 13123110 6906900 3108105 1184040 376740 98280 20475 3276 378 28 1\n1 29 406 3654 23751 118755 475020 1560780 4292145 10015005 20030010 34597290 51895935 67863915 77558760 77558760 67863915 51895935 34597290 20030010 10015005 4292145 1560780 475020 118755 23751 3654 406 29 1\n",
+      "name": "30 行",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<vector<long long>>t;\nfor(int i=0;i<n;++i){vector<long long>r(i+1,1);\nfor(int j=1;j<i;++j)r[j]=t[i-1][j-1]+t[i-1][j];\nt.push_back(r);}\nfor(auto&r:t){for(size_t j=0;j<r.size();++j){if(j)printf(\" \");printf(\"%lld\",r[j]);}printf(\"\\n\");}\nif(n==0)printf(\"\\n\");\nreturn 0;}\n"
+  },
+  "time_limit": 2.0
+}

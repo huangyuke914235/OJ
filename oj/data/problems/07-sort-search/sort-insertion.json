@@ -1,0 +1,91 @@
+{
+  "id": "sort-insertion",
+  "title": "插入排序",
+  "difficulty": "入门",
+  "tags": [
+    "排序",
+    "插入排序"
+  ],
+  "source": {
+    "name": "经典排序",
+    "url": "https://leetcode.cn/problems/sort-an-array/"
+  },
+  "statement": "用**插入排序**把数组升序排列并输出。\n\n插入排序的思路：把数组分成「已排序前缀」和「未排序后缀」，每次取后缀的第一个元素，在已排序部分从后往前找到它该插入的位置。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 5000$）。\n\n第二行 $n$ 个整数（$|a_i| \\le 10^9$）。",
+  "output_format": "一行 $n$ 个整数，升序排列。",
+  "constraints": [
+    "1 ≤ n ≤ 5000",
+    "|a_i| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "5\n3 1 4 1 5\n",
+      "output": "1 1 3 4 5\n",
+      "explain": ""
+    },
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "1 2 3 4\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**插入排序**：`a[0..i-1]` 已有序，把 `a[i]` 插入到正确位置（从后往前比较并后移）。\n\n时间 $O(n^2)$，空间 $O(1)$，**稳定**。\n\n> **优点**：数组**近乎有序**时接近 $O(n)$，实际表现常优于快排。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nfor(int i=1;i<n;++i){long long key=a[i];int j=i-1;\nwhile(j>=0&&a[j]>key){a[j+1]=a[j];--j;}\na[j+1]=key;}\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%lld\",a[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n3 1 4 1 5\n",
+      "output": "1 1 3 4 5\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "1 2 3 4\n",
+      "name": "已有序",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n4 3 2 1\n",
+      "output": "1 2 3 4\n",
+      "name": "逆序",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n7\n",
+      "output": "7\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n2 2 2 2\n",
+      "output": "2 2 2 2\n",
+      "name": "全相同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n-1 0 -3 2 -2\n",
+      "output": "-3 -2 -1 0 2\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2\n5 3\n",
+      "output": "3 5\n",
+      "name": "两元素",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nfor(int i=1;i<n;++i){long long key=a[i];int j=i-1;\nwhile(j>=0&&a[j]>key){a[j+1]=a[j];--j;}\na[j+1]=key;}\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%lld\",a[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

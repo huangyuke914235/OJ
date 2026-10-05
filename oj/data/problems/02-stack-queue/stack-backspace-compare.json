@@ -1,0 +1,92 @@
+{
+  "id": "stack-backspace-compare",
+  "title": "比较含退格的字符串",
+  "difficulty": "简单",
+  "tags": [
+    "栈",
+    "字符串",
+    "双指针"
+  ],
+  "source": {
+    "name": "LeetCode 844",
+    "url": "https://leetcode.cn/problems/backspace-string-compare/"
+  },
+  "statement": "`#` 表示**退格**（删除前一个字符）。给定两个字符串，判断它们经过退格处理后是否**相等**。\n\n若某个 `#` 前面没有字符，则它什么也不做。\n\n相等输出 `YES`，否则 `NO`。",
+  "input_format": "第一行一个字符串 $a$。\n\n第二行一个字符串 $b$。\n\n两串长度均不超过 $2\\times10^5$，仅含小写字母与 `#`。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "|a|, |b| ≤ 2×10^5",
+    "仅含小写字母与 #"
+  ],
+  "samples": [
+    {
+      "input": "ab#c\nad#c\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "ab##\nc#d#\n",
+      "output": "YES\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**用栈模拟退格**：遇到普通字符入栈，遇到 `#` 且栈非空就弹出。\n\n把两个串都处理完再比较即可。时间 $O(n)$，空间 $O(n)$。\n\n> **进阶**：可以从**后往前**用双指针 + 退格计数做到 $O(1)$ 空间。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nstring build(const string&s){string st;\nfor(char c:s){if(c=='#'){if(!st.empty())st.pop_back();}else st.push_back(c);}\nreturn st;}\nint main(){string a,b;cin>>a>>b;\nprintf(\"%s\\n\",build(a)==build(b)?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "ab#c\nad#c\n",
+      "output": "YES\n",
+      "name": "样例 1（相等）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "ab##\nc#d#\n",
+      "output": "YES\n",
+      "name": "样例 2（相等）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "a#c\nb\n",
+      "output": "NO\n",
+      "name": "样例 3（不等）",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "###\n#\n",
+      "output": "YES\n",
+      "name": "全为退格",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abc\nabc\n",
+      "output": "YES\n",
+      "name": "无退格",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "abc#\nab\n",
+      "output": "YES\n",
+      "name": "末尾退格",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "#\n#\n",
+      "output": "YES\n",
+      "name": "两串都空",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nstring build(const string&s){string st;\nfor(char c:s){if(c=='#'){if(!st.empty())st.pop_back();}else st.push_back(c);}\nreturn st;}\nint main(){string a,b;cin>>a>>b;\nprintf(\"%s\\n\",build(a)==build(b)?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

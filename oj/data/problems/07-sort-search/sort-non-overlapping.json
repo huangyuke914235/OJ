@@ -1,0 +1,93 @@
+{
+  "id": "sort-non-overlapping",
+  "title": "无重叠区间（最少删除数）",
+  "difficulty": "中等",
+  "tags": [
+    "贪心",
+    "区间",
+    "排序"
+  ],
+  "source": {
+    "name": "LeetCode 435",
+    "url": "https://leetcode.cn/problems/non-overlapping-intervals/"
+  },
+  "statement": "给定若干区间 $[start, end]$，请删除**最少数量**的区间，使得剩下的区间**互不重叠**。\n\n**不重叠**指前一个区间的**结束**不大于后一个区间的**开始**（端点可以相接）。\n\n输出最少需要删除的区间数。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^5$）。\n\n接下来 $n$ 行，每行两个整数 $start, end$（$start \\le end$，$|start|, |end| \\le 10^9$）。",
+  "output_format": "一行一个整数，表示最少删除数。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "start ≤ end",
+    "端点相接视为不重叠"
+  ],
+  "samples": [
+    {
+      "input": "4\n1 2\n2 3\n3 4\n1 3\n",
+      "output": "1\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n1 2\n1 2\n1 2\n",
+      "output": "2\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**按结束时间贪心**：先按**开始时间**排序（本题实现用 `curEnd` 跟踪当前保留区间的结束时间）。\n\n逐个考虑区间：若它的开始 $\\ge$ `curEnd`，说明不重叠，**保留**并更新 `curEnd`；否则必然重叠，需要删除——但**要保留结束更早的那个**（`curEnd = min(curEnd, end)`），这样给后面留出更多空间。\n\n答案 = 总数 − 保留数。\n\n> **更标准的写法**：直接按**结束时间升序**排序，然后贪心选择「结束最早且不与已选重叠」的区间。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<pair<long long,long long>>v(n);\nfor(int i=0;i<n;++i)scanf(\"%lld %lld\",&v[i].first,&v[i].second);\nsort(v.begin(),v.end());\nlong long curEnd=LLONG_MIN;int keep=0;\nfor(auto&pr:v){\nif(pr.first>=curEnd){++keep;curEnd=pr.second;}\nelse curEnd=min(curEnd,pr.second);}\nprintf(\"%d\\n\",n-keep);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n1 2\n2 3\n3 4\n1 3\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 2\n1 2\n1 2\n",
+      "output": "2\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2\n1 2\n2 3\n",
+      "output": "0\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n1 5\n",
+      "output": "0\n",
+      "name": "单区间",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n1 2\n3 4\n5 6\n",
+      "output": "0\n",
+      "name": "全不重叠",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1 10\n2 3\n4 5\n",
+      "output": "1\n",
+      "name": "全重叠",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1 2\n2 3\n3 4\n",
+      "output": "0\n",
+      "name": "端点相接",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<pair<long long,long long>>v(n);\nfor(int i=0;i<n;++i)scanf(\"%lld %lld\",&v[i].first,&v[i].second);\nsort(v.begin(),v.end());\nlong long curEnd=LLONG_MIN;int keep=0;\nfor(auto&pr:v){\nif(pr.first>=curEnd){++keep;curEnd=pr.second;}\nelse curEnd=min(curEnd,pr.second);}\nprintf(\"%d\\n\",n-keep);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,92 @@
+{
+  "id": "list-palindrome",
+  "title": "回文链表",
+  "difficulty": "简单",
+  "tags": [
+    "链表",
+    "双指针",
+    "栈"
+  ],
+  "source": {
+    "name": "LeetCode 234",
+    "url": "https://leetcode.cn/problems/palindrome-linked-list/"
+  },
+  "statement": "判断一个单链表的节点值序列是否为**回文**。是则输出 `YES`，否则输出 `NO`。",
+  "input_format": "第一行一个整数 $n$（$0 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数，按从头到尾顺序给出节点值（$|v| \\le 10^9$），$n=0$ 时为空行。",
+  "output_format": "一行，输出 `YES` 或 `NO`。空链表视为回文，输出 `YES`。",
+  "constraints": [
+    "0 ≤ n ≤ 10^5",
+    "|v| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "4\n1 2 2 1\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "2\n1 2\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**相向双指针**：从两端向中间逐对比较。\n\n> 在真实链表上不能随机访问，标准做法是「**快慢指针找中点 → 反转后半段 → 比较 → 恢复**」。\n> 本题以数组形式给出链表，用双指针即可。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nbool ok=true;for(int i=0,j=n-1;i<j;++i,--j)if(a[i]!=a[j]){ok=false;break;}\nprintf(\"%s\\n\",ok?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n1 2 2 1\n",
+      "output": "YES\n",
+      "name": "样例 1（是）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2\n1 2\n",
+      "output": "NO\n",
+      "name": "样例 2（否）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n7\n",
+      "output": "YES\n",
+      "name": "单节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "0\n",
+      "output": "YES\n",
+      "name": "空链表",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n5 5 5 5\n",
+      "output": "YES\n",
+      "name": "全相同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n1 2 3 2 1\n",
+      "output": "YES\n",
+      "name": "奇数长度回文",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n-1 0 0 -1\n",
+      "output": "YES\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nbool ok=true;for(int i=0,j=n-1;i<j;++i,--j)if(a[i]!=a[j]){ok=false;break;}\nprintf(\"%s\\n\",ok?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

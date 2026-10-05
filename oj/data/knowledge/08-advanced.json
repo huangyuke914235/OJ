@@ -15,7 +15,19 @@
         "`dp` 的答案是所有 `dp[i]` 的最大值，不是 `dp[n-1]`"
       ],
       "problems": [
-        "advanced-lis"
+        "advanced-lis",
+        "dp-fibonacci",
+        "dp-climb-stairs",
+        "dp-tribonacci",
+        "dp-house-robber",
+        "dp-house-robber-ii",
+        "dp-integer-break",
+        "dp-max-subarray-circular",
+        "dp-decode-ways",
+        "dp-min-cost-climbing",
+        "dp-min-cost-tickets",
+        "dp-arithmetic-slices",
+        "dp-delete-and-earn"
       ]
     },
     {
@@ -30,7 +42,10 @@
       ],
       "problems": [
         "advanced-edit-distance",
-        "advanced-lcs"
+        "advanced-lcs",
+        "dp-longest-common-substring",
+        "dp-longest-palindromic-subseq",
+        "dp-count-palindromic-substrings"
       ]
     },
     {
@@ -45,7 +60,14 @@
       ],
       "problems": [
         "advanced-01-knapsack",
-        "advanced-complete-knapsack"
+        "advanced-complete-knapsack",
+        "dp-coin-change",
+        "dp-coin-change-ii",
+        "dp-partition-equal",
+        "dp-target-sum",
+        "dp-01-knapsack-basic",
+        "dp-perfect-squares",
+        "dp-rod-cutting"
       ]
     },
     {
@@ -73,7 +95,8 @@
         "前 k−1 个位置窗口还没成形，不能提前记录答案"
       ],
       "problems": [
-        "advanced-sliding-window-max"
+        "advanced-sliding-window-max",
+        "queue-window-min"
       ]
     },
     {

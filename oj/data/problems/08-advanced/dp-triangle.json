@@ -1,0 +1,92 @@
+{
+  "id": "dp-triangle",
+  "title": "三角形最小路径和",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "二维DP",
+    "空间优化"
+  ],
+  "source": {
+    "name": "LeetCode 120",
+    "url": "https://leetcode.cn/problems/triangle/"
+  },
+  "statement": "给定一个三角形（第 $i$ 行有 $i$ 个数），从**顶部**出发走到**底部**。\n\n每一步只能移动到下一行的**相邻**位置（下标相同或下标 +1）。\n\n求路径上数字之和的**最小值**。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 200$）。\n\n接下来 $n$ 行，第 $i$ 行有 $i$ 个整数（$|v| \\le 10^4$）。",
+  "output_format": "一行一个整数，表示最小路径和。",
+  "constraints": [
+    "1 ≤ n ≤ 200",
+    "|v| ≤ 10^4"
+  ],
+  "samples": [
+    {
+      "input": "4\n2\n3 4\n6 5 7\n4 1 8 3\n",
+      "output": "11\n",
+      "explain": ""
+    },
+    {
+      "input": "1\n5\n",
+      "output": "5\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**自底向上 + 一维滚动**：`dp[j]` 表示从 $(i,j)$ 出发到底部的最小路径和。\n\n从**最后一行**开始（`dp` 初值就是最后一行），逐层往上：\n\n```\ndp[j] = min(dp[j], dp[j+1]) + triangle[i][j]\n```\n\n**为什么自底向上**：顶部只有一个起点，自顶向下要处理多个终点；自底向上则每层只需更新到 `dp[0]`，天然得到答案。\n\n空间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<vector<long long>>t(n);\nfor(int i=0;i<n;++i){t[i].resize(i+1);\nfor(int j=0;j<=i;++j)scanf(\"%lld\",&t[i][j]);}\nvector<long long>dp=t[n-1];\nfor(int i=n-2;i>=0;--i)for(int j=0;j<=i;++j)\ndp[j]=min(dp[j],dp[j+1])+t[i][j];\nprintf(\"%lld\\n\",dp[0]);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n2\n3 4\n6 5 7\n4 1 8 3\n",
+      "output": "11\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n5\n",
+      "output": "5\n",
+      "name": "单行",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2\n1\n2 3\n",
+      "output": "3\n",
+      "name": "两行",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n1\n1 1\n1 1 1\n",
+      "output": "3\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n-1\n2 3\n1 -5 4\n",
+      "output": "-4\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1\n2 3\n4 5 6\n",
+      "output": "7\n",
+      "name": "递增",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n-10\n1 2\n3 4 5\n6 7 8 9\n",
+      "output": "0\n",
+      "name": "四行",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<vector<long long>>t(n);\nfor(int i=0;i<n;++i){t[i].resize(i+1);\nfor(int j=0;j<=i;++j)scanf(\"%lld\",&t[i][j]);}\nvector<long long>dp=t[n-1];\nfor(int i=n-2;i>=0;--i)for(int j=0;j<=i;++j)\ndp[j]=min(dp[j],dp[j+1])+t[i][j];\nprintf(\"%lld\\n\",dp[0]);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

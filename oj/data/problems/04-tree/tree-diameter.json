@@ -1,0 +1,91 @@
+{
+  "id": "tree-diameter",
+  "title": "二叉树的直径",
+  "difficulty": "简单",
+  "tags": [
+    "树",
+    "二叉树",
+    "递归"
+  ],
+  "source": {
+    "name": "LeetCode 543",
+    "url": "https://leetcode.cn/problems/diameter-of-binary-tree/"
+  },
+  "statement": "二叉树的**直径**指任意两节点之间**最长路径的边数**。这条路径可能经过根，也可能不经过。\n\n求直径。",
+  "input_format": "一行，二叉树的层序序列（`null` 表示空节点）。节点数 $\\le 10^4$。",
+  "output_format": "一行一个整数，表示直径（边数）。空树输出 0。",
+  "constraints": [
+    "节点数 ≤ 10^4"
+  ],
+  "samples": [
+    {
+      "input": "1 2 3 4 5\n",
+      "output": "3\n",
+      "explain": ""
+    },
+    {
+      "input": "null\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**在求高度的递归里顺便更新答案**：对每个节点，经过它的最长路径长度是 `左高 + 右高`（边数）。\n\n用全局变量记录这个值的最大值即可。时间 $O(n)$。\n\n> **易错点**：直径**不一定经过根**，所以要对每个节点都计算一次，不能只算根节点。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint best=0;\nint h(Node*n){if(!n)return 0;\nint lh=h(n->l),rh=h(n->r);\nbest=max(best,lh+rh);\nreturn 1+max(lh,rh);}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nh(buildTree(tk));printf(\"%d\\n\",best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "1 2 3 4 5\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "0\n",
+      "name": "空树",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n",
+      "output": "0\n",
+      "name": "单节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 null 3 null 4\n",
+      "output": "3\n",
+      "name": "只有左链",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 5 6 7\n",
+      "output": "4\n",
+      "name": "完整树",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2\n",
+      "output": "1\n",
+      "name": "两节点",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 null null 5 6\n",
+      "output": "5\n",
+      "name": "不经过根",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint best=0;\nint h(Node*n){if(!n)return 0;\nint lh=h(n->l),rh=h(n->r);\nbest=max(best,lh+rh);\nreturn 1+max(lh,rh);}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nh(buildTree(tk));printf(\"%d\\n\",best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

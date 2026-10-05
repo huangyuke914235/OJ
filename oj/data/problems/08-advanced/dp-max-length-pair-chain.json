@@ -1,0 +1,86 @@
+{
+  "id": "dp-max-length-pair-chain",
+  "title": "最长数对链",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "贪心",
+    "区间"
+  ],
+  "source": {
+    "name": "LeetCode 646",
+    "url": "https://leetcode.cn/problems/maximum-length-of-pair-chain/"
+  },
+  "statement": "给定若干数对 $(a, b)$（$a < b$）。若数对 $B$ 的 $a$ **严格大于**数对 $A$ 的 $b$，则称 $B$ 可以接在 $A$ 后面。\n\n求能构成的最长数对链的长度。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 1000$）。\n\n接下来 $n$ 行，每行两个整数 $a, b$（$a < b$，$|a|, |b| \\le 10^9$）。",
+  "output_format": "一行一个整数，表示最长链长度。",
+  "constraints": [
+    "1 ≤ n ≤ 1000",
+    "a < b",
+    "接续条件为严格大于"
+  ],
+  "samples": [
+    {
+      "input": "5\n1 2\n2 3\n3 4\n1 3\n4 5\n",
+      "output": "2\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n1 2\n7 8\n4 5\n",
+      "output": "3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**贪心（按右端点排序）**：把所有数对按**右端点 $b$ 升序**排序，然后依次尝试接续：若当前数对的 $a$ **大于**已选链的末尾 $b$，就选它并更新末尾。\n\n> **为什么贪心正确**：右端点越小，给后面留的空间越大——这是经典的**区间调度**贪心。\n\n> **DP 解法**：按 $a$ 排序后求「最长递增子序列」式的 DP，$O(n^2)$，但贪心 $O(n\\log n)$ 更优。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<pair<long long,long long>>v(n);\nfor(int i=0;i<n;++i)scanf(\"%lld %lld\",&v[i].first,&v[i].second);\nsort(v.begin(),v.end(),[](const auto&a,const auto&b){return a.second<b.second;});\nint cnt=0;long long cur=LLONG_MIN;\nfor(auto&p:v)if(p.first>cur){++cnt;cur=p.second;}\nprintf(\"%d\\n\",cnt);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n1 2\n2 3\n3 4\n1 3\n4 5\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 2\n7 8\n4 5\n",
+      "output": "3\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n1 2\n",
+      "output": "1\n",
+      "name": "单数对",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n1 2\n3 4\n5 6\n",
+      "output": "3\n",
+      "name": "全部可接",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n1 10\n2 10\n3 10\n",
+      "output": "1\n",
+      "name": "全部冲突",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n-5 -4\n-3 -2\n-1 0\n",
+      "output": "3\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<pair<long long,long long>>v(n);\nfor(int i=0;i<n;++i)scanf(\"%lld %lld\",&v[i].first,&v[i].second);\nsort(v.begin(),v.end(),[](const auto&a,const auto&b){return a.second<b.second;});\nint cnt=0;long long cur=LLONG_MIN;\nfor(auto&p:v)if(p.first>cur){++cnt;cur=p.second;}\nprintf(\"%d\\n\",cnt);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

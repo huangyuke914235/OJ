@@ -1,0 +1,92 @@
+{
+  "id": "sort-relative-ranks",
+  "title": "相对名次",
+  "difficulty": "简单",
+  "tags": [
+    "数组",
+    "排序",
+    "哈希表"
+  ],
+  "source": {
+    "name": "LeetCode 506",
+    "url": "https://leetcode.cn/problems/relative-ranks/"
+  },
+  "statement": "给定各选手的得分，输出每个选手的**名次**。\n\n**输出格式**：前 3 名分别输出 `Gold Medal`、`Silver Medal`、`Bronze Medal`，其余输出名次数字（如 `4`）。\n\n得分**互不相同**。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^4$）。\n\n第二行 $n$ 个互不相同的整数（$0 \\le a_i \\le 10^6$）。",
+  "output_format": "一行 $n$ 个名次标记，以空格分隔（顺序与输入一致）。",
+  "constraints": [
+    "1 ≤ n ≤ 10^4",
+    "得分互不相同"
+  ],
+  "samples": [
+    {
+      "input": "5\n5 4 3 2 1\n",
+      "output": "Gold Medal Silver Medal Bronze Medal 4 5\n",
+      "explain": ""
+    },
+    {
+      "input": "5\n10 3 8 9 4\n",
+      "output": "Gold Medal 5 Bronze Medal Silver Medal 4\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**排序下标**：把下标按得分降序排序，得到名次顺序；再把名次写回对应下标。\n\n> **易错点**：排序的是**下标**而不是得分本身——否则无法知道名次属于哪个选手。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nvector<int>idx(n);for(int i=0;i<n;++i)idx[i]=i;\nsort(idx.begin(),idx.end(),[&](int x,int y){return a[x]>a[y];});\nvector<string>res(n);\nfor(int r=0;r<n;++r){\nif(r==0)res[idx[r]]=\"Gold Medal\";\nelse if(r==1)res[idx[r]]=\"Silver Medal\";\nelse if(r==2)res[idx[r]]=\"Bronze Medal\";\nelse res[idx[r]]=to_string(r+1);}\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%s\",res[i].c_str());}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n5 4 3 2 1\n",
+      "output": "Gold Medal Silver Medal Bronze Medal 4 5\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n10 3 8 9 4\n",
+      "output": "Gold Medal 5 Bronze Medal Silver Medal 4\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n100\n",
+      "output": "Gold Medal\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2\n1 2\n",
+      "output": "Silver Medal Gold Medal\n",
+      "name": "两元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n3 1 2\n",
+      "output": "Gold Medal Bronze Medal Silver Medal\n",
+      "name": "三元素",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n4 3 2 1\n",
+      "output": "Gold Medal Silver Medal Bronze Medal 4\n",
+      "name": "四元素",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "6\n7 1 5 3 9 2\n",
+      "output": "Silver Medal 6 Bronze Medal 4 Gold Medal 5\n",
+      "name": "乱序",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nvector<int>idx(n);for(int i=0;i<n;++i)idx[i]=i;\nsort(idx.begin(),idx.end(),[&](int x,int y){return a[x]>a[y];});\nvector<string>res(n);\nfor(int r=0;r<n;++r){\nif(r==0)res[idx[r]]=\"Gold Medal\";\nelse if(r==1)res[idx[r]]=\"Silver Medal\";\nelse if(r==2)res[idx[r]]=\"Bronze Medal\";\nelse res[idx[r]]=to_string(r+1);}\nfor(int i=0;i<n;++i){if(i)printf(\" \");printf(\"%s\",res[i].c_str());}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

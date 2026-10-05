@@ -1,0 +1,84 @@
+{
+  "id": "dp-delete-and-earn",
+  "title": "删除并获得点数",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "打家劫舍"
+  ],
+  "source": {
+    "name": "LeetCode 740",
+    "url": "https://leetcode.cn/problems/delete-and-earn/"
+  },
+  "statement": "每次操作：选择任意一个数 $x$，获得 $x$ 点，然后**删除所有等于 $x-1$ 和 $x+1$ 的数**。\n\n求能获得的**最大点数**。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 2\\times10^4$）。\n\n第二行 $n$ 个正整数（$1 \\le a_i \\le 10^4$）。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "1 ≤ n ≤ 2×10^4",
+    "1 ≤ a_i ≤ 10^4"
+  ],
+  "samples": [
+    {
+      "input": "3\n3 4 2\n",
+      "output": "6\n",
+      "explain": ""
+    },
+    {
+      "input": "6\n2 2 3 3 3 4\n",
+      "output": "9\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**转化为打家劫舍**：\n\n先把相同值的点数合并——`cnt[x] = x × (x 的出现次数)`。\n\n于是问题变成：在序列 `cnt[1], cnt[2], ..., cnt[maxV]` 上做打家劫舍（**不能选相邻的**）。\n\n> **为什么等价**：选了 $x$ 就不能选 $x-1$ 和 $x+1$，正是「不能取相邻」的约束。\n\n时间 $O(n + \\text{maxV})$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nint mx=0;vector<int>a(n);\nfor(int i=0;i<n;++i){scanf(\"%d\",&a[i]);mx=max(mx,a[i]);}\nvector<long long>cnt(mx+1,0);\nfor(int x:a)cnt[x]+=x;\nlong long p2=0,p1=0;\nfor(int v=0;v<=mx;++v){long long cur=max(p1,p2+cnt[v]);p2=p1;p1=cur;}\nprintf(\"%lld\\n\",p1);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3\n3 4 2\n",
+      "output": "6\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "6\n2 2 3 3 3 4\n",
+      "output": "9\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n5\n",
+      "output": "5\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n1 2 3\n",
+      "output": "4\n",
+      "name": "连续值",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5\n2 2 2 2 2\n",
+      "output": "10\n",
+      "name": "含重复",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n1 1 100 100\n",
+      "output": "202\n",
+      "name": "两端值",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nint mx=0;vector<int>a(n);\nfor(int i=0;i<n;++i){scanf(\"%d\",&a[i]);mx=max(mx,a[i]);}\nvector<long long>cnt(mx+1,0);\nfor(int x:a)cnt[x]+=x;\nlong long p2=0,p1=0;\nfor(int v=0;v<=mx;++v){long long cur=max(p1,p2+cnt[v]);p2=p1;p1=cur;}\nprintf(\"%lld\\n\",p1);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

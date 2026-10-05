@@ -1,0 +1,92 @@
+{
+  "id": "stack-longest-valid-paren",
+  "title": "最长有效括号",
+  "difficulty": "困难",
+  "tags": [
+    "栈",
+    "字符串",
+    "动态规划"
+  ],
+  "source": {
+    "name": "LeetCode 32",
+    "url": "https://leetcode.cn/problems/longest-valid-parentheses/"
+  },
+  "statement": "给定一个只含 `(` 和 `)` 的字符串，求**最长的有效括号子串**的长度。\n\n有效括号子串指连续的、括号正确配对的子串。",
+  "input_format": "一行一个字符串 $s$（$0 \\le |s| \\le 3\\times10^4$），仅含 `(` 和 `)`。",
+  "output_format": "一行一个整数，表示最长有效括号子串的长度。",
+  "constraints": [
+    "0 ≤ |s| ≤ 3×10^4",
+    "仅含圆括号"
+  ],
+  "samples": [
+    {
+      "input": "(()\n",
+      "output": "2\n",
+      "explain": ""
+    },
+    {
+      "input": ")()())\n",
+      "output": "4\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**栈存下标**：栈底放一个 $-1$ 作为「最后一个未匹配位置的哨兵」。\n\n- 遇到 `(`：压入下标；\n- 遇到 `)`：弹出栈顶。若栈变空，说明当前 `)` 无法匹配，把它的下标压入作为新哨兵；否则当前有效长度为 `i - st.top()`。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nvector<int>st;st.push_back(-1);int best=0;\nfor(int i=0;i<(int)s.size();++i){\nif(s[i]=='(')st.push_back(i);\nelse{st.pop_back();\nif(st.empty())st.push_back(i);\nelse best=max(best,i-st.back());}}\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "(()\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": ")()())\n",
+      "output": "4\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "\n",
+      "output": "0\n",
+      "name": "空串",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "()()\n",
+      "output": "4\n",
+      "name": "全合法",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "((((\n",
+      "output": "0\n",
+      "name": "全左括号",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "))))\n",
+      "output": "0\n",
+      "name": "全右括号",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "((()))\n",
+      "output": "6\n",
+      "name": "嵌套",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nvector<int>st;st.push_back(-1);int best=0;\nfor(int i=0;i<(int)s.size();++i){\nif(s[i]=='(')st.push_back(i);\nelse{st.pop_back();\nif(st.empty())st.push_back(i);\nelse best=max(best,i-st.back());}}\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

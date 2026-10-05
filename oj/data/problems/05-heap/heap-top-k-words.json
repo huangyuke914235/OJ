@@ -1,0 +1,86 @@
+{
+  "id": "heap-top-k-words",
+  "title": "前 K 个高频单词",
+  "difficulty": "中等",
+  "tags": [
+    "堆",
+    "优先队列",
+    "哈希表"
+  ],
+  "source": {
+    "name": "LeetCode 692",
+    "url": "https://leetcode.cn/problems/top-k-frequent-words/"
+  },
+  "statement": "给定一组单词和整数 $k$，返回**出现频率最高的 $k$ 个单词**。\n\n**输出要求**：按「频率降序；频率相同则字典序升序」排列，以空格分隔。",
+  "input_format": "第一行两个整数 $n, k$（$1 \\le k \\le$ 不同单词数 $\\le n \\le 10^4$）。\n\n第二行 $n$ 个小写字母单词，以空格分隔。",
+  "output_format": "一行 $k$ 个单词。",
+  "constraints": [
+    "1 ≤ n ≤ 10^4",
+    "仅小写字母",
+    "按 (频率降序, 字典序升序) 输出"
+  ],
+  "samples": [
+    {
+      "input": "6 2\ni love leetcode i love coding\n",
+      "output": "i love\n",
+      "explain": ""
+    },
+    {
+      "input": "3 2\na b c\n",
+      "output": "a b\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**哈希计数 + 双关键字排序**：\n\n1. 用哈希表统计每个单词的频率；\n2. 按「频率**降序**，频率相同则单词**字典序升序**」排序，取前 $k$ 个。\n\n> **易错点**：必须写成**双关键字**比较，只比频率会导致输出顺序不稳定。\n\n> **堆解法**：维护大小为 $k$ 的堆，比较规则反过来（频率低、字典序大的优先被弹出），时间 $O(n\\log k)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);\nunordered_map<string,int>c;\nfor(int i=0;i<n;++i){string w;cin>>w;++c[w];}\nvector<pair<string,int>>v(c.begin(),c.end());\nsort(v.begin(),v.end(),[](const auto&a,const auto&b){\nif(a.second!=b.second)return a.second>b.second;\nreturn a.first<b.first;});\nfor(int i=0;i<k;++i){if(i)printf(\" \");printf(\"%s\",v[i].first.c_str());}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "6 2\ni love leetcode i love coding\n",
+      "output": "i love\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 2\na b c\n",
+      "output": "a b\n",
+      "name": "全不同",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 1\na a a\n",
+      "output": "a\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 3\nb a d c\n",
+      "output": "a b c\n",
+      "name": "频率相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "8 2\nthe the a a b b c d\n",
+      "output": "a b\n",
+      "name": "混合",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 3\nx y z\n",
+      "output": "x y z\n",
+      "name": "k 等于总数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k;scanf(\"%d %d\",&n,&k);\nunordered_map<string,int>c;\nfor(int i=0;i<n;++i){string w;cin>>w;++c[w];}\nvector<pair<string,int>>v(c.begin(),c.end());\nsort(v.begin(),v.end(),[](const auto&a,const auto&b){\nif(a.second!=b.second)return a.second>b.second;\nreturn a.first<b.first;});\nfor(int i=0;i<k;++i){if(i)printf(\" \");printf(\"%s\",v[i].first.c_str());}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

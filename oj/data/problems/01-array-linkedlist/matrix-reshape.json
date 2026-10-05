@@ -1,0 +1,85 @@
+{
+  "id": "matrix-reshape",
+  "title": "重塑矩阵",
+  "difficulty": "入门",
+  "tags": [
+    "矩阵",
+    "数组",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 566",
+    "url": "https://leetcode.cn/problems/reshape-the-matrix/"
+  },
+  "statement": "给定一个 $r \\times c$ 的矩阵和目标尺寸 $nr \\times nc$。\n\n若两者**元素总数相同**，则按**行优先顺序**把矩阵重塑为 $nr \\times nc$ 并输出；否则输出 `NO`。\n\n行优先顺序指：先读第一行，再读第二行……",
+  "input_format": "第一行四个整数 $r, c, nr, nc$（$1 \\le r,c,nr,nc \\le 1000$）。\n\n接下来 $r$ 行，每行 $c$ 个整数（$|v| \\le 10^9$）。",
+  "output_format": "若可重塑，第一行输出 `YES`，随后 $nr$ 行输出新矩阵；否则只输出一行 `NO`。",
+  "constraints": [
+    "1 ≤ r,c,nr,nc ≤ 1000",
+    "|v| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "2 2 1 4\n1 2\n3 4\n",
+      "output": "YES\n1 2 3 4\n",
+      "explain": ""
+    },
+    {
+      "input": "2 2 2 4\n1 2\n3 4\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**展平再重排**：先把矩阵按行优先读成一维数组，再按新的列数 `nc` 切分。\n\n先判断 `r*c == nr*nc`，不等直接输出 `NO`。时间 $O(rc)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c,nr,nc;scanf(\"%d %d %d %d\",&r,&c,&nr,&nc);\nvector<long long>f;f.reserve(r*c);\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j){long long x;scanf(\"%lld\",&x);f.push_back(x);}\nif(r*c!=nr*nc){printf(\"NO\\n\");return 0;}\nprintf(\"YES\\n\");\nfor(int i=0;i<nr;++i){for(int j=0;j<nc;++j){if(j)printf(\" \");printf(\"%lld\",f[i*nc+j]);}printf(\"\\n\");}\nreturn 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "2 2 1 4\n1 2\n3 4\n",
+      "output": "YES\n1 2 3 4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 2 2 4\n1 2\n3 4\n",
+      "output": "NO\n",
+      "name": "样例 2（不可重塑）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 2 2 4\n1 2\n3 4\n5 6\n7 8\n",
+      "output": "YES\n1 2 3 4\n5 6 7 8\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 1 1 1\n5\n",
+      "output": "YES\n5\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 3 6 1\n1 2 3\n4 5 6\n",
+      "output": "YES\n1\n2\n3\n4\n5\n6\n",
+      "name": "转成单列",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 2 1 6\n1 2\n3 4\n5 6\n",
+      "output": "YES\n1 2 3 4 5 6\n",
+      "name": "转成单行",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c,nr,nc;scanf(\"%d %d %d %d\",&r,&c,&nr,&nc);\nvector<long long>f;f.reserve(r*c);\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j){long long x;scanf(\"%lld\",&x);f.push_back(x);}\nif(r*c!=nr*nc){printf(\"NO\\n\");return 0;}\nprintf(\"YES\\n\");\nfor(int i=0;i<nr;++i){for(int j=0;j<nc;++j){if(j)printf(\" \");printf(\"%lld\",f[i*nc+j]);}printf(\"\\n\");}\nreturn 0;}\n"
+  },
+  "time_limit": 2.0
+}

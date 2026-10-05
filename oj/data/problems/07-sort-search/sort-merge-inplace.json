@@ -1,0 +1,85 @@
+{
+  "id": "sort-merge-inplace",
+  "title": "合并两个有序数组（从后往前）",
+  "difficulty": "简单",
+  "tags": [
+    "数组",
+    "双指针",
+    "归并"
+  ],
+  "source": {
+    "name": "LeetCode 88",
+    "url": "https://leetcode.cn/problems/merge-sorted-array/"
+  },
+  "statement": "给定两个**非递减**数组 $A$（长 $n$）和 $B$（长 $m$），合并成一个非递减数组并输出。\n\n> **技巧**：经典做法是**从后往前**比较，避免搬移元素（$O(1)$ 额外空间）。本题只需输出合并结果。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n, m \\le 10^5$）。\n\n第二行 $n$ 个非递减整数。\n\n第三行 $m$ 个非递减整数。",
+  "output_format": "一行 $n+m$ 个整数，非递减。",
+  "constraints": [
+    "1 ≤ n, m ≤ 10^5",
+    "两数组非递减"
+  ],
+  "samples": [
+    {
+      "input": "3 3\n1 2 3\n2 5 6\n",
+      "output": "1 2 2 3 5 6\n",
+      "explain": ""
+    },
+    {
+      "input": "3 2\n1 2 3\n4 5\n",
+      "output": "1 2 3 4 5\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**从后往前归并**：两个指针分别指向 $A$ 和 $B$ 的**末尾**，每次把较大的放到结果数组的末尾。\n\n> **为什么从后往前**：若 $A$ 后面有足够空位，从后往前填就**不会覆盖还没处理的 $A$ 元素**，从而做到 $O(1)$ 额外空间。\n\n时间 $O(n+m)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<long long>a(n),b(m);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nfor(int i=0;i<m;++i)scanf(\"%lld\",&b[i]);\nvector<long long>r(n+m);\nint i=n-1,j=m-1,k=n+m-1;\nwhile(j>=0){if(i>=0&&a[i]>b[j])r[k--]=a[i--];else r[k--]=b[j--];}\nwhile(i>=0)r[k--]=a[i--];\nfor(int t=0;t<n+m;++t){if(t)printf(\" \");printf(\"%lld\",r[t]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 3\n1 2 3\n2 5 6\n",
+      "output": "1 2 2 3 5 6\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 2\n1 2 3\n4 5\n",
+      "output": "1 2 3 4 5\n",
+      "name": "全部 A 更小",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 3\n4 5\n1 2 3\n",
+      "output": "1 2 3 4 5\n",
+      "name": "全部 B 更小",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 3\n1 1 2\n1 2 2\n",
+      "output": "1 1 1 2 2 2\n",
+      "name": "含重复",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 2\n-3 -1\n-2 0\n",
+      "output": "-3 -2 -1 0\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 1\n1\n2\n",
+      "output": "1 2\n",
+      "name": "单元素",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<long long>a(n),b(m);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nfor(int i=0;i<m;++i)scanf(\"%lld\",&b[i]);\nvector<long long>r(n+m);\nint i=n-1,j=m-1,k=n+m-1;\nwhile(j>=0){if(i>=0&&a[i]>b[j])r[k--]=a[i--];else r[k--]=b[j--];}\nwhile(i>=0)r[k--]=a[i--];\nfor(int t=0;t<n+m;++t){if(t)printf(\" \");printf(\"%lld\",r[t]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

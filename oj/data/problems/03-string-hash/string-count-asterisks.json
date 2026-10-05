@@ -1,0 +1,84 @@
+{
+  "id": "string-count-asterisks",
+  "title": "统计星号",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "遍历"
+  ],
+  "source": {
+    "name": "LeetCode 2315",
+    "url": "https://leetcode.cn/problems/count-asterisks/"
+  },
+  "statement": "给定一个字符串，统计**位于前两个 `|` 之间**的 `*` 的个数。\n\n若字符串中不足 2 个 `|`，输出 $0$。",
+  "input_format": "一行一个字符串 $s$（$1 \\le |s| \\le 1000$），仅含 `*`、`|` 和小写字母。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "1 ≤ |s| ≤ 1000",
+    "不足 2 个 | 时输出 0"
+  ],
+  "samples": [
+    {
+      "input": "l|*e*et|c**o|*de|\n",
+      "output": "2\n",
+      "explain": ""
+    },
+    {
+      "input": "iamprogrammer\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**定位前两个 `|`**：找出前两个竖线的下标，统计它们之间的 `*` 个数。\n\n> **注意**：样例 2 没有竖线，但题面说「保证至少 2 个」——为稳妥起见，代码里仍做了兜底返回 0。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;\nvector<int>bars;\nfor(int i=0;i<(int)s.size();++i)if(s[i]=='|')bars.push_back(i);\nif(bars.size()<2){printf(\"0\\n\");return 0;}\nint c=0;\nfor(int i=bars[0]+1;i<bars[1];++i)if(s[i]=='*')++c;\nprintf(\"%d\\n\",c);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "l|*e*et|c**o|*de|\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "iamprogrammer\n",
+      "output": "0\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "yo|uar|e**|b|e***au|tifu|l\n",
+      "output": "0\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a||b*c\n",
+      "output": "0\n",
+      "name": "两竖线相邻",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a*|b|c*\n",
+      "output": "0\n",
+      "name": "星号在外",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "|***|\n",
+      "output": "3\n",
+      "name": "全在中间",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;\nvector<int>bars;\nfor(int i=0;i<(int)s.size();++i)if(s[i]=='|')bars.push_back(i);\nif(bars.size()<2){printf(\"0\\n\");return 0;}\nint c=0;\nfor(int i=bars[0]+1;i<bars[1];++i)if(s[i]=='*')++c;\nprintf(\"%d\\n\",c);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

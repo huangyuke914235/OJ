@@ -1,0 +1,85 @@
+{
+  "id": "tree-min-value",
+  "title": "二叉树的最小值",
+  "difficulty": "入门",
+  "tags": [
+    "树",
+    "二叉树",
+    "遍历"
+  ],
+  "source": {
+    "name": "二叉树基础",
+    "url": "https://leetcode.cn/problems/minimum-depth-of-binary-tree/"
+  },
+  "statement": "求二叉树中所有节点值的**最小值**。空树输出空行。",
+  "input_format": "一行，二叉树的层序序列（`null` 表示空节点）。节点数 $\\le 10^5$，$|v| \\le 10^9$。",
+  "output_format": "一行一个整数；空树输出空行。",
+  "constraints": [
+    "节点数 ≤ 10^5",
+    "|v| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "1 2 3\n",
+      "output": "1\n",
+      "explain": ""
+    },
+    {
+      "input": "null\n",
+      "output": "\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**遍历取最小**：初值取 $+\\infty$。\n\n> **对比 BST**：BST 的最小值就是**最左节点**，可以一路向左 $O(h)$ 找到，不必遍历全树。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nNode*root=buildTree(tk);\nif(!root){printf(\"\\n\");return 0;}\nlong long best=LLONG_MAX;vector<Node*>st;st.push_back(root);\nwhile(!st.empty()){Node*n=st.back();st.pop_back();\nbest=min(best,n->v);\nif(n->l)st.push_back(n->l);\nif(n->r)st.push_back(n->r);}\nprintf(\"%lld\\n\",best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "1 2 3\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "\n",
+      "name": "空树",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n",
+      "output": "5\n",
+      "name": "单节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "-1 -2 -3\n",
+      "output": "-3\n",
+      "name": "含负数",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 5 6 7\n",
+      "output": "1\n",
+      "name": "完整树",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "0 1 2\n",
+      "output": "0\n",
+      "name": "含零",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nNode*root=buildTree(tk);\nif(!root){printf(\"\\n\");return 0;}\nlong long best=LLONG_MAX;vector<Node*>st;st.push_back(root);\nwhile(!st.empty()){Node*n=st.back();st.pop_back();\nbest=min(best,n->v);\nif(n->l)st.push_back(n->l);\nif(n->r)st.push_back(n->r);}\nprintf(\"%lld\\n\",best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

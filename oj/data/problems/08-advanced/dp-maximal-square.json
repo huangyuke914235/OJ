@@ -1,0 +1,92 @@
+{
+  "id": "dp-maximal-square",
+  "title": "最大正方形",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "矩阵",
+    "二维DP"
+  ],
+  "source": {
+    "name": "LeetCode 221",
+    "url": "https://leetcode.cn/problems/maximal-square/"
+  },
+  "statement": "给定一个 $0/1$ 矩阵，求其中**只包含 $1$ 的最大正方形**的**面积**。\n\n若没有 $1$，输出 $0$。",
+  "input_format": "第一行两个整数 $r, c$（$1 \\le r, c \\le 300$）。\n\n接下来 $r$ 行，每行 $c$ 个整数（$0$ 或 $1$）。",
+  "output_format": "一行一个整数，表示最大正方形的面积。",
+  "constraints": [
+    "1 ≤ r, c ≤ 300",
+    "元素为 0 或 1"
+  ],
+  "samples": [
+    {
+      "input": "4 5\n1 0 1 0 0\n1 0 1 1 1\n1 1 1 1 1\n1 0 0 1 0\n",
+      "output": "4\n",
+      "explain": ""
+    },
+    {
+      "input": "2 2\n0 0\n0 0\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**状态**：`dp[i][j]` = 以 $(i,j)$ 为**右下角**的最大正方形**边长**。\n\n转移（当 `g[i][j] == 1` 时）：\n\n```\ndp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1\n```\n\n**直觉**：要以 $(i,j)$ 为右下角构成边长 $k$ 的正方形，需要上、左、左上三个位置都能构成边长 $k-1$ 的正方形——取三者最小值加一。\n\n答案 = 最大边长$^2$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<vector<int>>g(r,vector<int>(c));\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)scanf(\"%d\",&g[i][j]);\nvector<vector<int>>dp(r+1,vector<int>(c+1,0));\nint best=0;\nfor(int i=1;i<=r;++i)for(int j=1;j<=c;++j)\nif(g[i-1][j-1]==1){\ndp[i][j]=min({dp[i-1][j],dp[i][j-1],dp[i-1][j-1]})+1;\nbest=max(best,dp[i][j]);}\nprintf(\"%d\\n\",best*best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4 5\n1 0 1 0 0\n1 0 1 1 1\n1 1 1 1 1\n1 0 0 1 0\n",
+      "output": "4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 2\n0 0\n0 0\n",
+      "output": "0\n",
+      "name": "全零",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 3\n1 1 1\n1 1 1\n1 1 1\n",
+      "output": "9\n",
+      "name": "全一",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 1\n1\n",
+      "output": "1\n",
+      "name": "单格 1",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 1\n0\n",
+      "output": "0\n",
+      "name": "单格 0",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2 2\n1 1\n1 1\n",
+      "output": "4\n",
+      "name": "2x2 全一",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2 2\n1 0\n1 1\n",
+      "output": "1\n",
+      "name": "L 形",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int r,c;scanf(\"%d %d\",&r,&c);\nvector<vector<int>>g(r,vector<int>(c));\nfor(int i=0;i<r;++i)for(int j=0;j<c;++j)scanf(\"%d\",&g[i][j]);\nvector<vector<int>>dp(r+1,vector<int>(c+1,0));\nint best=0;\nfor(int i=1;i<=r;++i)for(int j=1;j<=c;++j)\nif(g[i-1][j-1]==1){\ndp[i][j]=min({dp[i-1][j],dp[i][j-1],dp[i-1][j-1]})+1;\nbest=max(best,dp[i][j]);}\nprintf(\"%d\\n\",best*best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

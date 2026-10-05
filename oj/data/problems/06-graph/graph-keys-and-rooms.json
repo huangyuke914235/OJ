@@ -1,0 +1,87 @@
+{
+  "id": "graph-keys-and-rooms",
+  "title": "钥匙和房间",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "BFS",
+    "DFS",
+    "有向图"
+  ],
+  "source": {
+    "name": "LeetCode 841",
+    "url": "https://leetcode.cn/problems/keys-and-rooms/"
+  },
+  "statement": "有 $n$ 个房间，编号 $1 \\sim n$，初始时你在 $1$ 号房间。\n\n每个房间里有一些**钥匙**，每把钥匙能打开对应的房间。你可以自由地在已打开的房间里移动。\n\n判断能否**进入所有房间**。能则输出 `YES`，否则 `NO`。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 1000$，$0 \\le m \\le 10^4$）。\n\n接下来 $m$ 行，每行两个整数 $a, b$，表示房间 $a$ 里有能打开房间 $b$ 的钥匙。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ n ≤ 1000",
+    "0 ≤ m ≤ 10^4",
+    "有向图"
+  ],
+  "samples": [
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "4 2\n1 2\n3 4\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**从房间 1 出发做 BFS**：房间是顶点，钥匙是**有向边**。\n\n能到达的房间数等于 $n$ 就能进入所有房间。\n\n> **注意**：这是**有向图**（钥匙只能从 $a$ 打开 $b$），不能当成无向图。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);\nfor(int i=0;i<m;++i){int a,b;scanf(\"%d %d\",&a,&b);g[a].push_back(b);}\nvector<bool>vis(n+1,false);queue<int>q;q.push(1);vis[1]=true;int cnt=1;\nwhile(!q.empty()){int u=q.front();q.pop();\nfor(int v:g[u])if(!vis[v]){vis[v]=true;++cnt;q.push(v);}}\nprintf(\"%s\\n\",cnt==n?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4 3\n1 2\n2 3\n3 4\n",
+      "output": "YES\n",
+      "name": "样例 1（可以）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 2\n1 2\n3 4\n",
+      "output": "NO\n",
+      "name": "样例 2（不可以）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 0\n",
+      "output": "YES\n",
+      "name": "单房间",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 2\n1 1\n1 2\n",
+      "output": "YES\n",
+      "name": "自环钥匙",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 2\n1 2\n2 1\n",
+      "output": "NO\n",
+      "name": "钥匙在死路",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 3\n1 2\n2 3\n3 1\n",
+      "output": "YES\n",
+      "name": "环形",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,m;scanf(\"%d %d\",&n,&m);\nvector<vector<int>>g(n+1);\nfor(int i=0;i<m;++i){int a,b;scanf(\"%d %d\",&a,&b);g[a].push_back(b);}\nvector<bool>vis(n+1,false);queue<int>q;q.push(1);vis[1]=true;int cnt=1;\nwhile(!q.empty()){int u=q.front();q.pop();\nfor(int v:g[u])if(!vis[v]){vis[v]=true;++cnt;q.push(v);}}\nprintf(\"%s\\n\",cnt==n?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

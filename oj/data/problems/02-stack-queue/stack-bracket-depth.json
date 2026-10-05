@@ -1,0 +1,84 @@
+{
+  "id": "stack-bracket-depth",
+  "title": "括号的最大嵌套深度",
+  "difficulty": "入门",
+  "tags": [
+    "栈",
+    "字符串"
+  ],
+  "source": {
+    "name": "LeetCode 1614",
+    "url": "https://leetcode.cn/problems/maximum-nesting-depth-of-the-parentheses/"
+  },
+  "statement": "给定一个**合法**的括号字符串（可能夹杂其他字符，忽略即可），求它的**最大嵌套深度**。\n\n嵌套深度指同一时刻未闭合的左括号数量的最大值。",
+  "input_format": "一行一个字符串 $s$（$0 \\le |s| \\le 100$），保证其中的括号是**合法**序列。",
+  "output_format": "一行一个整数，表示最大嵌套深度。",
+  "constraints": [
+    "0 ≤ |s| ≤ 100",
+    "括号序列合法"
+  ],
+  "samples": [
+    {
+      "input": "(1+(2*3)+((8)/4))+1\n",
+      "output": "3\n",
+      "explain": ""
+    },
+    {
+      "input": "(1)+((2))+(((3)))\n",
+      "output": "3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**计数即可**：遇到 `(` 深度加一，遇到 `)` 深度减一，全程记录最大值。\n\n非括号字符直接忽略。时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nint cur=0,best=0;\nfor(char c:s){if(c=='('){++cur;best=max(best,cur);}else if(c==')')--cur;}\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "(1+(2*3)+((8)/4))+1\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "(1)+((2))+(((3)))\n",
+      "output": "3\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "\n",
+      "output": "0\n",
+      "name": "空串",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abc\n",
+      "output": "0\n",
+      "name": "无括号",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "()\n",
+      "output": "1\n",
+      "name": "单层",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "(((())))\n",
+      "output": "4\n",
+      "name": "深层",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nint cur=0,best=0;\nfor(char c:s){if(c=='('){++cur;best=max(best,cur);}else if(c==')')--cur;}\nprintf(\"%d\\n\",best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,83 @@
+{
+  "id": "dp-tribonacci",
+  "title": "第 N 个泰波那契数",
+  "difficulty": "入门",
+  "tags": [
+    "动态规划",
+    "递推"
+  ],
+  "source": {
+    "name": "LeetCode 1137",
+    "url": "https://leetcode.cn/problems/n-th-tribonacci-number/"
+  },
+  "statement": "泰波那契数列：$T_0 = 0$，$T_1 = 1$，$T_2 = 1$，且 $T_n = T_{n-1} + T_{n-2} + T_{n-3}$。\n\n给定 $n$，求 $T_n$。",
+  "input_format": "一行一个整数 $n$（$0 \\le n \\le 37$）。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "0 ≤ n ≤ 37"
+  ],
+  "samples": [
+    {
+      "input": "4\n",
+      "output": "4\n",
+      "explain": ""
+    },
+    {
+      "input": "25\n",
+      "output": "1389537\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**滚动三个变量**：`T(n) = T(n-1) + T(n-2) + T(n-3)`，只需保留最近三项。\n\n时间 $O(n)$，空间 $O(1)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nlong long a=0,b=1,c=1;\nif(n==0){printf(\"0\\n\");return 0;}\nif(n==1){printf(\"1\\n\");return 0;}\nfor(int i=0;i<n-2;++i){long long t=a+b+c;a=b;b=c;c=t;}\nprintf(\"%lld\\n\",c);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n",
+      "output": "4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "25\n",
+      "output": "1389537\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "0\n",
+      "output": "0\n",
+      "name": "n = 0",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "name": "n = 1",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "name": "n = 2",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "37\n",
+      "output": "2082876103\n",
+      "name": "n = 37",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nlong long a=0,b=1,c=1;\nif(n==0){printf(\"0\\n\");return 0;}\nif(n==1){printf(\"1\\n\");return 0;}\nfor(int i=0;i<n-2;++i){long long t=a+b+c;a=b;b=c;c=t;}\nprintf(\"%lld\\n\",c);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

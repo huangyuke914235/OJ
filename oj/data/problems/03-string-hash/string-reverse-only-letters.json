@@ -1,0 +1,91 @@
+{
+  "id": "string-reverse-only-letters",
+  "title": "仅仅反转字母",
+  "difficulty": "简单",
+  "tags": [
+    "字符串",
+    "双指针"
+  ],
+  "source": {
+    "name": "LeetCode 917",
+    "url": "https://leetcode.cn/problems/reverse-only-letters/"
+  },
+  "statement": "给定字符串 $s$，**只反转其中的字母**，所有非字母字符保持**原来的位置**。",
+  "input_format": "一行一个字符串（长度 $1 \\le |s| \\le 100$），可含字母与 ASCII 可见字符。",
+  "output_format": "一行，处理后的字符串。",
+  "constraints": [
+    "1 ≤ |s| ≤ 100",
+    "字母保持大小写"
+  ],
+  "samples": [
+    {
+      "input": "ab-cd\n",
+      "output": "dc-ba\n",
+      "explain": ""
+    },
+    {
+      "input": "a-bC-dEf-ghIj\n",
+      "output": "j-Ih-gfE-dCba\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**相向双指针 + 跳过非字母**：左指针找字母、右指针找字母，找到就交换。\n\n> **易错点**：内层 while 也要带 `i < j` 边界，否则可能越界。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nint i=0,j=(int)s.size()-1;\nwhile(i<j){\nwhile(i<j&&!isalpha((unsigned char)s[i]))++i;\nwhile(i<j&&!isalpha((unsigned char)s[j]))--j;\nswap(s[i],s[j]);++i;--j;}\nprintf(\"%s\\n\",s.c_str());return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "ab-cd\n",
+      "output": "dc-ba\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "a-bC-dEf-ghIj\n",
+      "output": "j-Ih-gfE-dCba\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "Test1ng-Leet=code-Q!\n",
+      "output": "Qedo1ct-eeLg=ntse-T!\n",
+      "name": "样例 3",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abc\n",
+      "output": "cba\n",
+      "name": "全字母",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1-2=3\n",
+      "output": "1-2=3\n",
+      "name": "全非字母",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "a\n",
+      "output": "a\n",
+      "name": "单字母",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "name": "单非字母",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nint i=0,j=(int)s.size()-1;\nwhile(i<j){\nwhile(i<j&&!isalpha((unsigned char)s[i]))++i;\nwhile(i<j&&!isalpha((unsigned char)s[j]))--j;\nswap(s[i],s[j]);++i;--j;}\nprintf(\"%s\\n\",s.c_str());return 0;}\n"
+  },
+  "time_limit": 2.0
+}

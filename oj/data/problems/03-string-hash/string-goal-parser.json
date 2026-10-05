@@ -1,0 +1,84 @@
+{
+  "id": "string-goal-parser",
+  "title": "设计 Goal 解析器",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "替换"
+  ],
+  "source": {
+    "name": "LeetCode 1678",
+    "url": "https://leetcode.cn/problems/goal-parser-interpretation/"
+  },
+  "statement": "把命令字符串按以下规则解析：\n\n- `G` → `G`；\n- `()` → `o`；\n- `(al)` → `al`。",
+  "input_format": "一行一个字符串 $s$（$1 \\le |s| \\le 100$），仅含 `G`、`()`、`(al)` 三种片段。",
+  "output_format": "一行，解析后的字符串。",
+  "constraints": [
+    "1 ≤ |s| ≤ 100",
+    "仅含三种片段"
+  ],
+  "samples": [
+    {
+      "input": "G()(al)\n",
+      "output": "Goal\n",
+      "explain": ""
+    },
+    {
+      "input": "G()()()()(al)\n",
+      "output": "Gooooal\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**从左到右识别三种片段**：\n\n- `G`：长度 1；\n- `()`：长度 2；\n- `(al)`：长度 4。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;string r;\nfor(size_t i=0;i<s.size();){\nif(s[i]=='G'){r+='G';++i;}\nelse if(s[i]=='('&&i+1<s.size()&&s[i+1]==')'){r+='o';i+=2;}\nelse{r+=\"al\";i+=4;}}\nprintf(\"%s\\n\",r.c_str());return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "G()(al)\n",
+      "output": "Goal\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "G()()()()(al)\n",
+      "output": "Gooooal\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "GGGG\n",
+      "output": "GGGG\n",
+      "name": "只有 G",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "()()()\n",
+      "output": "ooo\n",
+      "name": "只有 ()",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "(al)(al)\n",
+      "output": "alal\n",
+      "name": "只有 (al)",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "G(al)G()G\n",
+      "output": "GalGoG\n",
+      "name": "混合",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;cin>>s;string r;\nfor(size_t i=0;i<s.size();){\nif(s[i]=='G'){r+='G';++i;}\nelse if(s[i]=='('&&i+1<s.size()&&s[i+1]==')'){r+='o';i+=2;}\nelse{r+=\"al\";i+=4;}}\nprintf(\"%s\\n\",r.c_str());return 0;}\n"
+  },
+  "time_limit": 2.0
+}

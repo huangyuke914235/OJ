@@ -1,0 +1,92 @@
+{
+  "id": "tree-same",
+  "title": "相同的树",
+  "difficulty": "入门",
+  "tags": [
+    "树",
+    "二叉树",
+    "递归"
+  ],
+  "source": {
+    "name": "LeetCode 100",
+    "url": "https://leetcode.cn/problems/same-tree/"
+  },
+  "statement": "判断两棵二叉树在**结构和节点值**上是否完全相同。\n\n相同输出 `YES`，否则 `NO`。",
+  "input_format": "第一行，第一棵树的层序序列。\n\n第二行，第二棵树的层序序列。\n\n`null` 表示空节点。节点数均 $\\le 10^5$。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "节点数 ≤ 10^5",
+    "|v| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "1 2 3\n1 2 3\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "1 2\n1 null 2\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**同步递归**：\n\n1. 两个节点都为空 → 相同；\n2. 只有一个是空 → 不同；\n3. 值不同 → 不同；\n4. 否则递归比较左右子树。\n\n> **易错点**：必须先判「都为空」，再判「其中一个为空」，顺序反了会空指针。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nbool same(Node*a,Node*b){\nif(!a&&!b)return true;\nif(!a||!b)return false;\nif(a->v!=b->v)return false;\nreturn same(a->l,b->l)&&same(a->r,b->r);}\nint main(){string l1,l2;getline(cin,l1);getline(cin,l2);\nstringstream s1(l1),s2(l2);vector<string>t1,t2;string x;\nwhile(s1>>x)t1.push_back(x);while(s2>>x)t2.push_back(x);\nif(t1.empty())t1.push_back(\"null\");if(t2.empty())t2.push_back(\"null\");\nprintf(\"%s\\n\",same(buildTree(t1),buildTree(t2))?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "1 2 3\n1 2 3\n",
+      "output": "YES\n",
+      "name": "样例 1（相同）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 2\n1 null 2\n",
+      "output": "NO\n",
+      "name": "样例 2（不同）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\nnull\n",
+      "output": "YES\n",
+      "name": "都为空",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\nnull\n",
+      "output": "NO\n",
+      "name": "一空一非空",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 3\n1 2 4\n",
+      "output": "NO\n",
+      "name": "值不同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2 3\n1 2\n",
+      "output": "NO\n",
+      "name": "结构不同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "-1 2\n-1 2\n",
+      "output": "YES\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nbool same(Node*a,Node*b){\nif(!a&&!b)return true;\nif(!a||!b)return false;\nif(a->v!=b->v)return false;\nreturn same(a->l,b->l)&&same(a->r,b->r);}\nint main(){string l1,l2;getline(cin,l1);getline(cin,l2);\nstringstream s1(l1),s2(l2);vector<string>t1,t2;string x;\nwhile(s1>>x)t1.push_back(x);while(s2>>x)t2.push_back(x);\nif(t1.empty())t1.push_back(\"null\");if(t2.empty())t2.push_back(\"null\");\nprintf(\"%s\\n\",same(buildTree(t1),buildTree(t2))?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

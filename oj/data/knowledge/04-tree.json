@@ -15,7 +15,11 @@
         "Morris 遍历能做到 O(1) 空间，但会临时改树结构，考场上非必需"
       ],
       "problems": [
-        "tree-inorder"
+        "tree-inorder",
+        "tree-preorder",
+        "tree-postorder",
+        "tree-inorder-iterative",
+        "tree-postorder-iterative"
       ]
     },
     {
@@ -29,7 +33,11 @@
         "空树要提前返回空结果，否则会把空的一层也加进去"
       ],
       "problems": [
-        "tree-level-order"
+        "tree-level-order",
+        "tree-level-average",
+        "tree-right-side-view",
+        "tree-zigzag-level-order",
+        "tree-level-max"
       ]
     },
     {
@@ -44,7 +52,11 @@
       ],
       "problems": [
         "tree-max-depth",
-        "tree-min-depth"
+        "tree-min-depth",
+        "tree-height-edges",
+        "tree-sum-depths",
+        "tree-diameter",
+        "tree-sum-left-leaves"
       ]
     },
     {
@@ -58,7 +70,10 @@
         "根节点为空时对称，直接返回 true"
       ],
       "problems": [
-        "tree-symmetric"
+        "tree-symmetric",
+        "tree-same",
+        "tree-leaf-similar",
+        "tree-merge"
       ]
     },
     {
@@ -74,7 +89,12 @@
       "problems": [
         "tree-validate-bst",
         "tree-lca-bst",
-        "tree-bst-kth-smallest"
+        "tree-bst-kth-smallest",
+        "tree-bst-search",
+        "tree-bst-insert",
+        "tree-bst-range-sum",
+        "tree-bst-min",
+        "tree-bst-max"
       ]
     },
     {
@@ -103,7 +123,12 @@
       ],
       "problems": [
         "tree-invert",
-        "tree-path-sum"
+        "tree-path-sum",
+        "tree-max-value",
+        "tree-min-value",
+        "tree-count-even",
+        "tree-count-greater",
+        "tree-search-value"
       ]
     }
   ],

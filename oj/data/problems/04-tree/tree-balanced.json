@@ -1,0 +1,92 @@
+{
+  "id": "tree-balanced",
+  "title": "平衡二叉树",
+  "difficulty": "简单",
+  "tags": [
+    "树",
+    "二叉树",
+    "递归"
+  ],
+  "source": {
+    "name": "LeetCode 110",
+    "url": "https://leetcode.cn/problems/balanced-binary-tree/"
+  },
+  "statement": "判断二叉树是否是**高度平衡**的。\n\n平衡的定义：**每个节点**的左右子树高度差**不超过 1**。\n\n是则输出 `YES`，否则 `NO`。",
+  "input_format": "一行，二叉树的层序序列（`null` 表示空节点）。节点数 $\\le 10^5$。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "节点数 ≤ 10^5",
+    "高度差 ≤ 1"
+  ],
+  "samples": [
+    {
+      "input": "3 9 20 null null 15 7\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "1 2 2 3 3 null null 4 4\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**一次递归同时求高度并判断**：返回当前子树的高度，途中若发现某节点左右高度差 > 1 就把全局标记置为 false。\n\n> **常见错误**：对每个节点都单独调用一次求高度函数，会退化成 $O(n^2)$。**要在同一次递归里完成**。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint h(Node*n,bool&ok){\nif(!n||!ok)return 0;\nint lh=h(n->l,ok),rh=h(n->r,ok);\nif(abs(lh-rh)>1)ok=false;\nreturn 1+max(lh,rh);}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nbool ok=true;h(buildTree(tk),ok);\nprintf(\"%s\\n\",ok?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3 9 20 null null 15 7\n",
+      "output": "YES\n",
+      "name": "样例 1（平衡）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 2 2 3 3 null null 4 4\n",
+      "output": "NO\n",
+      "name": "样例 2（不平衡）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "YES\n",
+      "name": "空树",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n",
+      "output": "YES\n",
+      "name": "单节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 5 6 7\n",
+      "output": "YES\n",
+      "name": "完整树",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2 null 3\n",
+      "output": "NO\n",
+      "name": "左链",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2 3\n",
+      "output": "YES\n",
+      "name": "差 1 的链",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint h(Node*n,bool&ok){\nif(!n||!ok)return 0;\nint lh=h(n->l,ok),rh=h(n->r,ok);\nif(abs(lh-rh)>1)ok=false;\nreturn 1+max(lh,rh);}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nbool ok=true;h(buildTree(tk),ok);\nprintf(\"%s\\n\",ok?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

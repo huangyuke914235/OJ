@@ -1,0 +1,92 @@
+{
+  "id": "array-best-time-stock",
+  "title": "买卖股票的最佳时机",
+  "difficulty": "简单",
+  "tags": [
+    "数组",
+    "贪心"
+  ],
+  "source": {
+    "name": "LeetCode 121",
+    "url": "https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/"
+  },
+  "statement": "给定一支股票每天的价格，你只能选择**某一天买入**、并在**之后的某一天卖出**（一次交易）。\n\n求能获得的最大利润；若无法获利则返回 $0$。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数 $p_i$（$0 \\le p_i \\le 10^4$），表示每天价格。",
+  "output_format": "一行一个整数，表示最大利润。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ p_i ≤ 10^4",
+    "只能买卖一次"
+  ],
+  "samples": [
+    {
+      "input": "6\n7 1 5 3 6 4\n",
+      "output": "5\n",
+      "explain": ""
+    },
+    {
+      "input": "5\n7 6 4 3 1\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**一次遍历**：维护「到目前为止的历史最低价 `low`」，对每天计算 `price - low` 并更新最大值。\n\n关键点：**先更新最低价再算利润**，保证卖出日不早于买入日。时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nlong long low=1e18,best=0;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);\nlow=min(low,x);best=max(best,x-low);}\nprintf(\"%lld\\n\",best);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "6\n7 1 5 3 6 4\n",
+      "output": "5\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n7 6 4 3 1\n",
+      "output": "0\n",
+      "name": "样例 2（下跌）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n5\n",
+      "output": "0\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "3\n",
+      "name": "单调上涨",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n5 4 3 2\n",
+      "output": "0\n",
+      "name": "最低在最后",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n0 3 1 4\n",
+      "output": "4\n",
+      "name": "含 0",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2\n1 5\n",
+      "output": "4\n",
+      "name": "两元素上涨",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nlong long low=1e18,best=0;\nfor(int i=0;i<n;++i){long long x;scanf(\"%lld\",&x);\nlow=min(low,x);best=max(best,x-low);}\nprintf(\"%lld\\n\",best);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

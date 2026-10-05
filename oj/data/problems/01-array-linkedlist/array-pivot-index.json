@@ -1,0 +1,91 @@
+{
+  "id": "array-pivot-index",
+  "title": "寻找数组的中心下标",
+  "difficulty": "入门",
+  "tags": [
+    "数组",
+    "前缀和"
+  ],
+  "source": {
+    "name": "LeetCode 724",
+    "url": "https://leetcode.cn/problems/find-pivot-index/"
+  },
+  "statement": "**中心下标**指满足「左侧所有元素之和 == 右侧所有元素之和」的下标。\n\n若下标在最左端，则左侧和为 $0$；在最右端则右侧和为 $0$。\n\n请返回**最靠左**的中心下标；若不存在则返回 $-1$。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^4$）。\n\n第二行 $n$ 个整数 $a_i$（$-1000 \\le a_i \\le 1000$）。",
+  "output_format": "一行一个整数，表示最靠左的中心下标；不存在则输出 $-1$。",
+  "constraints": [
+    "1 ≤ n ≤ 10^4",
+    "|a_i| ≤ 1000"
+  ],
+  "samples": [
+    {
+      "input": "6\n1 7 3 6 5 6\n",
+      "output": "3\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n1 2 3\n",
+      "output": "-1\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**前缀和**：先求出总和 `total`，再从左往右扫描，维护已扫过的 `left`。\n\n判断条件：`left == total - left - a[i]`（即左右两侧相等）。时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nlong long total=0;\nfor(int i=0;i<n;++i){scanf(\"%lld\",&a[i]);total+=a[i];}\nlong long left=0;\nfor(int i=0;i<n;++i){if(left==total-left-a[i]){printf(\"%d\\n\",i);return 0;}left+=a[i];}\nprintf(\"-1\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "6\n1 7 3 6 5 6\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 2 3\n",
+      "output": "-1\n",
+      "name": "样例 2（不存在）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n2 1 -1\n",
+      "output": "0\n",
+      "name": "样例 3（最左）",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n5\n",
+      "output": "0\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5\n0 0 0 0 0\n",
+      "output": "0\n",
+      "name": "全零",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n-1 -1 0 1 1\n",
+      "output": "-1\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1 2 0\n",
+      "output": "-1\n",
+      "name": "中心在末尾",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nlong long total=0;\nfor(int i=0;i<n;++i){scanf(\"%lld\",&a[i]);total+=a[i];}\nlong long left=0;\nfor(int i=0;i<n;++i){if(left==total-left-a[i]){printf(\"%d\\n\",i);return 0;}left+=a[i];}\nprintf(\"-1\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

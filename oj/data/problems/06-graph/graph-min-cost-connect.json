@@ -1,0 +1,94 @@
+{
+  "id": "graph-min-cost-connect",
+  "title": "连接所有点的最小费用",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "最小生成树",
+    "Prim",
+    "贪心"
+  ],
+  "source": {
+    "name": "LeetCode 1584",
+    "url": "https://leetcode.cn/problems/min-cost-to-connect-all-points/"
+  },
+  "statement": "给定平面上 $n$ 个点的坐标，连接两个点 $i$ 和 $j$ 的费用是它们的**曼哈顿距离** $|x_i-x_j| + |y_i-y_j|$。\n\n求让**所有点连通**所需的**最小总费用**。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 1000$）。\n\n接下来 $n$ 行，每行两个整数 $x_i, y_i$（$|x|, |y| \\le 10^6$）。",
+  "output_format": "一行一个整数，表示最小总费用。",
+  "constraints": [
+    "1 ≤ n ≤ 1000",
+    "|x|, |y| ≤ 10^6",
+    "费用为曼哈顿距离"
+  ],
+  "samples": [
+    {
+      "input": "3\n0 0\n2 2\n3 10\n",
+      "output": "13\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n0 0\n0 0\n0 0\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**Prim 算法（朴素版）**：\n\n1. `dist[i]` 表示「把点 $i$ 接入当前生成树」的最小费用，初始只有起点为 0；\n2. 每轮选一个**未使用且 `dist` 最小**的点加入生成树，累加费用；\n3. 用新加入的点**更新其他点的 `dist`**。\n\n时间 $O(n^2)$，适合稠密图。\n\n> **注意**：本题是完全图（任意两点间都有边），边数 $O(n^2)$，所以用朴素 Prim 比 Kruskal 更合适。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<long long>x(n),y(n);\nfor(int i=0;i<n;++i)scanf(\"%lld %lld\",&x[i],&y[i]);\nconst long long INF=4e18;\nvector<long long>dist(n,INF);vector<bool>used(n,false);\ndist[0]=0;long long total=0;\nfor(int it=0;it<n;++it){\nint u=-1;\nfor(int i=0;i<n;++i)if(!used[i]&&(u==-1||dist[i]<dist[u]))u=i;\nused[u]=true;total+=dist[u];\nfor(int v=0;v<n;++v)if(!used[v]){\nlong long d=llabs(x[u]-x[v])+llabs(y[u]-y[v]);\nif(d<dist[v])dist[v]=d;}}\nprintf(\"%lld\\n\",total);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3\n0 0\n2 2\n3 10\n",
+      "output": "13\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n0 0\n0 0\n0 0\n",
+      "output": "0\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n5 5\n",
+      "output": "0\n",
+      "name": "单点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2\n0 0\n3 4\n",
+      "output": "7\n",
+      "name": "两点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n0 0\n0 1\n1 0\n1 1\n",
+      "output": "3\n",
+      "name": "正方形",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n0 0\n1 0\n2 0\n3 0\n",
+      "output": "3\n",
+      "name": "一条线",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n1 1\n1 1\n1 1\n1 1\n",
+      "output": "0\n",
+      "name": "重复点",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);\nvector<long long>x(n),y(n);\nfor(int i=0;i<n;++i)scanf(\"%lld %lld\",&x[i],&y[i]);\nconst long long INF=4e18;\nvector<long long>dist(n,INF);vector<bool>used(n,false);\ndist[0]=0;long long total=0;\nfor(int it=0;it<n;++it){\nint u=-1;\nfor(int i=0;i<n;++i)if(!used[i]&&(u==-1||dist[i]<dist[u]))u=i;\nused[u]=true;total+=dist[u];\nfor(int v=0;v<n;++v)if(!used[v]){\nlong long d=llabs(x[u]-x[v])+llabs(y[u]-y[v]);\nif(d<dist[v])dist[v]=d;}}\nprintf(\"%lld\\n\",total);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

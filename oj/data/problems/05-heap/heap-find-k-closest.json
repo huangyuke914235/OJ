@@ -1,0 +1,93 @@
+{
+  "id": "heap-find-k-closest",
+  "title": "找到 K 个最接近的元素",
+  "difficulty": "中等",
+  "tags": [
+    "堆",
+    "优先队列",
+    "二分查找"
+  ],
+  "source": {
+    "name": "LeetCode 658",
+    "url": "https://leetcode.cn/problems/find-k-closest-elements/"
+  },
+  "statement": "给定**升序**数组、整数 $k$ 和目标值 $x$，找出数组中**最接近 $x$ 的 $k$ 个数**。\n\n**输出要求**：结果按**升序**排列，以空格分隔。\n\n若两个数与 $x$ 的距离相同，**优先保留较小的那个**。",
+  "input_format": "第一行三个整数 $n, k, x$（$1 \\le k \\le n \\le 10^4$，$|x| \\le 10^4$）。\n\n第二行 $n$ 个整数（升序，$|a_i| \\le 10^4$）。",
+  "output_format": "一行 $k$ 个整数，升序排列。",
+  "constraints": [
+    "1 ≤ k ≤ n ≤ 10^4",
+    "数组升序",
+    "距离相同时保留较小值"
+  ],
+  "samples": [
+    {
+      "input": "4 2 3\n1 2 3 4\n",
+      "output": "2 3\n",
+      "explain": ""
+    },
+    {
+      "input": "4 2 3\n1 2 3 4 5\n",
+      "output": "2 3\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**大小为 $k$ 的大根堆**：堆中保存「当前最接近的 $k$ 个数」，按**距离**比较，堆顶是距离最远的。\n\n遇到更近的就替换堆顶。\n\n> **平局处理**：`pair<距离, 值>` 比较大小时，距离相同时会再比值——正好满足「保留较小值」的要求（堆顶是更大的那个，先被弹出）。\n\n> **更优解法**：因为是升序数组，可用**二分**找到 $x$ 的位置，再向两侧双指针扩展，$O(\\log n + k)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k,x;scanf(\"%d %d %d\",&n,&k,&x);\nvector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\npriority_queue<pair<long long,long long>>pq;\nfor(long long v:a){\npq.push({llabs(v-x),v});\nif((int)pq.size()>k)pq.pop();}\nvector<long long>res;\nwhile(!pq.empty()){res.push_back(pq.top().second);pq.pop();}\nsort(res.begin(),res.end());\nfor(int i=0;i<k;++i){if(i)printf(\" \");printf(\"%lld\",res[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4 2 3\n1 2 3 4\n",
+      "output": "2 3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 2 3\n1 2 3 4 5\n",
+      "output": "2 3\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 3 5\n1 2 3\n",
+      "output": "1 2 3\n",
+      "name": "k = n",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 1 3\n1 2 3 4 5\n",
+      "output": "3\n",
+      "name": "k = 1",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 2 -1\n-5 -3 -1 0 2\n",
+      "output": "-1 0\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 2 2\n1 2 3 4\n",
+      "output": "1 2\n",
+      "name": "距离相同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 2 0\n-1 0 1\n",
+      "output": "-1 0\n",
+      "name": "全相同距离",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n,k,x;scanf(\"%d %d %d\",&n,&k,&x);\nvector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\npriority_queue<pair<long long,long long>>pq;\nfor(long long v:a){\npq.push({llabs(v-x),v});\nif((int)pq.size()>k)pq.pop();}\nvector<long long>res;\nwhile(!pq.empty()){res.push_back(pq.top().second);pq.pop();}\nsort(res.begin(),res.end());\nfor(int i=0;i<k;++i){if(i)printf(\" \");printf(\"%lld\",res[i]);}\nprintf(\"\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

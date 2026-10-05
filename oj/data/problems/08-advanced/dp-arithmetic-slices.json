@@ -1,0 +1,85 @@
+{
+  "id": "dp-arithmetic-slices",
+  "title": "等差数列划分",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "数组"
+  ],
+  "source": {
+    "name": "LeetCode 413",
+    "url": "https://leetcode.cn/problems/arithmetic-slices/"
+  },
+  "statement": "若一个数组的**相邻元素之差都相等**，则称它是**等差**的。\n\n给定数组，求其中**等差连续子数组**的个数（长度至少为 3）。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 5000$）。\n\n第二行 $n$ 个整数（$|a_i| \\le 10^4$）。",
+  "output_format": "一行一个整数。",
+  "constraints": [
+    "1 ≤ n ≤ 5000",
+    "|a_i| ≤ 10^4",
+    "子数组长度 ≥ 3"
+  ],
+  "samples": [
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "3\n",
+      "explain": ""
+    },
+    {
+      "input": "1\n1\n",
+      "output": "0\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**滚动 DP**：`cur` = 以 $i$ 结尾的等差子数组个数。\n\n若 `a[i]-a[i-1] == a[i-1]-a[i-2]`，则 `cur++`；否则 `cur = 0`。每步把 `cur` 累加到答案。\n\n> **直觉**：以 $i$ 结尾的等差子数组，长度从 3 到 $\\text{cur}+2$ 共 `cur` 个。\n\n时间 $O(n)$，空间 $O(1)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nlong long total=0,cur=0;\nfor(int i=2;i<n;++i){\nif(a[i]-a[i-1]==a[i-1]-a[i-2]){++cur;total+=cur;}\nelse cur=0;}\nprintf(\"%lld\\n\",total);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n1\n",
+      "output": "0\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n1 2 4\n",
+      "output": "0\n",
+      "name": "无等差",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n5 5 5 5\n",
+      "output": "3\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6\n1 2 3 4 5 6\n",
+      "output": "10\n",
+      "name": "长等差",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "6\n1 2 3 5 7 9\n",
+      "output": "4\n",
+      "name": "两段等差",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nlong long total=0,cur=0;\nfor(int i=2;i<n;++i){\nif(a[i]-a[i-1]==a[i-1]-a[i-2]){++cur;total+=cur;}\nelse cur=0;}\nprintf(\"%lld\\n\",total);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

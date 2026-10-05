@@ -1,0 +1,94 @@
+{
+  "id": "search-single-element",
+  "title": "有序数组中的单一元素",
+  "difficulty": "中等",
+  "tags": [
+    "二分查找",
+    "数组",
+    "位运算"
+  ],
+  "source": {
+    "name": "LeetCode 540",
+    "url": "https://leetcode.cn/problems/single-element-in-a-sorted-array/"
+  },
+  "statement": "给定一个**已排序**数组，其中每个元素都出现**两次**，只有一个元素出现**一次**。\n\n找出这个元素。\n\n**要求 $O(\\log n)$**。",
+  "input_format": "第一行一个**奇数** $n$（$1 \\le n \\le 10^5$）。\n\n第二行 $n$ 个非递减整数（$|a_i| \\le 10^9$），保证恰好一个元素出现一次。",
+  "output_format": "一行一个整数，表示只出现一次的元素。",
+  "constraints": [
+    "n 为奇数",
+    "|a_i| ≤ 10^9",
+    "恰好一个元素出现一次",
+    "要求 O(log n)"
+  ],
+  "samples": [
+    {
+      "input": "7\n1 1 2 3 3 4 4\n",
+      "output": "2\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n3 3 7 7 10 11 11\n",
+      "output": "7\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**利用「成对」的规律二分**：在单一元素**之前**，所有成对元素的下标是 `(偶数, 奇数)`；**之后**则变成 `(奇数, 偶数)`。\n\n做法：把 `mid` 调整到**偶数**位置，然后比较 `a[mid]` 与 `a[mid+1]`：\n\n- 相等 → 单一元素在右侧，`lo = mid + 2`；\n- 不等 → 单一元素在 `mid` 或左侧，`hi = mid`。\n\n时间 $O(\\log n)$。\n\n> **另解**：把所有元素异或起来（$O(n)$），或利用「前缀下标和的奇偶性」。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nint lo=0,hi=n-1;\nwhile(lo<hi){int mid=lo+(hi-lo)/2;\nif(mid%2==1)--mid;\nif(a[mid]==a[mid+1])lo=mid+2;else hi=mid;}\nprintf(\"%lld\\n\",a[lo]);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "7\n1 1 2 3 3 4 4\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n3 3 7 7 10 11 11\n",
+      "output": "7\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n7\n",
+      "output": "7\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5\n1 2 2 3 3\n",
+      "output": "1\n",
+      "name": "唯一在开头",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5\n1 1 2 2 3\n",
+      "output": "3\n",
+      "name": "唯一在末尾",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n-3 -3 -1 0 0\n",
+      "output": "-1\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1 2 2\n",
+      "output": "1\n",
+      "name": "三元素",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nint lo=0,hi=n-1;\nwhile(lo<hi){int mid=lo+(hi-lo)/2;\nif(mid%2==1)--mid;\nif(a[mid]==a[mid+1])lo=mid+2;else hi=mid;}\nprintf(\"%lld\\n\",a[lo]);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,84 @@
+{
+  "id": "string-reverse-prefix",
+  "title": "反转单词前缀",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "双指针"
+  ],
+  "source": {
+    "name": "LeetCode 2000",
+    "url": "https://leetcode.cn/problems/reverse-prefix-of-word/"
+  },
+  "statement": "给定字符串 $s$ 和一个字符 $ch$，找出 $ch$ 在 $s$ 中**第一次出现**的位置，把从开头到该位置（含）的**前缀反转**，其余部分保持不变。\n\n若 $ch$ 不存在，返回原字符串。",
+  "input_format": "第一行一个字符串 $s$（$1 \\le |s| \\le 250$），仅含小写字母。\n\n第二行一个字符 $ch$（小写字母）。",
+  "output_format": "一行，处理后的字符串。",
+  "constraints": [
+    "1 ≤ |s| ≤ 250",
+    "仅小写字母"
+  ],
+  "samples": [
+    {
+      "input": "abcdefd\nd\n",
+      "output": "dcbaefd\n",
+      "explain": ""
+    },
+    {
+      "input": "xyxzxe\nz\n",
+      "output": "zxyxxe\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**找到位置后反转前缀**：用 `find` 定位，再用 `reverse` 反转 $[0, p]$ 区间。\n\n时间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s,ch;cin>>s>>ch;\nsize_t p=s.find(ch[0]);\nif(p==string::npos){printf(\"%s\\n\",s.c_str());return 0;}\nreverse(s.begin(),s.begin()+p+1);\nprintf(\"%s\\n\",s.c_str());return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "abcdefd\nd\n",
+      "output": "dcbaefd\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "xyxzxe\nz\n",
+      "output": "zxyxxe\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abcd\n z\n",
+      "output": "abcd\n",
+      "name": "字符不存在",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abcd\n a\n",
+      "output": "abcd\n",
+      "name": "字符在开头",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abcd\n d\n",
+      "output": "dcba\n",
+      "name": "字符在末尾",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "a\n a\n",
+      "output": "a\n",
+      "name": "单字符",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s,ch;cin>>s>>ch;\nsize_t p=s.find(ch[0]);\nif(p==string::npos){printf(\"%s\\n\",s.c_str());return 0;}\nreverse(s.begin(),s.begin()+p+1);\nprintf(\"%s\\n\",s.c_str());return 0;}\n"
+  },
+  "time_limit": 2.0
+}

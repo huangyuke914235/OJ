@@ -15,7 +15,9 @@
         "多种括号时要用映射表（如 `{')':'(', ']':'[', '}':'{'}`）而不是硬编码 if-else 链"
       ],
       "problems": [
-        "stack-bracket-match"
+        "stack-bracket-match",
+        "stack-min-remove-brackets",
+        "stack-bracket-depth"
       ]
     },
     {
@@ -30,7 +32,14 @@
       ],
       "problems": [
         "stack-next-greater-element",
-        "stack-daily-temperatures"
+        "stack-daily-temperatures",
+        "stack-prev-smaller",
+        "stack-next-smaller",
+        "stack-prev-greater",
+        "stack-132-pattern",
+        "stack-histogram-area",
+        "stack-largest-rectangle",
+        "stack-trapping-rain"
       ]
     },
     {
@@ -58,7 +67,9 @@
         "前 k-1 个位置还没有完整窗口，不能提前记录答案"
       ],
       "problems": [
-        "advanced-sliding-window-max"
+        "advanced-sliding-window-max",
+        "queue-window-max-again",
+        "queue-window-min"
       ]
     },
     {
@@ -84,7 +95,10 @@
         "空栈时查询最值要先判空"
       ],
       "problems": [
-        "stack-min-stack"
+        "stack-min-stack",
+        "stack-basic-ops",
+        "queue-basic-ops",
+        "deque-basic-ops"
       ]
     },
     {
@@ -112,7 +126,8 @@
         "结果为空时要输出空行而不是什么都不输出"
       ],
       "problems": [
-        "stack-remove-adjacent-duplicates"
+        "stack-remove-adjacent-duplicates",
+        "stack-remove-adjacent-nums"
       ]
     }
   ],

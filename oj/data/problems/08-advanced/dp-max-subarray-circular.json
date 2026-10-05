@@ -1,0 +1,86 @@
+{
+  "id": "dp-max-subarray-circular",
+  "title": "环形子数组的最大和",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "Kadane",
+    "环形"
+  ],
+  "source": {
+    "name": "LeetCode 918",
+    "url": "https://leetcode.cn/problems/maximum-sum-circular-subarray/"
+  },
+  "statement": "给定一个**环形**数组（首尾相接），求**非空连续子数组**的最大和。\n\n> **提示**：结果要么「不跨过首尾」（普通最大子段和），要么「跨过首尾」（等于「总和 − 最小子段和」）。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 3\\times10^4$）。\n\n第二行 $n$ 个整数（$|a_i| \\le 10^4$）。",
+  "output_format": "一行一个整数，表示最大子数组和。",
+  "constraints": [
+    "1 ≤ n ≤ 3×10^4",
+    "|a_i| ≤ 10^4",
+    "子数组非空"
+  ],
+  "samples": [
+    {
+      "input": "3\n1 -2 3 -2\n",
+      "output": "4\n",
+      "explain": ""
+    },
+    {
+      "input": "3\n5 -3 5\n",
+      "output": "10\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**两种情况取最大**：\n\n1. **不跨环**：直接求普通的最大子段和（Kadane）；\n2. **跨环**：等价于「总和 − **最小**子段和」（把中间那段挖掉，剩下两端接起来）。\n\n> **易错点**：若数组**全为负数**，第 2 种情况会得到「总和 − 最小子段和 = 0」（空数组），这是非法的。此时答案就是最大子段和（即最大的那个负数）。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nauto kadane=[&](bool mx){long long best=a[0],cur=a[0];\nfor(int i=1;i<n;++i){\nif(mx)cur=max(a[i],cur+a[i]);else cur=min(a[i],cur+a[i]);\nif(mx)best=max(best,cur);else best=min(best,cur);}\nreturn best;};\nlong long total=0;for(long long x:a)total+=x;\nlong long mx=kadane(true),mn=kadane(false);\nlong long ans=mx;\nif(total-mn!=0)ans=max(ans,total-mn);\nbool allNeg=true;for(long long x:a)if(x>=0)allNeg=false;\nif(allNeg)ans=mx;\nprintf(\"%lld\\n\",ans);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "3\n1 -2 3 -2\n",
+      "output": "4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n5 -3 5\n",
+      "output": "10\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n-1\n",
+      "output": "-1\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n1 2 3\n",
+      "output": "6\n",
+      "name": "全正",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n-3 -2 -1\n",
+      "output": "-1\n",
+      "name": "全负",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n3 -1 2 -1\n",
+      "output": "4\n",
+      "name": "跨环",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nauto kadane=[&](bool mx){long long best=a[0],cur=a[0];\nfor(int i=1;i<n;++i){\nif(mx)cur=max(a[i],cur+a[i]);else cur=min(a[i],cur+a[i]);\nif(mx)best=max(best,cur);else best=min(best,cur);}\nreturn best;};\nlong long total=0;for(long long x:a)total+=x;\nlong long mx=kadane(true),mn=kadane(false);\nlong long ans=mx;\nif(total-mn!=0)ans=max(ans,total-mn);\nbool allNeg=true;for(long long x:a)if(x>=0)allNeg=false;\nif(allNeg)ans=mx;\nprintf(\"%lld\\n\",ans);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

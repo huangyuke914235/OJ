@@ -1,0 +1,86 @@
+{
+  "id": "tree-bst-max",
+  "title": "BST 中的最大值",
+  "difficulty": "入门",
+  "tags": [
+    "树",
+    "二叉搜索树",
+    "查找"
+  ],
+  "source": {
+    "name": "BST 性质",
+    "url": "https://leetcode.cn/problems/minimum-absolute-difference-in-bst/"
+  },
+  "statement": "给定一棵**二叉搜索树**，求其中的**最大值**。\n\n**要求**：利用 BST 性质，$O(h)$ 完成。",
+  "input_format": "一行，BST 的层序序列（`null` 表示空节点）。节点数 $\\le 10^5$。",
+  "output_format": "一行一个整数；空树输出空行。",
+  "constraints": [
+    "节点数 ≤ 10^5",
+    "保证是合法 BST",
+    "要求 O(h)"
+  ],
+  "samples": [
+    {
+      "input": "5 3 8 1\n",
+      "output": "8\n",
+      "explain": ""
+    },
+    {
+      "input": "null\n",
+      "output": "\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**BST 的最大值在最右端**：从根出发**一路向右**，走到底就是最大值。\n\n时间 $O(h)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nNode*root=buildTree(tk);\nif(!root){printf(\"\\n\");return 0;}\nNode*cur=root;\nwhile(cur->r)cur=cur->r;\nprintf(\"%lld\\n\",cur->v);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5 3 8 1\n",
+      "output": "8\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "\n",
+      "name": "空树",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "7\n",
+      "output": "7\n",
+      "name": "单节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 null 8 null null null 9\n",
+      "output": "8\n",
+      "name": "右链",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "0 -1 1\n",
+      "output": "1\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "8 4 12 2 6 10 14\n",
+      "output": "14\n",
+      "name": "完整 BST",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\n\nstruct Node { long long v; Node *l=nullptr,*r=nullptr; };\n\nNode* buildTree(const vector<string>&t){\n    if(t.empty()||t[0]==\"null\")return nullptr;\n    Node*root=new Node{stoll(t[0])};\n    queue<Node*>q;q.push(root);size_t i=1;\n    while(!q.empty()&&i<t.size()){\n        Node*cur=q.front();q.pop();\n        if(i<t.size()){if(t[i]!=\"null\"){cur->l=new Node{stoll(t[i])};q.push(cur->l);}++i;}\n        if(i<t.size()){if(t[i]!=\"null\"){cur->r=new Node{stoll(t[i])};q.push(cur->r);}++i;}\n    }\n    return root;\n}\n\nvector<string> readTok(){\n    vector<string>tok;string x;\n    while(cin>>x)tok.push_back(x);\n    return tok;\n}\nint main(){auto tk=readTok();if(tk.empty())tk.push_back(\"null\");\nNode*root=buildTree(tk);\nif(!root){printf(\"\\n\");return 0;}\nNode*cur=root;\nwhile(cur->r)cur=cur->r;\nprintf(\"%lld\\n\",cur->v);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

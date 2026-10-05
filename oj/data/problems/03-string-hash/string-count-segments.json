@@ -1,0 +1,91 @@
+{
+  "id": "string-count-segments",
+  "title": "字符串中的单词数",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 434",
+    "url": "https://leetcode.cn/problems/number-of-segments-in-a-string/"
+  },
+  "statement": "统计字符串中**单词的个数**。单词指**连续的、不含空格**的字符序列。\n\n注意字符串**可能有前导/连续空格**，这些都不计入单词。",
+  "input_format": "一行一个字符串（$0 \\le |s| \\le 10^5$），可含空格与 ASCII 可见字符。",
+  "output_format": "一行一个整数，表示单词数。",
+  "constraints": [
+    "0 ≤ |s| ≤ 10^5",
+    "空格分隔，可能有连续空格"
+  ],
+  "samples": [
+    {
+      "input": "Hello, my name is John\n",
+      "output": "5\n",
+      "explain": ""
+    },
+    {
+      "input": "Hello\n",
+      "output": "1\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**按空白切分**：用 `stringstream >> word` 自动跳过所有连续空格。\n\n> **易错点**：不要用「空格数 + 1」这种算法——前导空格和连续空格都会算错。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nstringstream ss(s);string w;int c=0;\nwhile(ss>>w)++c;\nprintf(\"%d\\n\",c);return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "Hello, my name is John\n",
+      "output": "5\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "Hello\n",
+      "output": "1\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "\n",
+      "output": "0\n",
+      "name": "空串",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "     \n",
+      "output": "0\n",
+      "name": "全空格",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "   a b\n",
+      "output": "2\n",
+      "name": "前导空格",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "a   b    c\n",
+      "output": "3\n",
+      "name": "多个连续空格",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": " \n",
+      "output": "0\n",
+      "name": "单个空格",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string s;getline(cin,s);\nstringstream ss(s);string w;int c=0;\nwhile(ss>>w)++c;\nprintf(\"%d\\n\",c);return 0;}\n"
+  },
+  "time_limit": 2.0
+}

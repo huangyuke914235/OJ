@@ -1,0 +1,92 @@
+{
+  "id": "heap-max-heap-check",
+  "title": "判断是否为大根堆",
+  "difficulty": "入门",
+  "tags": [
+    "堆",
+    "数组",
+    "树"
+  ],
+  "source": {
+    "name": "堆性质检验",
+    "url": "https://leetcode.cn/problems/minimum-absolute-difference-in-bst/"
+  },
+  "statement": "给定一个按**层序**存储的完全二叉树（数组形式），判断它是否满足**大根堆性质**：\n\n**每个节点**的值都不小于它的两个孩子。\n\n是则输出 `YES`，否则 `NO`。\n\n下标规则：节点 $i$ 的孩子是 $2i+1$ 与 $2i+2$（下标从 $0$ 开始）。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^5$）。\n\n第二行 $n$ 个整数（$|a_i| \\le 10^9$）。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "|a_i| ≤ 10^9"
+  ],
+  "samples": [
+    {
+      "input": "5\n9 7 5 3 1\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "5\n9 5 7 3 1\n",
+      "output": "YES\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**与「判断小根堆」对称**：对每个下标 $i \\ge 1$，检查 `a[(i-1)/2] >= a[i]`。\n\n时间 $O(n)$，空间 $O(1)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nbool ok=true;\nfor(int i=1;i<n;++i)if(a[(i-1)/2]<a[i]){ok=false;break;}\nprintf(\"%s\\n\",ok?\"YES\":\"NO\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n9 7 5 3 1\n",
+      "output": "YES\n",
+      "name": "样例 1（是）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n9 5 7 3 1\n",
+      "output": "YES\n",
+      "name": "样例 2（不是）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n7\n",
+      "output": "YES\n",
+      "name": "单元素",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n5 5 5 5\n",
+      "output": "YES\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6\n6 5 4 3 2 1\n",
+      "output": "YES\n",
+      "name": "严格递减",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5\n0 -1 -2 -3 -4\n",
+      "output": "YES\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n1 5 2\n",
+      "output": "NO\n",
+      "name": "根不是最大",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){int n;scanf(\"%d\",&n);vector<long long>a(n);\nfor(int i=0;i<n;++i)scanf(\"%lld\",&a[i]);\nbool ok=true;\nfor(int i=1;i<n;++i)if(a[(i-1)/2]<a[i]){ok=false;break;}\nprintf(\"%s\\n\",ok?\"YES\":\"NO\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}

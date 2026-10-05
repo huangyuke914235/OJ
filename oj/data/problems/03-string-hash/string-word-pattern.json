@@ -1,0 +1,92 @@
+{
+  "id": "string-word-pattern",
+  "title": "单词规律",
+  "difficulty": "简单",
+  "tags": [
+    "字符串",
+    "哈希表"
+  ],
+  "source": {
+    "name": "LeetCode 290",
+    "url": "https://leetcode.cn/problems/word-pattern/"
+  },
+  "statement": "给定一个**模式串** $pattern$（由小写字母组成）和一个由空格分隔的单词串，判断它们是否**遵循同一规律**——即存在**双射**，使得每个模式字母唯一对应一个单词，每个单词也唯一对应一个模式字母。\n\n符合输出 `YES`，否则 `NO`。",
+  "input_format": "第一行一个模式串 $pattern$（$1 \\le |pattern| \\le 300$），仅小写字母。\n\n第二行一个由空格分隔的单词串（单词数不超过 $300$，单词仅含小写字母）。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ |pattern| ≤ 300",
+    "单词数 ≤ 300",
+    "仅小写字母"
+  ],
+  "samples": [
+    {
+      "input": "abba\ndog cat cat dog\n",
+      "output": "YES\n",
+      "explain": ""
+    },
+    {
+      "input": "abba\ndog cat cat fish\n",
+      "output": "NO\n",
+      "explain": ""
+    }
+  ],
+  "hint": "**与「同构字符串」完全同构**，只是把「字符↔字符」换成「字符↔单词」。\n\n> **易错点**：必须**双向映射**；另外要先检查**单词个数与模式长度是否相等**。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string pat,line;cin>>pat;\ngetline(cin,line);          // 吃掉 pattern 所在行的剩余部分\ngetline(cin,line);          // 读取单词行\nstringstream ss(line);vector<string>w;string x;\nwhile(ss>>x)w.push_back(x);\nif(pat.size()!=w.size()){printf(\"NO\\n\");return 0;}\nunordered_map<char,string>m1;unordered_map<string,char>m2;\nfor(size_t i=0;i<pat.size();++i){\nchar c=pat[i];\nif(m1.count(c)&&m1[c]!=w[i]){printf(\"NO\\n\");return 0;}\nif(m2.count(w[i])&&m2[w[i]]!=c){printf(\"NO\\n\");return 0;}\nm1[c]=w[i];m2[w[i]]=c;}\nprintf(\"YES\\n\");return 0;}\n"
+  },
+  "tests": [
+    {
+      "input": "abba\ndog cat cat dog\n",
+      "output": "YES\n",
+      "name": "样例 1（符合）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abba\ndog cat cat fish\n",
+      "output": "NO\n",
+      "name": "样例 2（不符合）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "aaaa\ndog cat cat dog\n",
+      "output": "NO\n",
+      "name": "样例 3（不符合）",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "ab\ndog\n",
+      "output": "NO\n",
+      "name": "数量不等",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a\ndog\n",
+      "output": "YES\n",
+      "name": "单字母单词",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "aaa\ndog dog dog\n",
+      "output": "YES\n",
+      "name": "全同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "ab\ndog dog\n",
+      "output": "NO\n",
+      "name": "多对一",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n#include <cmath>\n#include <cstdlib>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <queue>\n#include <stack>\n#include <deque>\n#include <map>\n#include <set>\n#include <unordered_map>\n#include <unordered_set>\n#include <functional>\n#include <numeric>\n#include <sstream>\n#include <iostream>\nusing namespace std;\nint main(){string pat,line;cin>>pat;\ngetline(cin,line);          // 吃掉 pattern 所在行的剩余部分\ngetline(cin,line);          // 读取单词行\nstringstream ss(line);vector<string>w;string x;\nwhile(ss>>x)w.push_back(x);\nif(pat.size()!=w.size()){printf(\"NO\\n\");return 0;}\nunordered_map<char,string>m1;unordered_map<string,char>m2;\nfor(size_t i=0;i<pat.size();++i){\nchar c=pat[i];\nif(m1.count(c)&&m1[c]!=w[i]){printf(\"NO\\n\");return 0;}\nif(m2.count(w[i])&&m2[w[i]]!=c){printf(\"NO\\n\");return 0;}\nm1[c]=w[i];m2[w[i]]=c;}\nprintf(\"YES\\n\");return 0;}\n"
+  },
+  "time_limit": 2.0
+}
