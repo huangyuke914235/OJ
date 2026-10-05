@@ -8,8 +8,8 @@ on:
   push:
     branches: [main]
     paths:
-      - "oj/data/problems/**"
-      - "oj/core/**"
+      # 整个 oj/ 都纳入（含 config.py 的站点名/标语、core/ 数据模型、data/problems/ 题库）
+      - "oj/**"
       - "scripts/build_static.py"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
@@ -36,6 +36,25 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
+      # 提前探测 Pages 是否已启用。若未启用，deploy 步骤会以难懂的
+      # "Failed to create deployment" 报错收场；这里提前给出明确指引。
+      - name: 预检 — 确认 Pages 已启用
+        continue-on-error: true
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages")
+          case "$code" in
+            200)
+              echo "✓ GitHub Pages 已启用" ;;
+            404)
+              echo "::warning title=GitHub Pages 尚未启用::请打开 Settings → Pages，把 Build and deployment 的 Source 设为 'GitHub Actions'，然后重新运行本工作流。否则 deploy 步骤必然失败。" ;;
+            *)
+              # 401/403 等属于权限或网络问题，不代表 Pages 未启用，不误报
+              echo "预检跳过（HTTP $code），无法判定 Pages 状态，交由 deploy 步骤自行报错。" ;;
+          esac
 
       - name: Build static site
         run: python scripts/build_static.py

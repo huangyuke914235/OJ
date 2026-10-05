@@ -39,19 +39,37 @@ python scripts/build_static.py
 
 ### 自动部署（推荐）
 
+> ### ⚠️ 第一步必须先做：启用 Pages 并选择 "GitHub Actions"
+>
+> **这是最容易踩的坑。** 若跳过此步，工作流会「构建成功、部署失败」——
+> `build` 任务全绿，`deploy` 任务报 `Failed to create deployment (status: 404)`，
+> 站点始终 404。原因不是代码问题，而是**仓库还没启用 Pages**。
+>
+> 操作路径（一次性，约 10 秒）：
+>
+> 1. 打开 `https://github.com/<用户名>/<仓库名>/settings/pages`
+> 2. **Build and deployment → Source** → 选择 **GitHub Actions**
+>    （**不要**选 "Deploy from a branch"，那会与内置工作流冲突）
+> 3. 保存后，到 **Actions** 页面 → 选 **Build and Deploy Static Site to GitHub Pages**
+>    → **Re-run all jobs**（或点 **Run workflow** 手动触发）
+>
+> 验证是否已启用：`GET /repos/<用户名>/<仓库名>/pages` 返回 200（而非 404）。
+
 仓库已内置工作流 `.github/workflows/pages.yml`，触发条件：
 
-- `main` 分支上题库（`oj/data/problems/**`）、核心代码、构建脚本或工作流本身有改动
+- `main` 分支上 `oj/**`（题库、数据模型、站点配置）、构建脚本或工作流本身有改动
 - 手动触发（Actions 页面 → **Run workflow**）
 
-部署步骤（一次性配置）：
+部署步骤：
 
 1. 把仓库推送到 GitHub。
-2. **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
-   > 若选的是 "Deploy from a branch"，内置工作流会与它冲突；务必选 **GitHub Actions**。
+2. **按上方 ⚠️ 提示启用 Pages 并选择 GitHub Actions。**
 3. 推送到 `main` 分支，或在 Actions 页面手动运行工作流。
 4. 稍候片刻，站点发布在
    `https://<用户名>.github.io/<仓库名>/`。
+
+> **提示**：工作流自带一步「预检 — 确认 Pages 已启用」。
+> 若检测到未启用，会在日志里给出 `::warning::` 明确提示，而不只是抛出一句难懂的报错。
 
 ### 自定义站点信息
 
@@ -61,6 +79,9 @@ python scripts/build_static.py
 SITE_NAME = "DS-OJ"
 SITE_SLOGAN = "..."
 ```
+
+> 改动 `oj/config.py` 后推送到 `main` 会自动触发重新构建
+> （`paths` 已放宽为 `oj/**`，覆盖 `config.py`）。
 
 ---
 
