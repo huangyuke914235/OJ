@@ -1,0 +1,91 @@
+{
+  "id": "stack-remove-adjacent-duplicates",
+  "title": "删除字符串中所有相邻重复项",
+  "difficulty": "简单",
+  "tags": [
+    "栈",
+    "字符串"
+  ],
+  "source": {
+    "name": "LeetCode 1047 / 栈的应用",
+    "url": "https://leetcode.cn/problems/remove-all-adjacent-duplicates-in-string/"
+  },
+  "statement": "给定一个字符串 $s$，重复地**删除其中所有相邻且相同的字符对**，直到无法继续删除为止。\n\n返回最终得到的字符串。\n\n**注意**：删除操作可能产生新的相邻重复项，需要反复处理。例如 `abbaca` → 删 `bb` 得 `aaca` → 删 `aa` 得 `ca`。",
+  "input_format": "一行一个字符串 $s$（$1 \\le |s| \\le 10^5$），仅含大小写英文字母。",
+  "output_format": "一行，输出删除完毕后的字符串。若结果为空串，输出一个空行。",
+  "constraints": [
+    "1 ≤ |s| ≤ 10^5",
+    "仅含大小写英文字母"
+  ],
+  "samples": [
+    {
+      "input": "abbaca\n",
+      "output": "ca\n",
+      "explain": "删掉 `bb` 得到 `aaca`，再删掉 `aa` 得到 `ca`。"
+    },
+    {
+      "input": "abba\n",
+      "output": "\n",
+      "explain": "删掉 `bb` 得到 `aa`，再删掉 `aa` 得到空串。"
+    }
+  ],
+  "hint": "**栈**：从左到右扫描字符。\n\n- 若栈非空且**栈顶字符与当前字符相同**，说明形成了一对相邻重复，弹出栈顶（相当于删除这对）；\n- 否则把当前字符压栈。\n\n扫描结束后，栈中剩下的字符按从栈底到栈顶的顺序就是答案。\n\n**为什么正确**：栈顶始终代表「处理完前缀后剩下的最后一个字符」，删除后新的栈顶自然与前缀的下一个字符比较，从而正确处理「删了又产生新重复」的情况。时间 $O(n)$，空间 $O(n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n\nchar s[100005];\nchar stk[100005];\n\nint main() {\n    if (!fgets(s, sizeof(s), stdin)) { printf(\"\\n\"); return 0; }\n    int len = (int)strlen(s);\n    while (len > 0 && (s[len - 1] == '\\n' || s[len - 1] == '\\r')) s[--len] = 0;\n\n    int top = 0;\n    // TODO: 用栈消除相邻重复项\n\n    stk[top] = 0;\n    printf(\"%s\\n\", stk);\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "abbaca\n",
+      "output": "ca\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abba\n",
+      "output": "\n",
+      "name": "样例 2（全消）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "a\n",
+      "output": "a\n",
+      "name": "单字符",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "abcd\n",
+      "output": "abcd\n",
+      "name": "无重复",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aaaa\n",
+      "output": "\n",
+      "name": "全部相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aabccbdd\n",
+      "output": "\n",
+      "name": "三段相消",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "aAbbAc\n",
+      "output": "ac\n",
+      "name": "大小写敏感",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n\nchar s[100005];\nchar stk[100005];\n\nint main() {\n    if (!fgets(s, sizeof(s), stdin)) { printf(\"\\n\"); return 0; }\n    int len = (int)strlen(s);\n    while (len > 0 && (s[len - 1] == '\\n' || s[len - 1] == '\\r')) s[--len] = 0;\n\n    int top = 0;\n    for (int i = 0; i < len; ++i) {\n        if (top > 0 && stk[top - 1] == s[i]) --top;   // 消除一对\n        else stk[top++] = s[i];\n    }\n    stk[top] = 0;\n    printf(\"%s\\n\", stk);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

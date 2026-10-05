@@ -1,0 +1,94 @@
+{
+  "id": "stack-min-stack",
+  "title": "最小栈",
+  "difficulty": "简单",
+  "tags": [
+    "栈",
+    "设计",
+    "辅助栈"
+  ],
+  "source": {
+    "name": "LeetCode 155 / 剑指 Offer 30",
+    "url": "https://leetcode.cn/problems/min-stack/"
+  },
+  "statement": "设计一个支持 `push`、`pop`、`top` 操作，并能在**常数时间**内检索到最小元素的栈。\n\n- `push x`：将元素 $x$ 压入栈；\n- `pop`：删除栈顶元素；\n- `top`：获取栈顶元素；\n- `getMin`：获取栈中的最小元素。\n\n**要求所有操作的时间复杂度都是 $O(1)$**。",
+  "input_format": "第一行一个整数 $q$（$1 \\le q \\le 2 \\times 10^5$），表示操作数。\n\n接下来 $q$ 行，每行一个操作。其中 $|x| \\le 10^9$。\n\n**保证在栈非空时才调用 `pop` / `top` / `getMin`**。",
+  "output_format": "对每个 `top` 和 `getMin` 操作，输出一行对应的结果。",
+  "constraints": [
+    "1 ≤ q ≤ 2×10^5",
+    "|x| ≤ 10^9",
+    "pop/top/getMin 仅在非空栈上调用",
+    "所有操作 O(1)"
+  ],
+  "samples": [
+    {
+      "input": "5\npush 5\npush 3\ngetMin\ntop\npop\n",
+      "output": "3\n3\n",
+      "explain": "压入 5、3 后最小值为 3，栈顶也是 3；弹出栈顶 3。"
+    },
+    {
+      "input": "6\npush 2\npush 1\ngetMin\npop\ngetMin\ntop\n",
+      "output": "1\n2\n2\n",
+      "explain": "最小值为 1；弹出 1 之后最小值变回 2，栈顶也是 2。"
+    }
+  ],
+  "hint": "**辅助栈**：再开一个栈 `mn`，与主栈 `st` **同步**记录「当前栈内最小值」。\n\n- `push x`：`st` 压入 $x$；`mn` 压入 `min(mn.top(), x)`（若 `mn` 为空则直接压 $x$）；\n- `pop`：两个栈同时弹出；\n- `getMin`：直接返回 `mn` 的栈顶。\n\n关键在于 `mn` 与 `st` 的**高度始终一致**，这样弹出时不需要额外判断。所有操作都是 $O(1)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <cstring>\n\n// TODO: 用辅助栈同步维护最小值\n\nint main() {\n    int q;\n    scanf(\"%d\", &q);\n    for (int i = 0; i < q; ++i) {\n        char op[16];\n        scanf(\"%s\", op);\n        if (strcmp(op, \"push\") == 0) {\n            long long x; scanf(\"%lld\", &x);\n            // TODO\n        } else if (strcmp(op, \"pop\") == 0) {\n            // TODO\n        } else if (strcmp(op, \"top\") == 0) {\n            // TODO: 输出栈顶\n        } else if (strcmp(op, \"getMin\") == 0) {\n            // TODO: 输出最小值\n        }\n    }\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "5\npush 5\npush 3\ngetMin\ntop\npop\n",
+      "output": "3\n3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "6\npush 2\npush 1\ngetMin\npop\ngetMin\ntop\n",
+      "output": "1\n2\n2\n",
+      "name": "样例 2（弹掉最小）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\npush 7\ngetMin\ntop\n",
+      "output": "7\n7\n",
+      "name": "单元素",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "6\npush 1\npush 2\npush 3\ngetMin\ntop\npop\n",
+      "output": "1\n3\n",
+      "name": "递增入栈",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6\npush 3\npush 2\npush 1\ngetMin\ntop\npop\n",
+      "output": "1\n1\n",
+      "name": "递减入栈",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6\npush -1\npush -5\npush 0\ngetMin\ntop\npop\n",
+      "output": "-5\n0\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "8\npush 4\ngetMin\npush 4\ngetMin\ntop\npop\ngetMin\npop\n",
+      "output": "4\n4\n4\n4\n",
+      "name": "反复查询",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <cstring>\n#include <algorithm>\n\nstd::vector<long long> st, mn;\n\nint main() {\n    int q;\n    scanf(\"%d\", &q);\n    for (int i = 0; i < q; ++i) {\n        char op[16];\n        scanf(\"%s\", op);\n        if (strcmp(op, \"push\") == 0) {\n            long long x; scanf(\"%lld\", &x);\n            st.push_back(x);\n            mn.push_back(mn.empty() ? x : std::min(mn.back(), x));\n        } else if (strcmp(op, \"pop\") == 0) {\n            st.pop_back();\n            mn.pop_back();\n        } else if (strcmp(op, \"top\") == 0) {\n            printf(\"%lld\\n\", st.back());\n        } else if (strcmp(op, \"getMin\") == 0) {\n            printf(\"%lld\\n\", mn.back());\n        }\n    }\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

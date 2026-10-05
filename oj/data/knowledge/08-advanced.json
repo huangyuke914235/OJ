@@ -1,0 +1,214 @@
+{
+  "category": "08-advanced",
+  "name": "综合与进阶",
+  "summary": "把前面各章的知识组合起来解决复杂问题：动态规划负责「多阶段决策最优化」，并查集负责「动态连通性」，单调队列负责「窗口最值」。这一章的关键是识别问题属于哪一类范式。",
+  "overview": "进阶题的特点是**不再是单一知识点**，需要先判断问题属于哪种范式。\n\n**动态规划（DP）**是这一章的主体。判断一道题能否用 DP，看两点：① **最优子结构**——大问题的最优解由小问题的最优解构成；② **重叠子问题**——递归过程中会反复计算同样的状态。DP 的解题步骤固定为四步：**定义状态 → 写转移方程 → 确定初值 → 确定遍历顺序**。\n\n几种经典 DP 模型：**线性 DP**（LIS、最大子段和）、**区间 DP**（编辑距离、最长回文子序列）、**背包 DP**（0-1 背包、完全背包）、**状态压缩 DP**（集合划分）。\n\n**背包问题的滚动数组技巧**极其重要：0-1 背包的内层循环必须**从大到小**（保证每件物品只用一次），完全背包则**从小到大**（允许重复使用）。写反了结果就完全错误。\n\n**并查集**用于「动态连通性」——不断加边并查询两点是否连通，或判断加边是否成环。路径压缩 + 按秩合并后近似 $O(1)$。\n\n**单调队列**用于「固定窗口内的最值」，能在 $O(n)$ 内处理完所有窗口，是滑动窗口类问题的终极武器。\n\n> **一句话记忆**：先判断范式——「多阶段最优」想 DP，「动态连通」想并查集，「窗口最值」想单调队列。",
+  "patterns": [
+    {
+      "name": "线性 DP（最长递增子序列 LIS）",
+      "signal": "求最长递增子序列、最长不下降子序列、信封嵌套",
+      "idea": "**$O(n^2)$ 做法**：定义 `dp[i]` 为「以 i 结尾的最长递增子序列长度」，转移为 `dp[i] = max(dp[j]) + 1`，其中 `j < i` 且 `a[j] < a[i]`。**$O(n\\log n)$ 做法**：维护一个数组 `tails`，`tails[k]` 表示「长度为 k+1 的递增子序列的最小结尾值」。遍历每个元素，用 `lower_bound` 找到第一个不小于它的位置并替换。`tails` 的长度就是答案。",
+      "complexity": "O(n²) 或 O(n log n) / 空间 O(n)",
+      "pitfalls": [
+        "`tails` 数组**本身不是**某个具体的 LIS，它只是「各长度的最小结尾」，不要直接输出它",
+        "严格递增用 `lower_bound`（找第一个 >= x），非严格递增（允许相等）要用 `upper_bound`",
+        "`dp` 的答案是所有 `dp[i]` 的最大值，不是 `dp[n-1]`"
+      ],
+      "problems": [
+        "advanced-lis"
+      ]
+    },
+    {
+      "name": "区间 DP（编辑距离 / 序列对齐）",
+      "signal": "两个字符串的编辑距离、最长公共子序列、最长回文子序列",
+      "idea": "定义 `dp[i][j]` 表示「串 A 的前 i 个字符」与「串 B 的前 j 个字符」的最优解。以编辑距离为例：若 `a[i-1] == b[j-1]`，则 `dp[i][j] = dp[i-1][j-1]`（不用编辑）；否则 `dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])`，分别对应删除、插入、替换。",
+      "complexity": "时间 O(nm) / 空间 O(nm)（可滚动优化到 O(min(n,m)))",
+      "pitfalls": [
+        "**边界初始化**是重点：`dp[0][j] = j`（插入 j 次）、`dp[i][0] = i`（删除 i 次），不能全填 0",
+        "下标 `i` 对应 `a[i-1]`，不要写成 `a[i]`",
+        "二维 DP 空间大时可用滚动数组，但要注意不能覆盖还需要用到的上一行数据"
+      ],
+      "problems": [
+        "advanced-edit-distance",
+        "advanced-lcs"
+      ]
+    },
+    {
+      "name": "背包 DP（0-1 / 完全）",
+      "signal": "在容量限制下选物品使价值最大；凑零钱；子集和",
+      "idea": "定义 `dp[j]` 为「容量为 j 时的最大价值」。**0-1 背包**：每件物品只能选一次，内层循环 `j` 从**大到小**遍历，这样 `dp[j-w]` 还是「没考虑当前物品」的旧值。**完全背包**：每件物品可重复选，内层 `j` 从**小到大**遍历，此时 `dp[j-w]` 已经包含当前物品，实现了重复选取。",
+      "complexity": "时间 O(nW) / 空间 O(W)（滚动数组）",
+      "pitfalls": [
+        "**0-1 背包倒序遍历、完全背包正序遍历**——这是最容易搞反的地方，写反了结果完全错误",
+        "`dp` 数组初值：求最大价值初始化为 0；求「恰好装满」时除 `dp[0]=0` 外其余应为 `-∞`",
+        "二维写法 `dp[i][j]` 更直观但空间大，一维滚动要先想清楚遍历方向"
+      ],
+      "problems": [
+        "advanced-01-knapsack",
+        "advanced-complete-knapsack"
+      ]
+    },
+    {
+      "name": "并查集应用（连通性 / 环检测）",
+      "signal": "动态加边并查询连通性、判断无向图是否有环、Kruskal 最小生成树",
+      "idea": "把每个连通分量维护成一棵树。加边 `(u,v)` 时，若 `find(u) == find(v)` 说明它们已经连通，再加这条边就会成环；否则合并两个集合。所有操作近似 $O(1)$。",
+      "complexity": "单次操作摊还 O(α(n)) ≈ O(1) / 空间 O(n)",
+      "pitfalls": [
+        "路径压缩必须写，否则树可能退化成链，复杂度变成 O(n)",
+        "递归版 `find` 在数据量大时可能爆栈，建议写迭代版",
+        "按秩合并能进一步压低树高，虽非必需但值得写"
+      ],
+      "problems": [
+        "advanced-dsu"
+      ]
+    },
+    {
+      "name": "单调队列（滑动窗口最值）",
+      "signal": "固定长度窗口内的最大值/最小值；带限制的最优子数组",
+      "idea": "用双端队列存下标，保持队列内对应的值单调递减（求最大值时）。窗口右移：队尾弹出所有比新元素小的（它们不可能再成为最值）；新元素入队；队首若已滑出窗口则弹出。队首即当前窗口最大值。每个元素最多进出队各一次，整体 $O(n)$。",
+      "complexity": "时间 O(n) / 空间 O(k)",
+      "pitfalls": [
+        "队列存**下标**而非值，否则无法判断是否滑出窗口",
+        "弹出队首的条件是 `dq.front() <= i - k`",
+        "前 k−1 个位置窗口还没成形，不能提前记录答案"
+      ],
+      "problems": [
+        "advanced-sliding-window-max"
+      ]
+    },
+    {
+      "name": "状态压缩 DP",
+      "signal": "n 较小（通常 ≤ 20）且需要记录「哪些元素已被选」",
+      "idea": "用一个整数的二进制位表示集合状态，第 i 位为 1 表示元素 i 已被使用。`dp[mask]` 表示在状态 mask 下的最优解。转移时枚举下一个可选的元素，用位运算 `mask | (1 << i)` 得到新状态。状态总数 $2^n$，适合 n ≤ 20。",
+      "complexity": "时间 O(2ⁿ × n) / 空间 O(2ⁿ)",
+      "pitfalls": [
+        "n 超过 22 左右时 $2^n$ 会超时或超内存，用前先估算",
+        "枚举某一位是否已用时用 `(mask >> i) & 1`",
+        "注意 `1 << i` 在 i 较大时的整型溢出，必要时用 `1LL << i`"
+      ],
+      "problems": []
+    },
+    {
+      "name": "双状态 DP（正负翻转）",
+      "signal": "乘积型最值问题；乘法中负数会翻转大小关系",
+      "idea": "因为「负数 × 负数 = 正数」，当前最小的负数可能一跃成为最大值。所以同时维护以 `i` 结尾的 `curMax` 与 `curMin`，每步用 `{x, curMax*x, curMin*x}` 三者取极值更新。",
+      "complexity": "时间 O(n) / 空间 O(1)",
+      "pitfalls": [
+        "必须**先算好两个新值再同时赋值**，否则 curMax 被覆盖后 curMin 就算错",
+        "答案要取整个过程中的最大值，不能只返回最后的 curMax",
+        "元素可能全为负，初值不能设成 0"
+      ],
+      "problems": [
+        "advanced-max-product-subarray"
+      ]
+    }
+  ],
+  "techniques": [
+    {
+      "name": "LIS 的 O(n log n) 解法",
+      "detail": "维护 tails 数组，用 lower_bound 替换。注意 tails 不是具体的 LIS。",
+      "lang": "cpp",
+      "code": "std::vector<int> tails;              // tails[k] = 长度 k+1 的递增子序列的最小结尾\nfor (int x : a) {\n    auto it = std::lower_bound(tails.begin(), tails.end(), x);  // 严格递增\n    if (it == tails.end()) tails.push_back(x);\n    else                   *it = x;\n}\nreturn tails.size();\n// 若允许相等（非严格），把 lower_bound 换成 upper_bound"
+    },
+    {
+      "name": "编辑距离",
+      "detail": "二维 DP，注意第一行第一列的初始化。",
+      "lang": "cpp",
+      "code": "int n = a.size(), m = b.size();\nstd::vector<std::vector<int>> dp(n + 1, std::vector<int>(m + 1, 0));\nfor (int i = 0; i <= n; ++i) dp[i][0] = i;   // 全删\nfor (int j = 0; j <= m; ++j) dp[0][j] = j;   // 全插\n\nfor (int i = 1; i <= n; ++i) {\n    for (int j = 1; j <= m; ++j) {\n        if (a[i - 1] == b[j - 1]) {\n            dp[i][j] = dp[i - 1][j - 1];\n        } else {\n            dp[i][j] = 1 + std::min({dp[i - 1][j],      // 删\n                                     dp[i][j - 1],      // 插\n                                     dp[i - 1][j - 1]});// 换\n        }\n    }\n}\nreturn dp[n][m];"
+    },
+    {
+      "name": "0-1 背包（一维滚动数组）",
+      "detail": "内层容量必须倒序遍历，保证每件物品只用一次。",
+      "lang": "cpp",
+      "code": "std::vector<int> dp(W + 1, 0);\nfor (int i = 0; i < n; ++i) {\n    for (int j = W; j >= w[i]; --j) {   // 倒序！\n        dp[j] = std::max(dp[j], dp[j - w[i]] + v[i]);\n    }\n}\nreturn dp[W];"
+    },
+    {
+      "name": "完全背包（一维滚动数组）",
+      "detail": "内层容量正序遍历，允许同一物品重复选取。",
+      "lang": "cpp",
+      "code": "std::vector<int> dp(W + 1, 0);\nfor (int i = 0; i < n; ++i) {\n    for (int j = w[i]; j <= W; ++j) {   // 正序！与 0-1 背包的唯一区别\n        dp[j] = std::max(dp[j], dp[j - w[i]] + v[i]);\n    }\n}\nreturn dp[W];"
+    },
+    {
+      "name": "并查集（迭代 find + 路径压缩）",
+      "detail": "迭代版避免递归爆栈，两趟循环完成路径压缩。",
+      "lang": "cpp",
+      "code": "struct DSU {\n    std::vector<int> p, rnk;\n    DSU(int n) : p(n + 1), rnk(n + 1, 0) {\n        for (int i = 1; i <= n; ++i) p[i] = i;\n    }\n    int find(int x) {\n        int root = x;\n        while (p[root] != root) root = p[root];   // 找根\n        while (p[x] != root) {                    // 压缩路径\n            int nx = p[x];\n            p[x] = root;\n            x = nx;\n        }\n        return root;\n    }\n    bool unite(int a, int b) {\n        a = find(a); b = find(b);\n        if (a == b) return false;                 // 已连通 → 会成环\n        if (rnk[a] < rnk[b]) std::swap(a, b);\n        p[b] = a;\n        if (rnk[a] == rnk[b]) ++rnk[a];\n        return true;\n    }\n};"
+    },
+    {
+      "name": "滑动窗口最大值（单调队列）",
+      "detail": "双端队列存下标，保持值单调递减，队首即窗口最大值。",
+      "lang": "cpp",
+      "code": "std::deque<int> dq;\nstd::vector<int> res;\nfor (int i = 0; i < n; ++i) {\n    while (!dq.empty() && a[dq.back()] <= a[i]) dq.pop_back();  // 小的出队\n    dq.push_back(i);\n    if (dq.front() <= i - k) dq.pop_front();                    // 滑出窗口\n    if (i >= k - 1) res.push_back(a[dq.front()]);               // 窗口成形\n}"
+    },
+    {
+      "name": "状态压缩 DP 骨架",
+      "detail": "用二进制位表示集合，适合 n ≤ 20 的场景。",
+      "lang": "cpp",
+      "code": "int full = 1 << n;\nstd::vector<int> dp(full, INF);\ndp[0] = 0;\nfor (int mask = 0; mask < full; ++mask) {\n    if (dp[mask] == INF) continue;\n    for (int i = 0; i < n; ++i) {\n        if ((mask >> i) & 1) continue;          // 已选过\n        int nmask = mask | (1 << i);\n        dp[nmask] = std::min(dp[nmask], dp[mask] + cost(mask, i));\n    }\n}"
+    }
+  ],
+  "complexity_table": [
+    {
+      "op": "LIS（朴素 DP）",
+      "time": "O(n²)",
+      "note": "dp[i] 为以 i 结尾的 LIS 长度"
+    },
+    {
+      "op": "LIS（贪心 + 二分）",
+      "time": "O(n log n)",
+      "note": "维护 tails 数组"
+    },
+    {
+      "op": "编辑距离",
+      "time": "O(nm)",
+      "note": "可滚动优化空间"
+    },
+    {
+      "op": "最长公共子序列 LCS",
+      "time": "O(nm)",
+      "note": "与编辑距离同框架"
+    },
+    {
+      "op": "0-1 背包",
+      "time": "O(nW)",
+      "note": "内层容量倒序"
+    },
+    {
+      "op": "完全背包",
+      "time": "O(nW)",
+      "note": "内层容量正序"
+    },
+    {
+      "op": "并查集单次操作",
+      "time": "O(α(n)) ≈ O(1)",
+      "note": "路径压缩 + 按秩合并"
+    },
+    {
+      "op": "滑动窗口最大值（单调队列）",
+      "time": "O(n)",
+      "note": "每元素最多进出各一次"
+    },
+    {
+      "op": "状态压缩 DP",
+      "time": "O(2ⁿ × n)",
+      "note": "仅适用于 n ≤ 20 左右"
+    },
+    {
+      "op": "Dijkstra（堆优化）",
+      "time": "O((V+E) log V)",
+      "note": "非负边权最短路"
+    }
+  ],
+  "checklist": [
+    "拿到进阶题先判断范式：多阶段最优 → DP；动态连通 → 并查集；窗口最值 → 单调队列",
+    "写 DP 的四步：定义状态 → 转移方程 → 初值 → 遍历顺序，一步都不能跳",
+    "0-1 背包倒序、完全背包正序——写反必错",
+    "二维 DP 初始化别漏了第一行和第一列",
+    "LIS 的 tails 数组不是具体的 LIS，只是各长度的最小结尾",
+    "严格递增用 lower_bound，非严格用 upper_bound",
+    "DP 的答案是遍历过程中的最值，不一定是最后一个状态",
+    "并查集必须路径压缩；递归 find 大数据可能爆栈",
+    "状态压缩前先估算 2ⁿ，n 超过 22 就该换思路",
+    "空间不够时考虑滚动数组，但要确认不会覆盖还需用的旧值"
+  ]
+}

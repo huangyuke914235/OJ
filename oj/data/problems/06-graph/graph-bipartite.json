@@ -1,0 +1,95 @@
+{
+  "id": "graph-bipartite",
+  "title": "二分图判定",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "BFS",
+    "染色",
+    "二分图"
+  ],
+  "source": {
+    "name": "LeetCode 785 / 染色法",
+    "url": "https://leetcode.cn/problems/is-graph-bipartite/"
+  },
+  "statement": "给定一个 $n$ 个点、$m$ 条边的**无向图**，判断它是否为**二分图**。\n\n**二分图**的定义：可以把顶点分成两个互不相交的集合，使得**每条边的两个端点都分属不同集合**。\n\n等价说法：图中**不存在长度为奇数的环**。\n\n是二分图输出 `YES`，否则输出 `NO`。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 10^5$，$0 \\le m \\le 2 \\times 10^5$）。\n\n接下来 $m$ 行，每行两个整数 $u, v$，表示 $u$ 与 $v$ 之间有一条边。\n\n**图不一定连通**。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ m ≤ 2×10^5",
+    "无向图，可能不连通",
+    "无自环"
+  ],
+  "samples": [
+    {
+      "input": "4 4\n1 2\n1 3\n4 2\n4 3\n",
+      "output": "YES\n",
+      "explain": "可以把 {1,4} 染成一色、{2,3} 染成另一色，每条边两端异色。"
+    },
+    {
+      "input": "3 3\n1 2\n2 3\n3 1\n",
+      "output": "NO\n",
+      "explain": "存在长度为 3 的奇环，无法二分染色。"
+    }
+  ],
+  "hint": "**染色法（BFS 或 DFS）**：给每个顶点染上 0 或 1 两种颜色。\n\n从任意未染色的点出发染 0，然后 BFS：对每个邻居，若它**未染色**就染成相反色并入队；若**已染色且与当前点同色**，说明存在冲突，立即判定不是二分图。\n\n**关键**：外层要遍历**所有**顶点，对每个未染色的连通分量都发起一次 BFS，因为图不一定连通。\n\n时间 $O(n+m)$，空间 $O(n+m)$。\n\n> **易错点**：只从 1 号点开始 BFS 会漏掉其他连通分量中的奇环。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n\nint main() {\n    int n, m;\n    scanf(\"%d %d\", &n, &m);\n    std::vector<std::vector<int>> g(n + 1);\n    for (int i = 0; i < m; ++i) {\n        int u, v;\n        scanf(\"%d %d\", &u, &v);\n        g[u].push_back(v);\n        g[v].push_back(u);\n    }\n\n    std::vector<int> color(n + 1, -1);\n    // TODO: 遍历所有顶点，对每个未染色分量做 BFS 染色\n    bool ok = true;\n\n    printf(\"%s\\n\", ok ? \"YES\" : \"NO\");\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "4 4\n1 2\n1 3\n4 2\n4 3\n",
+      "output": "YES\n",
+      "name": "样例 1（是二分图）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3 3\n1 2\n2 3\n3 1\n",
+      "output": "NO\n",
+      "name": "样例 2（奇环）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 0\n",
+      "output": "YES\n",
+      "name": "单点无边",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "2 0\n",
+      "output": "YES\n",
+      "name": "两个孤立点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 4\n1 2\n2 3\n3 4\n4 1\n",
+      "output": "YES\n",
+      "name": "偶环",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6 2\n1 2\n4 5\n",
+      "output": "YES\n",
+      "name": "不连通且都二分",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "6 4\n1 2\n3 4\n4 5\n5 3\n",
+      "output": "NO\n",
+      "name": "不连通有一块非二分",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n\nint main() {\n    int n, m;\n    scanf(\"%d %d\", &n, &m);\n    std::vector<std::vector<int>> g(n + 1);\n    for (int i = 0; i < m; ++i) {\n        int u, v;\n        scanf(\"%d %d\", &u, &v);\n        g[u].push_back(v);\n        g[v].push_back(u);\n    }\n\n    std::vector<int> color(n + 1, -1);\n    bool ok = true;\n    for (int st = 1; st <= n && ok; ++st) {\n        if (color[st] != -1) continue;        // 已属于某个分量\n        color[st] = 0;\n        std::queue<int> q;\n        q.push(st);\n        while (!q.empty() && ok) {\n            int u = q.front(); q.pop();\n            for (int v : g[u]) {\n                if (color[v] == -1) {\n                    color[v] = color[u] ^ 1;   // 异色\n                    q.push(v);\n                } else if (color[v] == color[u]) {\n                    ok = false; break;         // 同色冲突\n                }\n            }\n        }\n    }\n    printf(\"%s\\n\", ok ? \"YES\" : \"NO\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,94 @@
+{
+  "id": "array-remove-duplicates",
+  "title": "有序数组去重",
+  "difficulty": "入门",
+  "tags": [
+    "数组",
+    "双指针",
+    "原地"
+  ],
+  "source": {
+    "name": "LeetCode 26 / 双指针原地压缩",
+    "url": "https://leetcode.cn/problems/remove-duplicates-from-sorted-array/"
+  },
+  "statement": "给定一个**非递减**数组 $a$，请**原地**删除重复元素，使得每个元素只出现一次，并返回去重后的新长度 $k$。\n\n去重后的结果应放在数组的**前 $k$ 个位置**，其余位置的内容无关紧要。\n\n**要求：空间复杂度 $O(1)$**，不能额外开一个数组。",
+  "input_format": "第一行一个整数 $n$（$0 \\le n \\le 2 \\times 10^5$）。\n\n第二行 $n$ 个整数 $a_i$，保证非递减（$|a_i| \\le 10^9$）。当 $n=0$ 时第二行为空行。",
+  "output_format": "第一行输出新长度 $k$。\n\n第二行输出去重后的前 $k$ 个元素，以空格分隔。若 $k=0$ 则输出一个空行。",
+  "constraints": [
+    "0 ≤ n ≤ 2×10^5",
+    "|a_i| ≤ 10^9",
+    "数组非递减",
+    "要求 O(1) 额外空间"
+  ],
+  "samples": [
+    {
+      "input": "5\n1 1 2 2 3\n",
+      "output": "3\n1 2 3\n",
+      "explain": "去重后得到 `[1, 2, 3]`，新长度为 3。"
+    },
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "4\n1 2 3 4\n",
+      "explain": "所有元素相同，去重后只剩一个 `7`。"
+    }
+  ],
+  "hint": "**读写双指针**：`slow` 指向「已确认的唯一序列」的末尾，`fast` 负责扫描。\n\n当 `a[fast] != a[slow]` 时，说明遇到了新值，把 `slow` 前移一位并写入 `a[fast]`。\n\n因为数组已经有序，相同的元素必然相邻，所以只需比较 `a[fast]` 与 `a[slow]`。\n时间 $O(n)$，空间 $O(1)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<long long> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &a[i]);\n\n    // TODO: 用读写双指针原地去重\n    int k = n;\n\n    printf(\"%d\\n\", k);\n    for (int i = 0; i < k; ++i) {\n        if (i) printf(\" \");\n        printf(\"%lld\", a[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n1 1 2 2 3\n",
+      "output": "3\n1 2 3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4\n1 2 3 4\n",
+      "output": "4\n1 2 3 4\n",
+      "name": "样例 2（无重复）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n7 7 7 7 7\n",
+      "output": "1\n7\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1\n5\n",
+      "output": "1\n5\n",
+      "name": "单元素",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "6\n-3 -3 -1 0 0 2\n",
+      "output": "4\n-3 -1 0 2\n",
+      "name": "含负数",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "8\n1 1 1 1 2 2 2 2\n",
+      "output": "2\n1 2\n",
+      "name": "仅两种值",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "10\n1 1 1 2 2 3 3 3 3 4\n",
+      "output": "4\n1 2 3 4\n",
+      "name": "长重复段",
+      "score": 25,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<long long> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &a[i]);\n\n    int k = 0;\n    for (int fast = 0; fast < n; ++fast) {\n        if (k == 0 || a[fast] != a[k - 1]) {\n            a[k++] = a[fast];\n        }\n    }\n\n    printf(\"%d\\n\", k);\n    for (int i = 0; i < k; ++i) {\n        if (i) printf(\" \");\n        printf(\"%lld\", a[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,93 @@
+{
+  "id": "list-middle-node",
+  "title": "链表的中间结点",
+  "difficulty": "入门",
+  "tags": [
+    "链表",
+    "快慢指针"
+  ],
+  "source": {
+    "name": "LeetCode 876 / 快慢指针",
+    "url": "https://leetcode.cn/problems/middle-of-the-linked-list/"
+  },
+  "statement": "给定一个单链表的头结点，请返回它的**中间结点**。\n\n若有**两个**中间结点（即链表长度为偶数），则返回**第二个**中间结点。\n\n**要求**：只能遍历链表一次，空间复杂度 $O(1)$。",
+  "input_format": "第一行一个整数 $n$（$0 \\le n \\le 2 \\times 10^5$），表示链表长度。\n\n第二行 $n$ 个整数，按从头到尾的顺序给出节点值 $v_i$（$|v_i| \\le 10^9$）。当 $n=0$ 时第二行为空行。",
+  "output_format": "一行，输出中间结点的值。若 $n=0$ 输出一个空行。",
+  "constraints": [
+    "0 ≤ n ≤ 2×10^5",
+    "|v_i| ≤ 10^9",
+    "只能遍历一次",
+    "要求 O(1) 空间"
+  ],
+  "samples": [
+    {
+      "input": "5\n1 2 3 4 5\n",
+      "output": "3\n",
+      "explain": "长度为 5（奇数），中间结点是第 3 个，值为 3。"
+    },
+    {
+      "input": "6\n1 2 3 4 5 6\n",
+      "output": "4\n",
+      "explain": "长度为 6（偶数），有两个中间结点（3 和 4），返回第二个，即 4。"
+    }
+  ],
+  "hint": "**快慢指针**：`slow` 每次走 1 步，`fast` 每次走 2 步。\n\n当 `fast` 到达链表末尾时，`slow` 恰好走过一半的路程，正好停在中间结点。\n\n注意**偶数长度要返回第二个中间结点**：循环条件写成「`fast` 和 `fast->next` 都非空时才继续前进」，这样偶数长度下 `slow` 会多走一步，落到第二个中间结点上。\n\n时间 $O(n)$，空间 $O(1)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\n// 本题以数组形式给出链表，请用快慢指针思路求解\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<long long> v(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &v[i]);\n\n    if (n == 0) { printf(\"\\n\"); return 0; }\n\n    // TODO: 快慢指针找中间结点\n    int mid = 0;\n    printf(\"%lld\\n\", v[mid]);\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "5\n1 2 3 4 5\n",
+      "output": "3\n",
+      "name": "样例 1（奇数）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "6\n1 2 3 4 5 6\n",
+      "output": "4\n",
+      "name": "样例 2（偶数）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n42\n",
+      "output": "42\n",
+      "name": "单节点",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "2\n1 2\n",
+      "output": "2\n",
+      "name": "两节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n7 8 9\n",
+      "output": "8\n",
+      "name": "三节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "7\n-3 -2 -1 0 1 2 3\n",
+      "output": "0\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4\n10 20 30 40\n",
+      "output": "30\n",
+      "name": "四节点",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<long long> v(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &v[i]);\n\n    if (n == 0) { printf(\"\\n\"); return 0; }\n\n    int slow = 0, fast = 0;\n    while (fast + 1 < n) {      // fast 还能走两步\n        slow += 1;\n        fast += 2;\n    }\n    printf(\"%lld\\n\", v[slow]);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,92 @@
+{
+  "id": "advanced-complete-knapsack",
+  "title": "完全背包",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "背包问题"
+  ],
+  "source": {
+    "name": "经典背包问题 / 完全背包",
+    "url": "https://www.luogu.com.cn/problem/P1616"
+  },
+  "statement": "有 $n$ 种物品和一个容量为 $W$ 的背包。第 $i$ 种物品的重量为 $w_i$、价值为 $v_i$。\n\n**每种物品都可以选取任意多件**（数量不限），求在总重量不超过 $W$ 的前提下，能获得的最大总价值。",
+  "input_format": "第一行两个整数 $n, W$（$1 \\le n \\le 1000$，$0 \\le W \\le 10^4$）。\n\n接下来 $n$ 行，每行两个整数 $w_i, v_i$（$1 \\le w_i \\le 10^4$，$0 \\le v_i \\le 10^4$）。",
+  "output_format": "一行一个整数，表示能获得的最大总价值。",
+  "constraints": [
+    "1 ≤ n ≤ 1000",
+    "0 ≤ W ≤ 10^4",
+    "每种物品可无限次选取"
+  ],
+  "samples": [
+    {
+      "input": "3 10\n3 5\n4 6\n5 9\n",
+      "output": "18\n",
+      "explain": "选 2 件第 3 种物品，总重 10、总价值 18，是最优解。"
+    },
+    {
+      "input": "1 10\n3 4\n",
+      "output": "12\n",
+      "explain": "第 1 种物品可以选 3 件，总重 9、价值 12。"
+    }
+  ],
+  "hint": "**一维滚动数组写法**：`dp[j]` 表示容量为 $j$ 时能获得的最大价值。\n\n```\nfor (每种物品 i)\n    for (int j = w[i]; j <= W; ++j)        // 正序遍历！\n        dp[j] = max(dp[j], dp[j - w[i]] + v[i]);\n```\n\n**为什么完全背包要正序，而 0-1 背包要倒序？**\n\n- **0-1 背包**：每件物品只能用一次，所以计算 `dp[j]` 时用到的 `dp[j-w]` 必须是「**还没考虑当前物品**」的旧值 → 容量**倒序**遍历，避免同一物品被重复使用。\n- **完全背包**：每件物品可以无限次使用，我们希望 `dp[j-w]` 已经**包含了当前物品**（这样再加一件就相当于多选一件）→ 容量**正序**遍历。\n\n> 这是背包问题**最容易记反**的一点。记法：「**0-1 倒着走，完全正着走**」。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <algorithm>\n\nint main() {\n    int n, W;\n    scanf(\"%d %d\", &n, &W);\n    std::vector<long long> dp(W + 1, 0);\n\n    for (int i = 0; i < n; ++i) {\n        int w; long long v;\n        scanf(\"%d %lld\", &w, &v);\n        // TODO: 注意内层容量的遍历方向\n    }\n\n    printf(\"%lld\\n\", dp[W]);\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "3 10\n3 5\n4 6\n5 9\n",
+      "output": "18\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 10\n3 4\n",
+      "output": "12\n",
+      "name": "样例 2（单物品）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 0\n1 5\n2 3\n",
+      "output": "0\n",
+      "name": "容量为 0",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "1 10\n4 7\n",
+      "output": "14\n",
+      "name": "装不满",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 20\n3 2\n7 5\n",
+      "output": "14\n",
+      "name": "大容量重复装",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 10\n3 1\n4 1\n",
+      "output": "3\n",
+      "name": "价值全为 1",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "4 15\n2 3\n3 4\n4 5\n5 8\n",
+      "output": "24\n",
+      "name": "多种物品组合",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <algorithm>\n\nint main() {\n    int n, W;\n    scanf(\"%d %d\", &n, &W);\n    std::vector<long long> dp(W + 1, 0);\n\n    for (int i = 0; i < n; ++i) {\n        int w; long long v;\n        scanf(\"%d %lld\", &w, &v);\n        for (int j = w; j <= W; ++j)            // 正序：允许重复选取\n            dp[j] = std::max(dp[j], dp[j - w] + v);\n    }\n\n    printf(\"%lld\\n\", dp[W]);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

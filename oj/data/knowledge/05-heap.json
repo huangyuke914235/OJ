@@ -1,0 +1,171 @@
+{
+  "category": "05-heap",
+  "name": "堆与优先队列",
+  "summary": "堆是一棵「完全二叉树 + 堆序性」的结构，用数组存储，支持 O(log n) 插入、O(log n) 弹出最值、O(1) 查看最值。它解决的是「动态维护极值」这一类问题——数据在变，但你始终只需要当前的最值。",
+  "overview": "堆的价值在于「**动态**」二字。如果数据是静态的，直接排序就够了（$O(n\\log n)$）；但如果数据一边插入一边查询最值，排序就失效了——每次插入都要重排，代价 $O(n\\log n)$。而堆把单次插入/删除压到 $O(\\log n)$，查看最值只要 $O(1)$。\n\n**堆的物理实现是数组**：下标 `i` 的左右孩子是 `2i+1` 和 `2i+2`，父亲是 `(i-1)/2`。因为是完全二叉树，数组存储不会浪费空间。核心操作是 `sift_up`（上浮）和 `sift_down`（下沉）。\n\n**C++ 中的堆**由 `std::priority_queue` 提供，默认是**大根堆**。想要小根堆有三种写法：① 用 `greater<int>`；② 存负数；③ 自定义比较器。\n\n**Top-K 是堆最经典的用法**：求「第 K 大」就维护一个大小为 K 的**小根堆**（堆顶是这 K 个里最小的，也是全局第 K 大）；求「第 K 小」则维护大小为 K 的大根堆。这样空间只有 $O(K)$，时间 $O(n\\log K)$。\n\n**对顶堆**是另一个重要技巧：用一个大根堆放较小的一半、小根堆放较大的一半，就能在 $O(\\log n)$ 内取到中位数。\n\n> **一句话记忆**：数据在动、只关心最值 → 用堆；求 Top-K → 维护大小为 K 的反向堆。",
+  "patterns": [
+    {
+      "name": "Top-K 问题（第 K 大 / 第 K 小）",
+      "signal": "求第 K 大/小、最大的 K 个、最小的 K 个",
+      "idea": "求**第 K 大**：维护一个大小为 K 的**小根堆**。遍历数组，堆未满就压入；满了就比较堆顶——若当前元素大于堆顶，说明它比堆里最小的还大，值得进堆，于是弹出堆顶、压入当前元素。遍历结束后堆顶就是第 K 大。求第 K 小则反过来用大根堆。",
+      "complexity": "时间 O(n log K) / 空间 O(K)",
+      "pitfalls": [
+        "求第 K 大用小根堆，求第 K 小用大根堆——**方向是反的**，这是最容易搞错的地方",
+        "C++ `priority_queue` 默认大根堆，小根堆要写 `priority_queue<int, vector<int>, greater<int>>`",
+        "K 大于数组长度时要按题意处理（返回什么、是否报错）"
+      ],
+      "problems": [
+        "heap-kth-largest",
+        "heap-top-k-frequent",
+        "heap-k-closest-points"
+      ]
+    },
+    {
+      "name": "合并 K 个有序序列",
+      "signal": "合并 K 个有序数组/链表；多路归并",
+      "idea": "维护一个大小为 K 的**小根堆**，堆里存「每个序列当前待处理的元素」及其来源序号。每轮弹出堆顶（全局最小），输出它，然后把该序列的下一个元素压入堆。重复直到堆空。相比「两两合并」的 $O(NK)$，这个做法是 $O(N\\log K)$。",
+      "complexity": "时间 O(N log K)（N 为元素总数）/ 空间 O(K)",
+      "pitfalls": [
+        "堆里要同时存**值**和**来源下标**，否则弹出后不知道该推进哪个序列",
+        "某个序列耗尽后不要再压入，注意判空",
+        "用自定义结构体时需要提供比较器；用 `pair` 时默认按 first 比较，正好可用"
+      ],
+      "problems": [
+        "heap-merge-k-sorted"
+      ]
+    },
+    {
+      "name": "对顶堆求中位数",
+      "signal": "动态数据流的中位数、随时插入并查询中位数",
+      "idea": "维护两个堆：**大根堆** `lo` 存较小的一半，**小根堆** `hi` 存较大的一半。插入时先压入 `lo`，再把 `lo` 的堆顶挪到 `hi`，然后平衡两堆大小（保证 `lo.size()` 等于或比 `hi.size()` 大 1）。查询时若两堆等大则中位数是两个堆顶的平均；否则是 `lo` 的堆顶。",
+      "complexity": "插入 O(log n)，查询 O(1) / 空间 O(n)",
+      "pitfalls": [
+        "**必须每次都重新平衡**，否则两堆大小差距会越来越大",
+        "先无条件压入 `lo` 再把 `lo` 顶挪给 `hi`，这样能自动保证 `lo` 的所有元素都不大于 `hi` 的元素",
+        "偶数个元素时中位数是两堆顶的**平均值**，注意返回浮点还是整数"
+      ],
+      "problems": [
+        "heap-median-stream"
+      ]
+    },
+    {
+      "name": "堆的模拟与手写实现",
+      "signal": "要求手写堆、模拟堆操作、输出堆内元素",
+      "idea": "用数组存堆，下标从 0 或 1 开始。`sift_up(i)`：不断与父节点比较，比父节点优就交换并上移。`sift_down(i)`：与左右孩子中较优的那个比较，若比它差就交换并下移。插入 = 尾部加入 + `sift_up`；弹出堆顶 = 把尾元素移到堆顶 + `sift_down`。",
+      "complexity": "插入 O(log n) / 弹出 O(log n) / 建堆 O(n)",
+      "pitfalls": [
+        "下标从 0 开始时，孩子是 `2i+1`、`2i+2`；从 1 开始时是 `2i`、`2i+1`——两套公式别混用",
+        "`sift_down` 中要先判孩子是否存在（`child < n`），再比较两个孩子",
+        "建堆用「从最后一个非叶节点往前依次 sift_down」，是 O(n) 而不是 O(n log n)"
+      ],
+      "problems": [
+        "heap-basic-ops"
+      ]
+    },
+    {
+      "name": "贪心 + 堆（带截止时间的调度）",
+      "signal": "任务调度、会议室安排、带截止时间的收益最大化",
+      "idea": "先按某维度排序（通常是截止时间或结束时间），然后遍历：用堆维护「已选中的候选」。当发现当前选择不合法（如超出容量）时，从堆中弹出最差的那个，腾出空间。堆在这里充当「可撤销的贪心选择集」。",
+      "complexity": "时间 O(n log n) / 空间 O(n)",
+      "pitfalls": [
+        "排序维度选错会导致贪心不成立，要先想清楚按什么排序",
+        "弹出的是「最差」还是「最优」，取决于堆是大根还是小根，容易搞反",
+        "要证明贪心的正确性（通常靠交换论证），不要凭感觉"
+      ],
+      "problems": [
+        "heap-last-stone-weight"
+      ]
+    }
+  ],
+  "techniques": [
+    {
+      "name": "C++ priority_queue 三种用法",
+      "detail": "默认大根堆；小根堆用 greater；自定义类型用仿函数或 lambda。",
+      "lang": "cpp",
+      "code": "// 1. 大根堆（默认）\nstd::priority_queue<int> maxHeap;\n\n// 2. 小根堆\nstd::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;\n\n// 3. 自定义比较：按 pair 的 first 小的优先（默认就是）\nstd::priority_queue<std::pair<int,int>,\n                    std::vector<std::pair<int,int>>,\n                    std::greater<std::pair<int,int>>> pq;"
+    },
+    {
+      "name": "Top-K：求第 K 大",
+      "detail": "维护大小为 K 的小根堆，堆顶即第 K 大。",
+      "lang": "cpp",
+      "code": "std::priority_queue<int, std::vector<int>, std::greater<int>> pq;  // 小根堆\nfor (int x : nums) {\n    pq.push(x);\n    if ((int)pq.size() > k) pq.pop();   // 超出 K 就弹掉最小的\n}\nreturn pq.top();                        // 堆顶就是第 K 大"
+    },
+    {
+      "name": "合并 K 个有序序列",
+      "detail": "小根堆存 (值, 来源下标)，每轮弹最小并推进该序列。",
+      "lang": "cpp",
+      "code": "using T = std::pair<int,int>;          // (值, 来源下标)\nstd::priority_queue<T, std::vector<T>, std::greater<T>> pq;\nstd::vector<int> pos(k, 0);             // 每个序列的当前下标\nfor (int i = 0; i < k; ++i) {\n    if (!arr[i].empty()) pq.push({arr[i][0], i});\n}\nwhile (!pq.empty()) {\n    auto [v, i] = pq.top(); pq.pop();\n    res.push_back(v);\n    if (++pos[i] < (int)arr[i].size()) pq.push({arr[i][pos[i]], i});\n}"
+    },
+    {
+      "name": "对顶堆求中位数",
+      "detail": "大根堆放小的一半，小根堆放大的一半；插入后立即平衡。",
+      "lang": "cpp",
+      "code": "std::priority_queue<int> lo;                                   // 大根堆，较小的一半\nstd::priority_queue<int, std::vector<int>, std::greater<int>> hi;  // 小根堆，较大的一半\n\nvoid add(int x) {\n    lo.push(x);\n    hi.push(lo.top()); lo.pop();        // 把 lo 最大的挪给 hi\n    if (hi.size() > lo.size()) {        // 平衡：lo 可以比 hi 多 1\n        lo.push(hi.top()); hi.pop();\n    }\n}\n\ndouble median() {\n    if (lo.size() == hi.size()) return (lo.top() + hi.top()) / 2.0;\n    return lo.top();\n}"
+    },
+    {
+      "name": "手写小根堆（数组实现，下标从 0）",
+      "detail": "sift_up 上浮、sift_down 下沉，是堆的两个基本操作。",
+      "lang": "cpp",
+      "code": "std::vector<int> h;                    // 小根堆\n\nvoid sift_up(int i) {\n    while (i > 0) {\n        int p = (i - 1) / 2;\n        if (h[p] <= h[i]) break;\n        std::swap(h[p], h[i]);\n        i = p;\n    }\n}\n\nvoid sift_down(int i) {\n    int n = h.size();\n    while (true) {\n        int c = 2 * i + 1, best = i;\n        if (c < n && h[c] < h[best]) best = c;\n        if (c + 1 < n && h[c + 1] < h[best]) best = c + 1;\n        if (best == i) break;\n        std::swap(h[i], h[best]);\n        i = best;\n    }\n}\n\nvoid push(int x) { h.push_back(x); sift_up(h.size() - 1); }\n\nint pop() {\n    int top = h[0];\n    h[0] = h.back(); h.pop_back();\n    if (!h.empty()) sift_down(0);\n    return top;\n}"
+    },
+    {
+      "name": "O(n) 建堆",
+      "detail": "从最后一个非叶节点开始往前依次 sift_down，总复杂度是 O(n) 而非 O(n log n)。",
+      "lang": "cpp",
+      "code": "// h 已填入数据，n = h.size()\nfor (int i = n / 2 - 1; i >= 0; --i) {\n    sift_down(i);\n}"
+    }
+  ],
+  "complexity_table": [
+    {
+      "op": "查看堆顶",
+      "time": "O(1)",
+      "note": "直接取数组首元素"
+    },
+    {
+      "op": "插入元素",
+      "time": "O(log n)",
+      "note": "尾部加入 + 上浮"
+    },
+    {
+      "op": "弹出堆顶",
+      "time": "O(log n)",
+      "note": "尾元素补顶 + 下沉"
+    },
+    {
+      "op": "建堆（自底向上）",
+      "time": "O(n)",
+      "note": "比逐个插入的 O(n log n) 更快"
+    },
+    {
+      "op": "堆排序",
+      "time": "O(n log n)",
+      "note": "建堆 O(n) + n 次弹出"
+    },
+    {
+      "op": "Top-K（n 个元素，堆大小 K）",
+      "time": "O(n log K)",
+      "note": "空间 O(K)"
+    },
+    {
+      "op": "合并 K 个序列（总 N 个元素）",
+      "time": "O(N log K)",
+      "note": "优于两两合并的 O(NK)"
+    },
+    {
+      "op": "对顶堆插入 / 查询中位数",
+      "time": "O(log n) / O(1)",
+      "note": "两堆大小差不超过 1"
+    }
+  ],
+  "checklist": [
+    "看到「第 K 大」→ 维护大小 K 的**小根堆**（方向别搞反）",
+    "看到「动态中位数」→ 对顶堆",
+    "看到「合并 K 个有序」→ 小根堆多路归并",
+    "C++ `priority_queue` 默认大根堆，小根堆要写 `greater<T>`",
+    "堆里存复合信息时（值 + 来源），别忘了来源下标",
+    "对顶堆每次插入后都要重新平衡",
+    "手写堆注意下标从 0 还是 1 开始，孩子公式不同",
+    "建堆是 O(n)，不是 O(n log n)",
+    "「求最大 K 个」和「求第 K 大」用同一个堆，但输出方式不同"
+  ]
+}

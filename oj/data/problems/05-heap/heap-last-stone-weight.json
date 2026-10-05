@@ -1,0 +1,92 @@
+{
+  "id": "heap-last-stone-weight",
+  "title": "最后一块石头的重量",
+  "difficulty": "简单",
+  "tags": [
+    "堆",
+    "优先队列",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 1046 / 大根堆模拟",
+    "url": "https://leetcode.cn/problems/last-stone-weight/"
+  },
+  "statement": "有一堆石头，每块石头的重量为正整数。\n\n每一回合，从中选出**两块最重**的石头，然后将它们一起粉碎：\n- 若两块重量**相等**，则两块都消失；\n- 若**不等**，则较轻的一块消失，较重的一块剩余重量变为两者之差。\n\n重复上述过程直到**最多只剩一块**石头，输出它的重量；若一块也不剩，输出 $0$。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^4$）。\n\n第二行 $n$ 个正整数 $a_i$（$1 \\le a_i \\le 10^4$）。",
+  "output_format": "一行一个整数，表示最后剩下石头的重量；若全被粉碎则输出 $0$。",
+  "constraints": [
+    "1 ≤ n ≤ 10^4",
+    "1 ≤ a_i ≤ 10^4"
+  ],
+  "samples": [
+    {
+      "input": "6\n2 7 4 1 8 1\n",
+      "output": "1\n",
+      "explain": "取 8 与 7 粉碎得 1；再取 4 与 2 粉碎得 2；再取 2 与 1 粉碎得 1；最后取 1 与 1 粉碎，全消失……最终剩 1。"
+    },
+    {
+      "input": "2\n5 5\n",
+      "output": "0\n",
+      "explain": "两块等重，一起消失，一块不剩。"
+    }
+  ],
+  "hint": "**大根堆**：每次都要取「当前最重的两块」，这正是堆擅长的操作。\n\n1. 把所有石头放进大根堆；\n2. 每次弹出两个最大值 $x \\ge y$；若 $x \\ne y$，把 $x - y$ 放回堆；\n3. 堆中不足两块时停止，输出堆中剩余的（或 $0$）。\n\n**C++ 技巧**：`std::priority_queue` 默认就是大根堆，直接用即可。\n若用 Python 的 `heapq`（小根堆），需要**存负数**来模拟大根堆。\n\n每次操作 $O(\\log n)$，总共 $O(n \\log n)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::priority_queue<long long> pq;   // 默认大根堆\n    for (int i = 0; i < n; ++i) {\n        long long x; scanf(\"%lld\", &x);\n        pq.push(x);\n    }\n\n    // TODO: 每次取两块最大的相减\n\n    printf(\"%lld\\n\", pq.empty() ? 0LL : pq.top());\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "6\n2 7 4 1 8 1\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2\n5 5\n",
+      "output": "0\n",
+      "name": "样例 2（全消）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n9\n",
+      "output": "9\n",
+      "name": "单块",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "2\n3 7\n",
+      "output": "4\n",
+      "name": "两块不等",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n6 6 6 6\n",
+      "output": "0\n",
+      "name": "全相同偶数个",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n4 4 4\n",
+      "output": "4\n",
+      "name": "全相同奇数个",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5\n1 2 3 4 5\n",
+      "output": "1\n",
+      "name": "递增序列",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::priority_queue<long long> pq;\n    for (int i = 0; i < n; ++i) {\n        long long x; scanf(\"%lld\", &x);\n        pq.push(x);\n    }\n\n    while (pq.size() >= 2) {\n        long long x = pq.top(); pq.pop();\n        long long y = pq.top(); pq.pop();\n        if (x != y) pq.push(x - y);\n    }\n\n    printf(\"%lld\\n\", pq.empty() ? 0LL : pq.top());\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

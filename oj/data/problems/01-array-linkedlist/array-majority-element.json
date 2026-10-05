@@ -1,0 +1,94 @@
+{
+  "id": "array-majority-element",
+  "title": "多数元素（投票法）",
+  "difficulty": "简单",
+  "tags": [
+    "数组",
+    "Boyer-Moore",
+    "贪心"
+  ],
+  "source": {
+    "name": "LeetCode 169 / Boyer-Moore 投票算法",
+    "url": "https://leetcode.cn/problems/majority-element/"
+  },
+  "statement": "给定一个长度为 $n$ 的数组 $a$，求其中的**多数元素**。\n\n多数元素的定义是：出现次数**严格大于** $\\lfloor n/2 \\rfloor$ 的元素。\n\n题目**保证**数组中一定存在多数元素。\n\n**进阶要求**：请设计 $O(n)$ 时间、$O(1)$ 空间的算法。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 2 \\times 10^5$）。\n\n第二行 $n$ 个整数 $a_i$（$|a_i| \\le 10^9$）。保证存在多数元素。",
+  "output_format": "一行，输出多数元素的值。",
+  "constraints": [
+    "1 ≤ n ≤ 2×10^5",
+    "|a_i| ≤ 10^9",
+    "保证存在多数元素",
+    "要求 O(n) 时间 / O(1) 空间"
+  ],
+  "samples": [
+    {
+      "input": "3\n3 2 3\n",
+      "output": "3\n",
+      "explain": "3 出现 2 次，超过 ⌊3/2⌋=1，是多数元素。"
+    },
+    {
+      "input": "7\n2 2 1 1 1 2 2\n",
+      "output": "2\n",
+      "explain": "2 出现 4 次，超过 ⌊7/2⌋=3，是多数元素。"
+    }
+  ],
+  "hint": "**Boyer-Moore 投票算法**：维护一个候选者 `cand` 和一个计数器 `cnt`。\n\n- 若 `cnt == 0`，把当前元素设为候选者，`cnt = 1`；\n- 若当前元素等于候选者，`cnt += 1`；\n- 否则 `cnt -= 1`（相当于「一换一抵消」）。\n\n**直觉**：多数元素出现次数超过一半，即使把它和其他所有元素两两抵消，最后剩下的仍然是它。时间 $O(n)$，空间 $O(1)$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<long long> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &a[i]);\n\n    // TODO: Boyer-Moore 投票算法\n    long long cand = a[0];\n\n    printf(\"%lld\\n\", cand);\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "3\n3 2 3\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "7\n2 2 1 1 1 2 2\n",
+      "output": "2\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n5\n",
+      "output": "5\n",
+      "name": "单元素",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "5\n4 4 4 4 4\n",
+      "output": "4\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "7\n1 2 1 3 1 4 1\n",
+      "output": "1\n",
+      "name": "多数在末尾",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "9\n-1 -1 -1 -1 -1 2 2 3 3\n",
+      "output": "-1\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "6\n7 7 7 7 1 2\n",
+      "output": "7\n",
+      "name": "恰好过半再加一",
+      "score": 25,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<long long> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &a[i]);\n\n    long long cand = a[0];\n    int cnt = 0;\n    for (int i = 0; i < n; ++i) {\n        if (cnt == 0) { cand = a[i]; cnt = 1; }\n        else if (a[i] == cand) ++cnt;\n        else --cnt;\n    }\n    printf(\"%lld\\n\", cand);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

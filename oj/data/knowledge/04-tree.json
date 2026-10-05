@@ -1,0 +1,201 @@
+{
+  "category": "04-tree",
+  "name": "树与二叉树",
+  "summary": "二叉树的一切解法都建立在两种遍历骨架之上：DFS（递归，前/中/后序）与 BFS（层序）。二叉搜索树（BST）额外提供「中序遍历有序」这条黄金性质，是大量题目的突破口。",
+  "overview": "树是非线性结构的入门，也是递归思维训练的最佳载体。\n\n**递归是树题的母语。** 写树的递归函数时，先想清楚三件事：① 函数的语义是什么（返回什么信息）；② 基准情况（空节点返回什么）；③ 如何用左右子树的结果组合出当前节点的结果。想清楚这三点，代码通常只有几行。\n\n**遍历是骨架。** 前序（根左右）适合自顶向下传递信息（如求深度时传层数）；中序（左根右）在 BST 上天然有序；后序（左右根）适合自底向上汇总信息（如求高度、判断平衡）。层序（BFS）适合处理「按层」的问题。\n\n**BST 的特殊性。** 对 BST 做中序遍历会得到递增序列——这条性质是判断 BST、找第 k 小、求 LCA 的关键。注意「验证 BST」不能只比较父子节点，必须传递**上下界**，因为 BST 要求整棵左子树都小于根。\n\n**LCA（最近公共祖先）**分两种：普通二叉树用后序递归（左右子树各找到一个就返回当前节点）；BST 则可以利用大小关系，从根往下走，第一个落在 `[p, q]` 之间的节点就是答案。\n\n> **一句话记忆**：树题先定「用哪种遍历」，再定「递归函数返回什么信息」。",
+  "patterns": [
+    {
+      "name": "递归遍历（前 / 中 / 后序）",
+      "signal": "需要按某种顺序访问所有节点；输出遍历序列；把树转成线性结构",
+      "idea": "前序：先处理当前节点再递归左右；中序：先左再当前再右；后序：先左右再当前。迭代写法需要显式栈，中序迭代的经典写法是「一路向左压栈，弹出后转向右子树」。",
+      "complexity": "时间 O(n) / 空间 O(h)，h 为树高（递归栈）",
+      "pitfalls": [
+        "中序迭代的循环条件是 `cur || !st.empty()`，两个都不能少",
+        "递归深度在极端退化（链状树）时会达到 n，可能爆栈；工程上可改迭代",
+        "Morris 遍历能做到 O(1) 空间，但会临时改树结构，考场上非必需"
+      ],
+      "problems": [
+        "tree-inorder"
+      ]
+    },
+    {
+      "name": "层序遍历（BFS）",
+      "signal": "按层输出、求层宽、找每层最右节点、之字形遍历",
+      "idea": "用队列。关键技巧是**在处理一层之前先记录队列当前大小 `sz`**，然后只处理这 `sz` 个节点（它们恰好是同一层），并把它们的子节点入队。这样每轮循环就对应一层。",
+      "complexity": "时间 O(n) / 空间 O(w)，w 为最大层宽",
+      "pitfalls": [
+        "必须在循环开始前固定 `sz = q.size()`，若在循环中动态取 `q.size()` 会混淆层次",
+        "之字形遍历可在奇数层反转该层结果，或改用双端队列",
+        "空树要提前返回空结果，否则会把空的一层也加进去"
+      ],
+      "problems": [
+        "tree-level-order"
+      ]
+    },
+    {
+      "name": "递归求深度 / 高度 / 路径",
+      "signal": "最大深度、最小深度、直径、路径和、是否平衡",
+      "idea": "后序递归：`depth(node) = 1 + max(depth(left), depth(right))`，空节点返回 0。这类题的特点是「当前节点的答案依赖子树的返回值」，因此天然是后序。求直径时，在递归过程中用 `左高 + 右高` 更新全局最大值。",
+      "complexity": "时间 O(n) / 空间 O(h)",
+      "pitfalls": [
+        "最大深度和最小深度不同：最小深度**不能**简单取 min，因为单侧为空的节点不算叶子（叶子定义是左右都空）",
+        "求直径不要重复递归——在同一个递归里顺便算高度，否则会退化成 O(n²)",
+        "空节点返回值要想清楚：求深度返回 0，求路径和可能返回 0 或 -∞（取决于是否允许空路径）"
+      ],
+      "problems": [
+        "tree-max-depth",
+        "tree-min-depth"
+      ]
+    },
+    {
+      "name": "对称性 / 结构比较",
+      "signal": "判断对称二叉树、判断两棵树是否相同、判断子树",
+      "idea": "对称性判断本质是「两棵子树互为镜像」：`mirror(a, b)` 要求 `a->val == b->val` 且 `mirror(a->left, b->right)` 且 `mirror(a->right, b->left)`。注意递归时**交叉比较**，而不是同侧比较。",
+      "complexity": "时间 O(n) / 空间 O(h)",
+      "pitfalls": [
+        "对称是「左的左配右的右」，写成同侧比较就变成了「判断两棵树相同」",
+        "两节点都为空的基准情况必须先判，否则访问 `->val` 会空指针",
+        "根节点为空时对称，直接返回 true"
+      ],
+      "problems": [
+        "tree-symmetric"
+      ]
+    },
+    {
+      "name": "BST 性质应用（验证 / 查找 / 第 k 小）",
+      "signal": "验证二叉搜索树、BST 中查找、第 k 小元素、转有序数组",
+      "idea": "BST 的核心性质是**中序遍历严格递增**。验证 BST 有两种做法：① 中序遍历检查序列是否严格递增；② 递归时传递允许的上下界 `(lo, hi)`，当前值必须落在区间内，左子树收紧上界、右子树收紧下界。查找则按大小关系决定往左还是往右。",
+      "complexity": "时间 O(n)（验证）或 O(h)（查找）/ 空间 O(h)",
+      "pitfalls": [
+        "**只比较父子节点是错的**——必须保证整棵左子树都小于根。例如 `[5,1,4,null,null,3,6]` 中 3 在 4 的左子树但小于 5，不是 BST",
+        "边界要用 `long long` 或指针，避免节点值恰好等于 `INT_MIN`/`INT_MAX` 时判断失效",
+        "严格递增 vs 非严格：题目是否允许相等值要看清"
+      ],
+      "problems": [
+        "tree-validate-bst",
+        "tree-lca-bst",
+        "tree-bst-kth-smallest"
+      ]
+    },
+    {
+      "name": "最近公共祖先（LCA）",
+      "signal": "求两个节点的最近公共祖先",
+      "idea": "**普通二叉树**用后序递归：若当前节点是 p 或 q 或为空就返回当前节点；否则递归左右，若左右都非空说明 p、q 分居两侧，当前节点即 LCA；若只有一侧非空就返回那一侧。**BST** 则利用大小关系：从根往下走，若 p、q 都小于当前值就往左，都大于就往右，否则当前节点就是 LCA。",
+      "complexity": "普通二叉树 O(n)；BST O(h) / 空间 O(h)",
+      "pitfalls": [
+        "BST 版本不用递归也能写，且更快——别一上来就套普通二叉树的 O(n) 做法",
+        "递归版本要注意「当前节点就是 p 或 q」的情况，此时直接返回当前节点",
+        "BST 判断分支时用 `p->val < root->val && q->val < root->val` 而不是只看一个"
+      ],
+      "problems": [
+        "tree-lca-bst"
+      ]
+    },
+    {
+      "name": "递归遍历的应用（翻转 / 路径）",
+      "signal": "翻转二叉树、判断路径和、把树按某种规则改写",
+      "idea": "这类题的共同点是「每个节点做的事只依赖自己与子树」，因此递归结构非常直接：先处理子树，再处理当前节点（后序），或先处理当前节点再递归（前序）。路径和类问题把「剩余需要的值」作为参数往下传。",
+      "complexity": "时间 O(n) / 空间 O(h)",
+      "pitfalls": [
+        "**路径和必须在叶子处判定**，不能中途 `rest == 0` 就返回 true",
+        "翻转时交换左右指针与递归的先后顺序无所谓，但别漏掉任何一侧",
+        "输出层序序列时要删掉末尾多余的 null 占位"
+      ],
+      "problems": [
+        "tree-invert",
+        "tree-path-sum"
+      ]
+    }
+  ],
+  "techniques": [
+    {
+      "name": "递归遍历三件套",
+      "detail": "先明确函数的语义和返回值，再写基准情况，最后组合。",
+      "lang": "cpp",
+      "code": "// 前序\nvoid preorder(TreeNode *r) {\n    if (!r) return;\n    visit(r);\n    preorder(r->left);\n    preorder(r->right);\n}\n\n// 中序（BST 上得到递增序列）\nvoid inorder(TreeNode *r) {\n    if (!r) return;\n    inorder(r->left);\n    visit(r);\n    inorder(r->right);\n}\n\n// 后序\nvoid postorder(TreeNode *r) {\n    if (!r) return;\n    postorder(r->left);\n    postorder(r->right);\n    visit(r);\n}"
+    },
+    {
+      "name": "中序遍历（迭代）",
+      "detail": "一路向左压栈，弹出后访问并转向右子树。是「不递归实现中序」的标准写法。",
+      "lang": "cpp",
+      "code": "std::vector<int> res;\nstd::stack<TreeNode*> st;\nTreeNode *cur = root;\nwhile (cur || !st.empty()) {\n    while (cur) {            // 一路向左\n        st.push(cur);\n        cur = cur->left;\n    }\n    cur = st.top(); st.pop();\n    res.push_back(cur->val); // 访问\n    cur = cur->right;        // 转向右子树\n}"
+    },
+    {
+      "name": "层序遍历（按层分组）",
+      "detail": "先固定本层节点数，再处理，天然分层。",
+      "lang": "cpp",
+      "code": "std::vector<std::vector<int>> res;\nif (!root) return res;\nstd::queue<TreeNode*> q;\nq.push(root);\nwhile (!q.empty()) {\n    int sz = q.size();           // 本层节点数，必须先固定\n    std::vector<int> level;\n    for (int i = 0; i < sz; ++i) {\n        TreeNode *n = q.front(); q.pop();\n        level.push_back(n->val);\n        if (n->left)  q.push(n->left);\n        if (n->right) q.push(n->right);\n    }\n    res.push_back(level);\n}"
+    },
+    {
+      "name": "验证 BST（上下界法）",
+      "detail": "传递允许区间，左子树收紧上界、右子树收紧下界。这是唯一正确的 O(n) 做法。",
+      "lang": "cpp",
+      "code": "bool check(TreeNode *r, long long lo, long long hi) {\n    if (!r) return true;\n    if (r->val <= lo || r->val >= hi) return false;\n    return check(r->left,  lo, r->val) &&\n           check(r->right, r->val, hi);\n}\nbool isValidBST(TreeNode *root) {\n    return check(root, LLONG_MIN, LLONG_MAX);\n}"
+    },
+    {
+      "name": "LCA（普通二叉树，后序）",
+      "detail": "左右各找到一个说明当前节点是 LCA；只找到一边就把那一边往上传递。",
+      "lang": "cpp",
+      "code": "TreeNode* lca(TreeNode *r, TreeNode *p, TreeNode *q) {\n    if (!r || r == p || r == q) return r;\n    TreeNode *L = lca(r->left,  p, q);\n    TreeNode *R = lca(r->right, p, q);\n    if (L && R) return r;      // 分居两侧，当前即 LCA\n    return L ? L : R;          // 都在同一侧\n}"
+    },
+    {
+      "name": "LCA（BST，利用大小关系）",
+      "detail": "从根往下走，第一个落在 p、q 之间（含）的节点就是 LCA。迭代写法无需递归栈。",
+      "lang": "cpp",
+      "code": "TreeNode* lcaBST(TreeNode *root, TreeNode *p, TreeNode *q) {\n    TreeNode *cur = root;\n    while (cur) {\n        if (p->val < cur->val && q->val < cur->val) {\n            cur = cur->left;       // 都在左子树\n        } else if (p->val > cur->val && q->val > cur->val) {\n            cur = cur->right;      // 都在右子树\n        } else {\n            return cur;            // 分居两侧（或当前就是其一）\n        }\n    }\n    return nullptr;\n}"
+    }
+  ],
+  "complexity_table": [
+    {
+      "op": "遍历（前/中/后/层序）",
+      "time": "O(n)",
+      "note": "每个节点访问一次"
+    },
+    {
+      "op": "求最大深度",
+      "time": "O(n)",
+      "note": "后序递归"
+    },
+    {
+      "op": "验证 BST",
+      "time": "O(n)",
+      "note": "上下界法或中序"
+    },
+    {
+      "op": "BST 查找 / 插入 / 删除",
+      "time": "O(h)",
+      "note": "h 为树高"
+    },
+    {
+      "op": "BST 求第 k 小",
+      "time": "O(h + k)",
+      "note": "中序走到第 k 个即可"
+    },
+    {
+      "op": "LCA（普通二叉树）",
+      "time": "O(n)",
+      "note": "后序递归"
+    },
+    {
+      "op": "LCA（BST）",
+      "time": "O(h)",
+      "note": "利用大小关系，无需遍历全树"
+    },
+    {
+      "op": "平衡树（AVL/红黑）树高",
+      "time": "O(log n)",
+      "note": "退化链状树则为 O(n)"
+    }
+  ],
+  "checklist": [
+    "写递归前先问：这个函数返回什么信息？基准情况是什么？",
+    "「按层」→ BFS，且必须先固定 `sz = q.size()`",
+    "「BST」→ 想中序遍历有序",
+    "验证 BST 必须传上下界，不能只比父子",
+    "最小深度不能简单取 min，要区分叶子定义",
+    "求直径/路径和时，避免重复递归导致 O(n²)",
+    "对称判断是交叉比较（左的左 vs 右的右）",
+    "BST 求 LCA 有 O(h) 的专门解法，别套 O(n) 通用解",
+    "递归深度可能达 n，链状树注意爆栈风险"
+  ]
+}

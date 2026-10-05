@@ -32,9 +32,18 @@ def render(ps: ProblemSet) -> None:
 
         # ---------------- 导航
         page = st.session_state.page
-        nav = [("problems", "📚  题库"), ("submissions", "📝  提交记录"), ("about", "ℹ️  关于")]
+        nav = [
+            ("problems", "📚  题库"),
+            ("knowledge", "📘  知识点"),
+            ("submissions", "📝  提交记录"),
+            ("about", "ℹ️  关于"),
+        ]
         for key, label in nav:
-            active = (page == key) or (key == "problems" and page == "problem")
+            active = (
+                (page == key)
+                or (key == "problems" and page == "problem")
+                or (key == "knowledge" and page == "knowledge_detail")
+            )
             if st.button(
                 label,
                 key=f"nav_{key}",

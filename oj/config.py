@@ -12,6 +12,8 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "oj" / "data"
 PROBLEMS_DIR = DATA_DIR / "problems"
+# 知识点总结（每个分类一份，含题型清单与方法总结）
+KNOWLEDGE_DIR = DATA_DIR / "knowledge"
 SUBMISSIONS_DB = DATA_DIR / "submissions.json"
 STATIC_DIR = PROJECT_ROOT / "static"
 DEPLOY_DIR = PROJECT_ROOT / "deploy"

@@ -1,0 +1,94 @@
+{
+  "id": "tree-min-depth",
+  "title": "二叉树的最小深度",
+  "difficulty": "简单",
+  "tags": [
+    "树",
+    "二叉树",
+    "递归",
+    "BFS"
+  ],
+  "source": {
+    "name": "LeetCode 111 / 递归边界",
+    "url": "https://leetcode.cn/problems/minimum-depth-of-binary-tree/"
+  },
+  "statement": "给定一棵二叉树的层序序列，求它的**最小深度**。\n\n**最小深度**的定义：从根节点到**最近的叶子节点**的节点数量。\n\n**叶子节点**指**没有左右孩子**的节点。\n\n若树为空，最小深度为 $0$。",
+  "input_format": "一行，表示二叉树的层序序列，用空格分隔。整数表示节点值，`null` 表示空节点。\n\n$0 \\le$ 节点数 $\\le 10^5$。若树为空，该行为 `null`。",
+  "output_format": "一行一个整数，表示最小深度。空树输出 `0`。",
+  "constraints": [
+    "0 ≤ 节点数 ≤ 10^5",
+    "层序表示",
+    "叶子 = 左右孩子都为空"
+  ],
+  "samples": [
+    {
+      "input": "3 9 20 null null 15 7\n",
+      "output": "2\n",
+      "explain": "根 3 的左孩子 9 就是叶子，路径 3→9 长度为 2，这是最短的。"
+    },
+    {
+      "input": "1 2 null 3 null 4\n",
+      "output": "4\n",
+      "explain": "每个节点都只有一个孩子，形成一条链，唯一的叶子是 4，深度为 4。"
+    }
+  ],
+  "hint": "**递归**，但要注意一个**极易踩的坑**：\n\n不能简单写成 `1 + min(depth(left), depth(right))`。因为当某一侧为空时，它的深度返回 $0$，`min(0, 真实深度)` 会错误地取到 $0$。\n\n正确做法是分类讨论：\n- 左右都空 → 是叶子，返回 $1$；\n- 只有左 → 返回 `1 + depth(left)`（**不能取 min**）；\n- 只有右 → 返回 `1 + depth(right)`；\n- 左右都有 → 返回 `1 + min(depth(left), depth(right))`。\n\n> 对比：求**最大深度**时直接取 `max` 就没这个问题，因为 $0$ 不会影响最大值。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <queue>\n#include <iostream>\n\nstruct Node {\n    long long v;\n    Node *l = nullptr, *r = nullptr;\n};\n\n// TODO: 求最小深度（注意单侧为空的情况）\n\nint main() {\n    std::vector<std::string> tok;\n    std::string t;\n    while (std::cin >> t) tok.push_back(t);\n    // TODO\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "3 9 20 null null 15 7\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 2 null 3 null 4\n",
+      "output": "4\n",
+      "name": "样例 2（链状）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "0\n",
+      "name": "空树",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "5\n",
+      "output": "1\n",
+      "name": "单节点",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 null 2 null 3\n",
+      "output": "3\n",
+      "name": "只有右子树",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 5 6 7\n",
+      "output": "3\n",
+      "name": "完全平衡",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 null null null\n",
+      "output": "2\n",
+      "name": "左深右浅",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <queue>\n#include <algorithm>\n#include <iostream>\n\nstruct Node {\n    long long v;\n    Node *l = nullptr, *r = nullptr;\n};\n\nNode* buildTree(const std::vector<std::string> &t) {\n    if (t.empty() || t[0] == \"null\") return nullptr;\n    Node *root = new Node{std::stoll(t[0])};\n    std::queue<Node*> q;\n    q.push(root);\n    size_t i = 1;\n    while (!q.empty() && i < t.size()) {\n        Node *cur = q.front(); q.pop();\n        if (i < t.size()) {\n            if (t[i] != \"null\") { cur->l = new Node{std::stoll(t[i])}; q.push(cur->l); }\n            ++i;\n        }\n        if (i < t.size()) {\n            if (t[i] != \"null\") { cur->r = new Node{std::stoll(t[i])}; q.push(cur->r); }\n            ++i;\n        }\n    }\n    return root;\n}\n\nint minDepth(Node *n) {\n    if (!n) return 0;\n    if (!n->l && !n->r) return 1;          // 叶子\n    if (!n->l) return 1 + minDepth(n->r);  // 不能取 min\n    if (!n->r) return 1 + minDepth(n->l);\n    return 1 + std::min(minDepth(n->l), minDepth(n->r));\n}\n\nint main() {\n    std::vector<std::string> tok;\n    std::string t;\n    while (std::cin >> t) tok.push_back(t);\n    if (tok.empty()) tok.push_back(\"null\");\n    printf(\"%d\\n\", minDepth(buildTree(tok)));\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

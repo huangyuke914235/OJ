@@ -1,0 +1,93 @@
+{
+  "id": "string-group-anagrams",
+  "title": "字母异位词分组",
+  "difficulty": "中等",
+  "tags": [
+    "字符串",
+    "哈希表",
+    "排序"
+  ],
+  "source": {
+    "name": "LeetCode 49 / 哈希分组",
+    "url": "https://leetcode.cn/problems/group-anagrams/"
+  },
+  "statement": "给定 $n$ 个小写字母字符串，请把**字母异位词**分到同一组。\n\n字母异位词指字母种类和数量完全相同、但排列顺序不同的字符串（例如 `eat`、`tea`、`ate` 互为异位词）。\n\n**输出要求**（为保证判题唯一性）：\n1. 每组内部按**字典序**升序排列，同一行内用空格分隔；\n2. 各组之间按**组内第一个单词的字典序**升序排列，每组占一行。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^4$）。\n\n接下来 $n$ 行，每行一个小写字母字符串（长度 $1 \\le |s| \\le 100$）。",
+  "output_format": "若干行，每行一组异位词（组内字典序升序，空格分隔）。组间按首个单词字典序升序。",
+  "constraints": [
+    "1 ≤ n ≤ 10^4",
+    "1 ≤ |s| ≤ 100",
+    "仅含小写字母"
+  ],
+  "samples": [
+    {
+      "input": "6\neat\ntea\ntan\nate\nnat\nbat\n",
+      "output": "ate eat tea\nbat\nnat tan\n",
+      "explain": "`ate eat tea` 互为异位词；`ant nat` 互为异位词；`bat` 单独一组。各组按首词字典序：ate < ant < bat。"
+    },
+    {
+      "input": "3\nabc\ndef\nghi\n",
+      "output": "abc\ndef\nghi\n",
+      "explain": "三个词互不为异位词，各自成组。"
+    }
+  ],
+  "hint": "**关键是把「异位词」映射成同一个键**，这样才能用哈希表分组。\n\n两种常用键：\n1. **排序后**的字符串——异位词排序后必然相同，$O(L\\log L)$ 构造；\n2. **字符计数**编码，如 `a2b1c0...`，$O(L)$ 构造。\n\n本题字符串很短，用排序法即可。\n\n> **易错点**：哈希表遍历顺序不确定，必须**显式排序**才能得到确定的输出，否则同一份输入可能产生不同的行序，导致判题不稳定。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <map>\n#include <algorithm>\n#include <iostream>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::map<std::string, std::vector<std::string>> groups;\n    for (int i = 0; i < n; ++i) {\n        std::string w;\n        std::cin >> w;\n        // TODO: 计算 key 并分组\n    }\n    // TODO: 按规则输出\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "6\neat\ntea\ntan\nate\nnat\nbat\n",
+      "output": "ate eat tea\nbat\nnat tan\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\nabc\ndef\nghi\n",
+      "output": "abc\ndef\nghi\n",
+      "name": "样例 2（无同组）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\na\n",
+      "output": "a\n",
+      "name": "单字符串",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "4\nab\nba\nab\nba\n",
+      "output": "ab ab ba ba\n",
+      "name": "全部同组",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5\nabc\nabc\ncba\nxyz\nzyx\n",
+      "output": "abc abc cba\nxyz zyx\n",
+      "name": "含重复词",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\na\nab\nabc\nabcd\n",
+      "output": "a\nab\nabc\nabcd\n",
+      "name": "长度不同",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "8\nlisten\nsilent\nenlist\ngoogle\ngogole\ncat\nact\ntac\n",
+      "output": "act cat tac\nenlist listen silent\ngogole google\n",
+      "name": "多组混杂",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <map>\n#include <algorithm>\n#include <iostream>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::map<std::string, std::vector<std::string>> groups;\n    for (int i = 0; i < n; ++i) {\n        std::string w;\n        std::cin >> w;\n        std::string key = w;\n        std::sort(key.begin(), key.end());   // 排序后的串作为 key\n        groups[key].push_back(w);\n    }\n    std::vector<std::vector<std::string>> res;\n    for (auto &kv : groups) {                // 先收集各组\n        auto v = kv.second;\n        std::sort(v.begin(), v.end());       // 组内字典序\n        res.push_back(v);\n    }\n    std::sort(res.begin(), res.end(),        // 组间按首词字典序\n              [](const std::vector<std::string> &a,\n                 const std::vector<std::string> &b) { return a[0] < b[0]; });\n    for (auto &v : res) {\n        for (size_t i = 0; i < v.size(); ++i) {\n            if (i) printf(\" \");\n            printf(\"%s\", v[i].c_str());\n        }\n        printf(\"\\n\");\n    }\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

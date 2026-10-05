@@ -1,0 +1,93 @@
+{
+  "id": "tree-invert",
+  "title": "翻转二叉树",
+  "difficulty": "入门",
+  "tags": [
+    "树",
+    "二叉树",
+    "递归"
+  ],
+  "source": {
+    "name": "LeetCode 226 / 递归入门",
+    "url": "https://leetcode.cn/problems/invert-binary-tree/"
+  },
+  "statement": "给定一棵二叉树的层序序列，请把它**翻转**（左右镜像），并输出翻转后的层序序列。\n\n翻转的定义：交换每个节点的左右子树。\n\n输出时，**末尾多余的 `null` 需要省略**；若树为空，输出 `null`。",
+  "input_format": "一行，表示二叉树的层序序列，用空格分隔。整数表示节点值，`null` 表示空节点。\n\n$0 \\le$ 节点数 $\\le 10^5$，节点值 $|v| \\le 10^9$。若树为空，该行为 `null`。",
+  "output_format": "一行，输出翻转后二叉树的层序序列（末尾多余的 `null` 省略）。空树输出 `null`。",
+  "constraints": [
+    "0 ≤ 节点数 ≤ 10^5",
+    "|v| ≤ 10^9",
+    "层序表示，null 表示空节点"
+  ],
+  "samples": [
+    {
+      "input": "4 2 7 1 3 6 9\n",
+      "output": "4 7 2 9 6 3 1\n",
+      "explain": "根 4 的左右子树互换，递归地每一层都互换，得到镜像树。"
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "explain": "只有一个节点，翻转后不变。"
+    }
+  ],
+  "hint": "**递归**：对每个节点，先递归翻转它的左右子树，然后交换 `left` 和 `right` 指针。\n\n```\nTreeNode* invert(TreeNode* root) {\n    if (!root) return nullptr;\n    swap(root->left, root->right);   // 交换左右\n    invert(root->left);              // 递归处理\n    invert(root->right);\n    return root;\n}\n```\n\n交换与递归的**先后顺序无所谓**，因为两棵子树的处理互不影响。\n\n> **易错点**：输出层序序列时，要删掉末尾多余的 `null`，否则会多出大量无意义的占位符。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <queue>\n#include <iostream>\n\nstruct Node {\n    long long v;\n    Node *l = nullptr, *r = nullptr;\n};\n\n// TODO: 翻转二叉树，然后按层序输出（末尾 null 省略）\n\nint main() {\n    std::vector<std::string> tok;\n    std::string t;\n    while (std::cin >> t) tok.push_back(t);\n    // TODO\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "4 2 7 1 3 6 9\n",
+      "output": "4 7 2 9 6 3 1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "name": "样例 2（单节点）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n",
+      "output": "null\n",
+      "name": "空树",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "1 2 null 3\n",
+      "output": "1 null 2 null 3\n",
+      "name": "只有左子树",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 null 2 null 3\n",
+      "output": "1 2 null 3\n",
+      "name": "只有右子树",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 2 3 4 5 6 7\n",
+      "output": "1 3 2 7 6 5 4\n",
+      "name": "完全二叉树",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2 null 3 null 4\n",
+      "output": "1 null 2 null 3 null 4\n",
+      "name": "链状树",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <queue>\n#include <iostream>\n\nstruct Node {\n    long long v;\n    Node *l = nullptr, *r = nullptr;\n};\n\nNode* buildTree(const std::vector<std::string> &t) {\n    if (t.empty() || t[0] == \"null\") return nullptr;\n    Node *root = new Node{std::stoll(t[0])};\n    std::queue<Node*> q;\n    q.push(root);\n    size_t i = 1;\n    while (!q.empty() && i < t.size()) {\n        Node *cur = q.front(); q.pop();\n        if (i < t.size()) {\n            if (t[i] != \"null\") { cur->l = new Node{std::stoll(t[i])}; q.push(cur->l); }\n            ++i;\n        }\n        if (i < t.size()) {\n            if (t[i] != \"null\") { cur->r = new Node{std::stoll(t[i])}; q.push(cur->r); }\n            ++i;\n        }\n    }\n    return root;\n}\n\nNode* invert(Node *n) {\n    if (!n) return nullptr;\n    std::swap(n->l, n->r);\n    invert(n->l);\n    invert(n->r);\n    return n;\n}\n\nint main() {\n    std::vector<std::string> tok;\n    std::string t;\n    while (std::cin >> t) tok.push_back(t);\n    if (tok.empty()) tok.push_back(\"null\");\n\n    Node *root = invert(buildTree(tok));\n\n    if (!root) { printf(\"null\\n\"); return 0; }   // 空树单独处理\n\n    // 层序输出，末尾 null 省略\n    std::vector<std::string> out;\n    std::queue<Node*> q;\n    q.push(root);\n    while (!q.empty()) {\n        Node *n = q.front(); q.pop();\n        if (!n) { out.push_back(\"null\"); continue; }\n        out.push_back(std::to_string(n->v));\n        q.push(n->l);\n        q.push(n->r);\n    }\n    while (!out.empty() && out.back() == \"null\") out.pop_back();\n    for (size_t i = 0; i < out.size(); ++i) {\n        if (i) printf(\" \");\n        printf(\"%s\", out[i].c_str());\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

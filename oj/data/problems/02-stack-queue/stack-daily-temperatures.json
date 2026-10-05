@@ -1,0 +1,92 @@
+{
+  "id": "stack-daily-temperatures",
+  "title": "每日温度",
+  "difficulty": "中等",
+  "tags": [
+    "栈",
+    "单调栈"
+  ],
+  "source": {
+    "name": "LeetCode 739 / 单调栈经典",
+    "url": "https://leetcode.cn/problems/daily-temperatures/"
+  },
+  "statement": "给定一个整数数组 $t$，表示连续若干天的温度。\n\n对每一天 $i$，请计算**至少需要等待多少天**才会出现一个更高的温度。若之后都不会更高，则答案为 $0$。\n\n**要求：时间复杂度 $O(n)$**。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 2 \\times 10^5$）。\n\n第二行 $n$ 个整数 $t_i$（$-10^9 \\le t_i \\le 10^9$）。",
+  "output_format": "一行 $n$ 个整数，依次为每一天需要等待的天数，以空格分隔。",
+  "constraints": [
+    "1 ≤ n ≤ 2×10^5",
+    "|t_i| ≤ 10^9",
+    "要求 O(n) 算法"
+  ],
+  "samples": [
+    {
+      "input": "8\n73 74 75 71 69 72 76 73\n",
+      "output": "1 1 4 2 1 1 0 0\n",
+      "explain": "第 1 天(73)等 1 天到 74；第 3 天(75)要等 4 天到 76；第 7 天(76)之后没有更高温度，为 0。"
+    },
+    {
+      "input": "5\n30 25 20 15 10\n",
+      "output": "0 0 0 0 0\n",
+      "explain": "温度严格递减，之后都不会更高，全部为 0。"
+    }
+  ],
+  "hint": "**单调栈**：维护一个栈存**下标**，栈内对应的温度从栈底到栈顶**单调递减**。\n\n从左到右扫描第 $i$ 天：当栈非空且栈顶下标的温度 $< t_i$ 时，栈顶那一天「等待的天数」就是 $i - j$，弹出它；重复直到不满足。然后把 $i$ 压栈。\n\n每个下标最多入栈、出栈各一次，因此总时间 $O(n)$。\n\n> 这与「下一个更大元素」是同一个模板，只是记录的不是值而是**下标之差**。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<long long> t(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &t[i]);\n\n    std::vector<int> res(n, 0);\n    std::vector<int> stk;\n    // TODO: 单调栈求解\n\n    for (int i = 0; i < n; ++i) {\n        if (i) printf(\" \");\n        printf(\"%d\", res[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "8\n73 74 75 71 69 72 76 73\n",
+      "output": "1 1 4 2 1 1 0 0\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5\n30 25 20 15 10\n",
+      "output": "0 0 0 0 0\n",
+      "name": "样例 2（递减）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n50\n",
+      "output": "0\n",
+      "name": "单元素",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "5\n10 20 30 40 50\n",
+      "output": "1 1 1 1 0\n",
+      "name": "递增",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n7 7 7 7\n",
+      "output": "0 0 0 0\n",
+      "name": "全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6\n1 3 2 4 3 5\n",
+      "output": "1 2 1 2 1 0\n",
+      "name": "交替",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "6\n-5 -3 -4 -1 -2 0\n",
+      "output": "1 2 1 2 1 0\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<long long> t(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &t[i]);\n\n    std::vector<int> res(n, 0);\n    std::vector<int> stk;\n    for (int i = 0; i < n; ++i) {\n        while (!stk.empty() && t[stk.back()] < t[i]) {\n            int j = stk.back();\n            stk.pop_back();\n            res[j] = i - j;\n        }\n        stk.push_back(i);\n    }\n\n    for (int i = 0; i < n; ++i) {\n        if (i) printf(\" \");\n        printf(\"%d\", res[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

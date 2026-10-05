@@ -1,0 +1,94 @@
+{
+  "id": "graph-grid-islands",
+  "title": "岛屿数量",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "DFS",
+    "网格",
+    "连通块"
+  ],
+  "source": {
+    "name": "LeetCode 200 / 网格 DFS",
+    "url": "https://leetcode.cn/problems/number-of-islands/"
+  },
+  "statement": "给定一个由 `'1'`（陆地）和 `'0'`（水）组成的二维网格，计算其中**岛屿的数量**。\n\n**岛屿**由水平或垂直方向上相邻的陆地连接而成，即上下左右四个方向连通（**对角线不算连通**）。\n\n可以认为网格的四条边之外都是水。",
+  "input_format": "第一行两个整数 $rows, cols$（$1 \\le rows, cols \\le 1000$）。\n\n接下来 $rows$ 行，每行一个长度为 $cols$ 的字符串，仅由 `0` 和 `1` 组成。",
+  "output_format": "一行一个整数，表示岛屿数量。",
+  "constraints": [
+    "1 ≤ rows, cols ≤ 1000",
+    "网格仅含 0 和 1",
+    "上下左右连通，对角不算"
+  ],
+  "samples": [
+    {
+      "input": "4 5\n11110\n11010\n11000\n00000\n",
+      "output": "1\n",
+      "explain": "所有陆地通过上下左右连通成一片，只有 1 个岛屿。"
+    },
+    {
+      "input": "4 5\n11000\n11000\n00100\n00011\n",
+      "output": "3\n",
+      "explain": "左上 2×2 一块、中间单独一块、右下两块相邻成一块，共 3 个岛屿。"
+    }
+  ],
+  "hint": "**把网格看作图，用 DFS/BFS 数连通块**：\n\n遍历每个格子，遇到 `'1'` 就把岛屿数加一，然后从它出发做一次 DFS，把**与之相连的所有陆地都标记为已访问**（可以直接原地改成 `'0'`，省一个 visited 数组）。\n\nDFS 时用方向数组统一处理四个方向：\n```\nconst int dx[4] = {1, -1, 0, 0};\nconst int dy[4] = {0, 0, 1, -1};\n```\n\n时间 $O(rows \\times cols)$，每个格子最多被访问一次。\n\n> **两个易错点**：\n> 1. **边界检查必须写全**（`0 <= nx < rows && 0 <= ny < cols`），否则越界；\n> 2. 网格较大（$10^6$ 格）时**递归 DFS 可能爆栈**，建议改用显式栈或 BFS 队列。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <iostream>\n\nint rows, cols;\nstd::vector<std::string> grid;\n\n// TODO: 写一个 DFS，把与 (x,y) 相连的陆地全部沉掉\n\nint main() {\n    scanf(\"%d %d\", &rows, &cols);\n    grid.resize(rows);\n    for (int i = 0; i < rows; ++i) std::cin >> grid[i];\n\n    int cnt = 0;\n    // TODO\n\n    printf(\"%d\\n\", cnt);\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "4 5\n11110\n11010\n11000\n00000\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 5\n11000\n11000\n00100\n00011\n",
+      "output": "3\n",
+      "name": "样例 2（三个岛）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 3\n000\n000\n",
+      "output": "0\n",
+      "name": "全水",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "2 2\n11\n11\n",
+      "output": "1\n",
+      "name": "全陆",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 2\n10\n01\n",
+      "output": "2\n",
+      "name": "对角不算连通",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 5\n10101\n",
+      "output": "3\n",
+      "name": "单行",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "5 1\n1\n0\n1\n0\n1\n",
+      "output": "3\n",
+      "name": "单列",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <stack>\n#include <iostream>\n\nint main() {\n    int rows, cols;\n    scanf(\"%d %d\", &rows, &cols);\n    std::vector<std::string> grid(rows);\n    for (int i = 0; i < rows; ++i) std::cin >> grid[i];\n\n    const int dx[4] = {1, -1, 0, 0};\n    const int dy[4] = {0, 0, 1, -1};\n    int cnt = 0;\n\n    for (int i = 0; i < rows; ++i) {\n        for (int j = 0; j < cols; ++j) {\n            if (grid[i][j] != '1') continue;\n            ++cnt;\n            // 显式栈 DFS，避免大网格递归爆栈\n            std::stack<std::pair<int,int>> st;\n            grid[i][j] = '0';\n            st.push({i, j});\n            while (!st.empty()) {\n                auto [x, y] = st.top(); st.pop();\n                for (int d = 0; d < 4; ++d) {\n                    int nx = x + dx[d], ny = y + dy[d];\n                    if (nx < 0 || nx >= rows || ny < 0 || ny >= cols) continue;\n                    if (grid[nx][ny] != '1') continue;\n                    grid[nx][ny] = '0';\n                    st.push({nx, ny});\n                }\n            }\n        }\n    }\n    printf(\"%d\\n\", cnt);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

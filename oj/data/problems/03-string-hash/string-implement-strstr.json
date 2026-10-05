@@ -1,0 +1,93 @@
+{
+  "id": "string-implement-strstr",
+  "title": "实现 strStr（子串匹配）",
+  "difficulty": "中等",
+  "tags": [
+    "字符串",
+    "KMP",
+    "子串匹配"
+  ],
+  "source": {
+    "name": "LeetCode 28 / KMP 算法",
+    "url": "https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/"
+  },
+  "statement": "给定两个字符串 $haystack$ 和 $needle$，请找出 $needle$ 在 $haystack$ 中**第一次出现的位置**（下标从 $0$ 开始）。\n\n若 $needle$ 不是 $haystack$ 的子串，返回 $-1$。\n\n**特殊情况**：若 $needle$ 是空串，按惯例返回 $0$。\n\n**进阶要求**：请使用 $O(n+m)$ 的 **KMP 算法**，而非 $O(nm)$ 的暴力匹配。",
+  "input_format": "第一行一个字符串 $haystack$。\n\n第二行一个字符串 $needle$（可能为空行）。\n\n两串长度均不超过 $10^5$，仅含小写英文字母。",
+  "output_format": "一行，输出第一次出现的下标；不存在则输出 $-1$。",
+  "constraints": [
+    "0 ≤ |haystack|, |needle| ≤ 10^5",
+    "仅含小写字母",
+    "建议 O(n+m) 算法"
+  ],
+  "samples": [
+    {
+      "input": "sadbutsad\nsad\n",
+      "output": "0\n",
+      "explain": "`sad` 在开头就出现了，下标为 0。"
+    },
+    {
+      "input": "leetcode\nleeto\n",
+      "output": "-1\n",
+      "explain": "`leeto` 不是 `leetcode` 的子串。"
+    }
+  ],
+  "hint": "**KMP 算法**分两步：\n\n**第一步：求模式串的 `pi`（前缀函数）数组。** `pi[i]` 表示 `needle[0..i]` 的最长**相等真前后缀**的长度。递推方式：`j = pi[i-1]`，若 `needle[i] != needle[j]` 就不断令 `j = pi[j-1]` 回退，匹配上则 `j++`，最后 `pi[i] = j`。\n\n**第二步：用 `pi` 做匹配。** 主串指针 `i` 一直前进不回头；失配时模式串指针 `j` 回退到 `pi[j-1]` 而不是回到 $0$，这就是省时间的关键。\n\n当 `j == m` 时匹配成功，起始位置为 `i - m + 1`。\n\n> **易错点**：`needle` 为空串时要直接返回 $0$，否则会越界访问。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <iostream>\n\nint main() {\n    std::string hay, nee;\n    std::getline(std::cin, hay);\n    std::getline(std::cin, nee);\n\n    if (nee.empty()) { printf(\"0\\n\"); return 0; }\n\n    int n = hay.size(), m = nee.size();\n    std::vector<int> pi(m, 0);\n    // TODO: 1) 构造 pi 数组  2) KMP 匹配\n\n    printf(\"-1\\n\");\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "sadbutsad\nsad\n",
+      "output": "0\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "leetcode\nleeto\n",
+      "output": "-1\n",
+      "name": "样例 2（未找到）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abc\n",
+      "output": "0\n",
+      "name": "空模式串",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "abc\nabc\n",
+      "output": "0\n",
+      "name": "模式等于主串",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "ababab\nbab\n",
+      "output": "1\n",
+      "name": "模式在末尾",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aaaaa\naa\n",
+      "output": "0\n",
+      "name": "重复模式",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "a\na\n",
+      "output": "0\n",
+      "name": "单字符",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <iostream>\n\nint main() {\n    std::string hay, nee;\n    std::getline(std::cin, hay);\n    std::getline(std::cin, nee);\n\n    if (nee.empty()) { printf(\"0\\n\"); return 0; }\n\n    int n = (int)hay.size(), m = (int)nee.size();\n\n    // 1) 前缀函数\n    std::vector<int> pi(m, 0);\n    for (int i = 1; i < m; ++i) {\n        int j = pi[i - 1];\n        while (j > 0 && nee[i] != nee[j]) j = pi[j - 1];\n        if (nee[i] == nee[j]) ++j;\n        pi[i] = j;\n    }\n\n    // 2) 匹配\n    int j = 0, ans = -1;\n    for (int i = 0; i < n; ++i) {\n        while (j > 0 && hay[i] != nee[j]) j = pi[j - 1];\n        if (hay[i] == nee[j]) ++j;\n        if (j == m) { ans = i - m + 1; break; }\n    }\n    printf(\"%d\\n\", ans);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

@@ -1,0 +1,93 @@
+{
+  "id": "advanced-lcs",
+  "title": "最长公共子序列",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "字符串",
+    "LCS"
+  ],
+  "source": {
+    "name": "LeetCode 1143 / 经典二维 DP",
+    "url": "https://leetcode.cn/problems/longest-common-subsequence/"
+  },
+  "statement": "给定两个字符串 $a$ 和 $b$，求它们的**最长公共子序列**（LCS）的长度。\n\n**子序列**指从原串中删去若干字符（可以不删）后得到的序列，**不要求连续**，但**不能改变字符的相对顺序**。\n\n例如 `abcde` 与 `ace` 的最长公共子序列是 `ace`，长度为 $3$。",
+  "input_format": "第一行一个字符串 $a$。\n\n第二行一个字符串 $b$（可能为空行）。\n\n两串长度均不超过 $5000$，仅含小写英文字母。",
+  "output_format": "一行一个整数，表示最长公共子序列的长度。",
+  "constraints": [
+    "0 ≤ |a|, |b| ≤ 5000",
+    "仅含小写字母",
+    "子序列不要求连续"
+  ],
+  "samples": [
+    {
+      "input": "abcde\nace\n",
+      "output": "3\n",
+      "explain": "`ace` 是两者的公共子序列，且长度已达上限。"
+    },
+    {
+      "input": "abc\ndef\n",
+      "output": "0\n",
+      "explain": "没有任何公共字符，长度为 0。"
+    }
+  ],
+  "hint": "**状态定义**：`dp[i][j]` = 「$a$ 的前 $i$ 个字符」与「$b$ 的前 $j$ 个字符」的 LCS 长度。\n\n**转移方程**：\n```\nif (a[i-1] == b[j-1])\n    dp[i][j] = dp[i-1][j-1] + 1;     // 该字符可纳入公共子序列\nelse\n    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);   // 舍弃其中一边的末尾\n```\n\n**初值**：`dp[0][*] = dp[*][0] = 0`（与空串的 LCS 为 $0$）。\n\n答案即 `dp[n][m]`。时间 $O(nm)$。\n\n> **空间优化**：注意到 `dp[i][*]` 只依赖上一行，可以用**滚动数组**把空间从 $O(nm)$ 降到 $O(m)$。但更新 `cur[j]` 时用到的是 `prev[j-1]`（上一行的左一格），所以要**单独保留上一行**，不能直接原地覆盖。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <iostream>\n\nint main() {\n    std::string a, b;\n    std::getline(std::cin, a);\n    std::getline(std::cin, b);\n\n    int n = a.size(), m = b.size();\n    // TODO: 二维 DP（可用滚动数组优化空间）\n    int ans = 0;\n\n    printf(\"%d\\n\", ans);\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "abcde\nace\n",
+      "output": "3\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abc\ndef\n",
+      "output": "0\n",
+      "name": "样例 2（无公共）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "abc\nabc\n",
+      "output": "3\n",
+      "name": "完全相同",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "abc\n",
+      "output": "0\n",
+      "name": "其中一个是空串",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "aaaa\naa\n",
+      "output": "2\n",
+      "name": "全相同字符",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "a\nb\n",
+      "output": "0\n",
+      "name": "单字符匹配",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "abcbdab\nbdcaba\n",
+      "output": "4\n",
+      "name": "交叉匹配",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <algorithm>\n#include <iostream>\n\nint main() {\n    std::string a, b;\n    std::getline(std::cin, a);\n    std::getline(std::cin, b);\n\n    int n = (int)a.size(), m = (int)b.size();\n    std::vector<int> prev(m + 1, 0), cur(m + 1, 0);\n\n    for (int i = 1; i <= n; ++i) {\n        cur.assign(m + 1, 0);\n        for (int j = 1; j <= m; ++j) {\n            if (a[i - 1] == b[j - 1])\n                cur[j] = prev[j - 1] + 1;\n            else\n                cur[j] = std::max(prev[j], cur[j - 1]);\n        }\n        prev = cur;\n    }\n    printf(\"%d\\n\", prev[m]);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

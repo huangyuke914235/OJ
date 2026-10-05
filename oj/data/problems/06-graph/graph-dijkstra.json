@@ -1,0 +1,95 @@
+{
+  "id": "graph-dijkstra",
+  "title": "单源最短路径（Dijkstra）",
+  "difficulty": "中等",
+  "tags": [
+    "图",
+    "最短路",
+    "Dijkstra",
+    "优先队列"
+  ],
+  "source": {
+    "name": "经典最短路算法 / 洛谷 P4779",
+    "url": "https://www.luogu.com.cn/problem/P4779"
+  },
+  "statement": "给定一个 $n$ 个点、$m$ 条边的**无向连通图**（边权非负），求从起点 $s$ 到终点 $t$ 的**最短路径长度**。\n\n若 $s$ 无法到达 $t$，输出 $-1$。\n\n**要求：时间复杂度 $O((n+m)\\log n)$**，即堆优化的 Dijkstra。",
+  "input_format": "第一行两个整数 $n, m$（$1 \\le n \\le 10^5$，$0 \\le m \\le 2 \\times 10^5$）。\n\n接下来 $m$ 行，每行三个整数 $u, v, w$，表示 $u$ 与 $v$ 之间有一条长度为 $w$ 的边（$0 \\le w \\le 10^4$）。\n\n最后一行两个整数 $s, t$（$1 \\le s, t \\le n$），为起点与终点。",
+  "output_format": "一行一个整数，表示 $s$ 到 $t$ 的最短距离；若不可达则输出 $-1$。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "0 ≤ m ≤ 2×10^5",
+    "0 ≤ w ≤ 10^4",
+    "无向图，边权非负"
+  ],
+  "samples": [
+    {
+      "input": "5 6\n1 2 2\n1 3 4\n2 3 1\n2 4 7\n3 5 3\n4 5 1\n1 5\n",
+      "output": "6\n",
+      "explain": "路径 1→2→3→5 总长为 2+1+3=6，比 1→3→5（4+3=7）更短。"
+    },
+    {
+      "input": "4 2\n1 2 5\n3 4 1\n1 4\n",
+      "output": "-1\n",
+      "explain": "1 所在的连通分量是 {1,2}，无法到达 4。"
+    }
+  ],
+  "hint": "**堆优化的 Dijkstra**：\n\n1. `dist[]` 全部初始化为 $\\infty$，`dist[s] = 0`；\n2. 用**小根堆**存 `(距离, 顶点)`，初始放入 `(0, s)`；\n3. 每次弹出堆顶 `(d, u)`：**若 `d > dist[u]` 说明是过期条目，直接跳过**（这叫「惰性删除」）；\n4. 否则遍历 `u` 的邻居 `v`，若 `dist[u] + w < dist[v]` 就松弛并压入新条目。\n\n每条边最多引起一次成功松弛，每次堆操作 $O(\\log n)$，因此总复杂度 $O((n+m)\\log n)$。\n\n> **两个关键点**：\n> 1. **边权必须非负**，否则 Dijkstra 的正确性不成立（有负权要用 Bellman-Ford / SPFA）；\n> 2. **必须跳过过期条目**（第 3 步），否则复杂度会退化。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n\nconst long long INF = 4e18;\n\nint main() {\n    int n, m;\n    scanf(\"%d %d\", &n, &m);\n    std::vector<std::vector<std::pair<int,int>>> g(n + 1);\n    for (int i = 0; i < m; ++i) {\n        int u, v, w;\n        scanf(\"%d %d %d\", &u, &v, &w);\n        g[u].push_back({v, w});\n        g[v].push_back({u, w});\n    }\n    int s, t;\n    scanf(\"%d %d\", &s, &t);\n\n    // TODO: 堆优化 Dijkstra\n    long long ans = -1;\n\n    printf(\"%lld\\n\", ans);\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "5 6\n1 2 2\n1 3 4\n2 3 1\n2 4 7\n3 5 3\n4 5 1\n1 5\n",
+      "output": "6\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 2\n1 2 5\n3 4 1\n1 4\n",
+      "output": "-1\n",
+      "name": "样例 2（不连通）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 0\n1 1\n",
+      "output": "0\n",
+      "name": "单点",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "2 1\n1 2 7\n1 2\n",
+      "output": "7\n",
+      "name": "直达最短路",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3 3\n1 2 10\n2 3 10\n1 3 15\n1 3\n",
+      "output": "15\n",
+      "name": "两点多路径",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4 3\n1 2 1\n2 3 1\n3 4 1\n1 4\n",
+      "output": "3\n",
+      "name": "链状图",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3 3\n1 2 0\n2 3 0\n1 3 5\n1 3\n",
+      "output": "0\n",
+      "name": "含 0 权边",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <queue>\n\nconst long long INF = 4e18;\n\nint main() {\n    int n, m;\n    scanf(\"%d %d\", &n, &m);\n    std::vector<std::vector<std::pair<int,int>>> g(n + 1);\n    for (int i = 0; i < m; ++i) {\n        int u, v, w;\n        scanf(\"%d %d %d\", &u, &v, &w);\n        g[u].push_back({v, w});\n        g[v].push_back({u, w});\n    }\n    int s, t;\n    scanf(\"%d %d\", &s, &t);\n\n    std::vector<long long> dist(n + 1, INF);\n    dist[s] = 0;\n    using P = std::pair<long long,int>;\n    std::priority_queue<P, std::vector<P>, std::greater<P>> pq;\n    pq.push({0, s});\n\n    while (!pq.empty()) {\n        auto [d, u] = pq.top(); pq.pop();\n        if (d > dist[u]) continue;            // 过期条目，跳过\n        for (auto [v, w] : g[u]) {\n            long long nd = d + w;\n            if (nd < dist[v]) {\n                dist[v] = nd;\n                pq.push({nd, v});\n            }\n        }\n    }\n    printf(\"%lld\\n\", dist[t] == INF ? -1LL : dist[t]);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

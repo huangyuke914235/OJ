@@ -1,0 +1,95 @@
+{
+  "id": "heap-top-k-frequent",
+  "title": "前 K 个高频元素",
+  "difficulty": "中等",
+  "tags": [
+    "堆",
+    "优先队列",
+    "哈希表",
+    "Top-K"
+  ],
+  "source": {
+    "name": "LeetCode 347 / 哈希 + 堆",
+    "url": "https://leetcode.cn/problems/top-k-frequent-elements/"
+  },
+  "statement": "给定一个整数数组和一个整数 $k$，返回其中出现**频率最高的 $k$ 个元素**。\n\n**输出要求**（为保证判题唯一性）：按「频率降序；频率相同则元素值升序」排列，在同一行以空格分隔。",
+  "input_format": "第一行两个整数 $n, k$（$1 \\le k \\le$ 不同值的个数 $\\le n \\le 10^5$）。\n\n第二行 $n$ 个整数 $a_i$（$|a_i| \\le 10^9$）。",
+  "output_format": "一行 $k$ 个整数，按上述规则排列，以空格分隔。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "|a_i| ≤ 10^9",
+    "k 不超过不同值的个数",
+    "按 (频次降序, 值升序) 输出"
+  ],
+  "samples": [
+    {
+      "input": "6 2\n1 1 1 2 2 3\n",
+      "output": "1 2\n",
+      "explain": "1 出现 3 次、2 出现 2 次、3 出现 1 次，频率最高的两个是 1 和 2。"
+    },
+    {
+      "input": "2 1\n1 2\n",
+      "output": "1\n",
+      "explain": "三个数频率都是 2，按值升序输出 `1 2 3`。"
+    }
+  ],
+  "hint": "**两步走**：\n\n**第一步：统计频率。** 用哈希表（`unordered_map` 或排序后扫描）统计每个值的出现次数。\n\n**第二步：取频率最高的 $k$ 个。** 两种做法：\n1. **排序**：把 (值, 频次) 全部排序，$O(m\\log m)$（$m$ 为不同值个数），实现简单；\n2. **大小为 $k$ 的小根堆**：维护「当前频率最高的 $k$ 个」，堆顶是其中频率最低的，新元素频率更高就替换，$O(m\\log k)$。\n\n> **易错点**：本题要求「频率相同时按值升序」，排序时要写成「先比频次降序，再比值升序」的双关键字比较，只比频次会导致输出顺序不稳定。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <unordered_map>\n#include <algorithm>\n\nint main() {\n    int n, k;\n    scanf(\"%d %d\", &n, &k);\n    std::unordered_map<long long, int> cnt;\n    for (int i = 0; i < n; ++i) {\n        long long x; scanf(\"%lld\", &x);\n        ++cnt[x];\n    }\n\n    // TODO: 按 (频次降序, 值升序) 排序，取前 k 个输出\n\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "6 2\n1 1 1 2 2 3\n",
+      "output": "1 2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "2 1\n1 2\n",
+      "output": "1\n",
+      "name": "样例 2（k=1）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "4 1\n5 5 5 5\n",
+      "output": "5\n",
+      "name": "全相同",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "6 3\n3 3 2 2 1 1\n",
+      "output": "1 2 3\n",
+      "name": "频次相同按值排",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "6 2\n-1 -1 -1 2 2 3\n",
+      "output": "-1 2\n",
+      "name": "含负数",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 3\n1 2 2 3 3\n",
+      "output": "2 3 1\n",
+      "name": "k 等于不同值个数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "10 3\n4 4 4 4 1 1 1 2 2 3\n",
+      "output": "4 1 2\n",
+      "name": "多频次混杂",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <unordered_map>\n#include <algorithm>\n\nint main() {\n    int n, k;\n    scanf(\"%d %d\", &n, &k);\n    std::unordered_map<long long, int> cnt;\n    for (int i = 0; i < n; ++i) {\n        long long x; scanf(\"%lld\", &x);\n        ++cnt[x];\n    }\n\n    std::vector<std::pair<long long,int>> v(cnt.begin(), cnt.end());\n    std::sort(v.begin(), v.end(), [](const auto &a, const auto &b) {\n        if (a.second != b.second) return a.second > b.second;  // 频次降序\n        return a.first < b.first;                              // 值升序\n    });\n\n    for (int i = 0; i < k; ++i) {\n        if (i) printf(\" \");\n        printf(\"%lld\", v[i].first);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

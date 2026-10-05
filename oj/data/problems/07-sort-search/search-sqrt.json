@@ -1,0 +1,93 @@
+{
+  "id": "search-sqrt",
+  "title": "x 的平方根（二分答案）",
+  "difficulty": "简单",
+  "tags": [
+    "二分查找",
+    "二分答案",
+    "数学"
+  ],
+  "source": {
+    "name": "LeetCode 69 / 二分答案入门",
+    "url": "https://leetcode.cn/problems/sqrtx/"
+  },
+  "statement": "给定一个非负整数 $n$，求它的**算术平方根的整数部分**，即最大的整数 $x$ 满足 $x^2 \\le n$。\n\n**禁止**使用任何库函数（如 `sqrt`、`pow`）。\n\n**要求：时间复杂度 $O(\\log n)$**。",
+  "input_format": "一行一个整数 $n$（$0 \\le n \\le 2^{31}-1$）。",
+  "output_format": "一行一个整数，表示 $\\lfloor\\sqrt{n}\\rfloor$。",
+  "constraints": [
+    "0 ≤ n ≤ 2^31−1",
+    "禁止使用 sqrt/pow",
+    "要求 O(log n)"
+  ],
+  "samples": [
+    {
+      "input": "4\n",
+      "output": "2\n",
+      "explain": "2² = 4 ≤ 4，而 3² = 9 > 4，所以答案是 2。"
+    },
+    {
+      "input": "8\n",
+      "output": "2\n",
+      "explain": "2² = 4 ≤ 8，3² = 9 > 8，所以答案是 2。"
+    }
+  ],
+  "hint": "这是**二分答案**的入门题：答案 $x$ 具有**单调性**——「$x^2 \\le n$ 是否成立」随着 $x$ 增大从 true 变为 false。\n\n在 $[0, n]$ 上二分，每次取 `mid`，判断 `mid*mid <= n`：\n- 成立 → `mid` 可行，尝试更大：`lo = mid`；\n- 不成立 → `hi = mid - 1`。\n\n**注意中点要上取整**（`(lo + hi + 1) / 2`），否则当 `lo` 与 `hi` 相邻时会陷入死循环。\n\n> **溢出提醒**：$n$ 可达 $2^{31}-1$，`mid*mid` 会超过 `int` 范围，**必须用 `long long`** 做乘法，否则会得到负数导致判断出错。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n\nint main() {\n    long long n;\n    scanf(\"%lld\", &n);\n\n    // TODO: 二分答案，注意用 long long 计算 mid*mid\n    long long ans = 0;\n\n    printf(\"%lld\\n\", ans);\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n",
+      "output": "2\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "8\n",
+      "output": "2\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "0\n",
+      "output": "0\n",
+      "name": "零",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "1\n",
+      "output": "1\n",
+      "name": "一",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "144\n",
+      "output": "12\n",
+      "name": "完全平方数",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1000000000\n",
+      "output": "31622\n",
+      "name": "大数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2147483647\n",
+      "output": "46340\n",
+      "name": "质数",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n\nint main() {\n    long long n;\n    scanf(\"%lld\", &n);\n\n    if (n < 2) { printf(\"%lld\\n\", n); return 0; }\n\n    long long lo = 1, hi = n;\n    while (lo < hi) {\n        long long mid = lo + (hi - lo + 1) / 2;   // 上取整\n        if (mid * mid <= n) lo = mid;\n        else                hi = mid - 1;\n    }\n    printf(\"%lld\\n\", lo);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

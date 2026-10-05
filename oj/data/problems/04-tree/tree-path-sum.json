@@ -1,0 +1,94 @@
+{
+  "id": "tree-path-sum",
+  "title": "路径总和",
+  "difficulty": "简单",
+  "tags": [
+    "树",
+    "二叉树",
+    "递归",
+    "DFS"
+  ],
+  "source": {
+    "name": "LeetCode 112 / 递归回溯",
+    "url": "https://leetcode.cn/problems/path-sum/"
+  },
+  "statement": "给定一棵二叉树和一个目标和 $target$，判断树中是否存在**从根节点到叶子节点**的路径，使得路径上所有节点值之和等于 $target$。\n\n**叶子节点**指**没有左右孩子**的节点。路径必须**终止于叶子**，不能在中途某个节点就停下。\n\n若存在这样的路径输出 `YES`，否则输出 `NO`。",
+  "input_format": "第一行，二叉树的层序序列，空格分隔，`null` 表示空节点。\n\n第二行，一个整数 $target$（$-10^9 \\le target \\le 10^9$）。\n\n$0 \\le$ 节点数 $\\le 10^5$。",
+  "output_format": "一行，输出 `YES` 或 `NO`。",
+  "constraints": [
+    "0 ≤ 节点数 ≤ 10^5",
+    "|target| ≤ 10^9",
+    "路径必须终止于叶子"
+  ],
+  "samples": [
+    {
+      "input": "5 4 8 11 null 13 4 7 2 null null null 1\n22\n",
+      "output": "YES\n",
+      "explain": "路径 5 → 4 → 11 → 2 的和是 22，且 2 是叶子，满足条件。"
+    },
+    {
+      "input": "1 2 3\n5\n",
+      "output": "NO\n",
+      "explain": "所有根到叶子的路径和为 1+2=3 或 1+3=4，都不等于 5。"
+    }
+  ],
+  "hint": "**递归（自顶向下）**：把「剩余需要的和」作为参数往下传。\n\n到达节点 $u$ 时，剩余和变为 `rest - u->val`。若 $u$ 是**叶子**（左右都空），判断剩余和是否为 $0$；否则递归左右子树，只要有一侧成立即可。\n\n```\nbool dfs(Node* n, long long rest) {\n    if (!n) return false;\n    rest -= n->v;\n    if (!n->l && !n->r) return rest == 0;   // 必须到叶子\n    return dfs(n->l, rest) || dfs(n->r, rest);\n}\n```\n\n> **易错点**：不能在 `rest == 0` 时立即返回 true——必须确认当前节点是叶子。否则形如「1 → 2，target=1」会误判成 YES。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <queue>\n#include <iostream>\n\nstruct Node {\n    long long v;\n    Node *l = nullptr, *r = nullptr;\n};\n\n// TODO: 判断是否存在根到叶子的路径和为 target\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n    long long target;\n    scanf(\"%lld\", &target);\n    // TODO\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "5 4 8 11 null 13 4 7 2 null null null 1\n22\n",
+      "output": "YES\n",
+      "name": "样例 1（存在）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1 2 3\n5\n",
+      "output": "NO\n",
+      "name": "样例 2（不存在）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "null\n0\n",
+      "output": "NO\n",
+      "name": "空树",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "5\n5\n",
+      "output": "YES\n",
+      "name": "单节点命中",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5\n3\n",
+      "output": "NO\n",
+      "name": "单节点未命中",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 -2 -3\n-1\n",
+      "output": "YES\n",
+      "name": "含负数",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "1 2 null 3\n6\n",
+      "output": "YES\n",
+      "name": "只有左链",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <queue>\n#include <sstream>\n#include <iostream>\n\nstruct Node {\n    long long v;\n    Node *l = nullptr, *r = nullptr;\n};\n\nNode* buildTree(const std::vector<std::string> &t) {\n    if (t.empty() || t[0] == \"null\") return nullptr;\n    Node *root = new Node{std::stoll(t[0])};\n    std::queue<Node*> q;\n    q.push(root);\n    size_t i = 1;\n    while (!q.empty() && i < t.size()) {\n        Node *cur = q.front(); q.pop();\n        if (i < t.size()) {\n            if (t[i] != \"null\") { cur->l = new Node{std::stoll(t[i])}; q.push(cur->l); }\n            ++i;\n        }\n        if (i < t.size()) {\n            if (t[i] != \"null\") { cur->r = new Node{std::stoll(t[i])}; q.push(cur->r); }\n            ++i;\n        }\n    }\n    return root;\n}\n\nbool dfs(Node *n, long long rest) {\n    if (!n) return false;\n    rest -= n->v;\n    if (!n->l && !n->r) return rest == 0;   // 必须是叶子\n    return dfs(n->l, rest) || dfs(n->r, rest);\n}\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n    long long target;\n    scanf(\"%lld\", &target);\n\n    std::istringstream iss(line);\n    std::vector<std::string> tok;\n    std::string t;\n    while (iss >> t) tok.push_back(t);\n    if (tok.empty()) tok.push_back(\"null\");\n\n    printf(\"%s\\n\", dfs(buildTree(tok), target) ? \"YES\" : \"NO\");\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

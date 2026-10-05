@@ -1,0 +1,93 @@
+{
+  "id": "search-rotated-array",
+  "title": "搜索旋转排序数组",
+  "difficulty": "中等",
+  "tags": [
+    "二分查找",
+    "数组"
+  ],
+  "source": {
+    "name": "LeetCode 33 / 二分变体",
+    "url": "https://leetcode.cn/problems/search-in-rotated-sorted-array/"
+  },
+  "statement": "给定一个**严格递增**的数组，它经过了**一次旋转**（即把前面若干元素整体移到末尾，例如 `[0,1,2,4,5,6,7]` 旋转后可能是 `[4,5,6,7,0,1,2]`）。\n\n再给定一个目标值 $target$，请在数组中查找它，返回其**下标**；若不存在则返回 $-1$。\n\n**要求：时间复杂度 $O(\\log n)$**，不能直接线性扫描。\n\n数组中**没有重复元素**。",
+  "input_format": "第一行一个整数 $n$ 后跟 $n$ 个整数（$1 \\le n \\le 10^5$），为旋转后的数组，保证由严格递增数组旋转一次得到。\n\n第二行一个整数 $target$（$|target| \\le 10^9$）。",
+  "output_format": "一行，输出 $target$ 的下标；若不存在则输出 $-1$。",
+  "constraints": [
+    "1 ≤ n ≤ 10^5",
+    "元素严格递增后旋转一次",
+    "无重复元素",
+    "要求 O(log n)"
+  ],
+  "samples": [
+    {
+      "input": "7 4 5 6 7 0 1 2\n0\n",
+      "output": "4\n",
+      "explain": "0 在下标 4 处。"
+    },
+    {
+      "input": "7 4 5 6 7 0 1 2\n3\n",
+      "output": "-1\n",
+      "explain": "数组中不存在 3。"
+    }
+  ],
+  "hint": "**二分的核心观察**：把旋转数组从中间切开，**至少有一半是完全有序的**。\n\n每轮取 `mid`，比较 `a[lo]` 与 `a[mid]`：\n\n- 若 `a[lo] <= a[mid]`：说明**左半段有序**。再看 $target$ 是否落在 `[a[lo], a[mid])` 区间内——在就收缩到左半，否则去右半；\n- 否则**右半段有序**。看 $target$ 是否落在 `(a[mid], a[hi]]` 内——在就去右半，否则去左半。\n\n每次都能排除一半，因此是 $O(\\log n)$。\n\n> **易错点**：判断区间时边界开闭要一致。上面用的是「左闭右开」`[a[lo], a[mid])` 和「左开右闭」`(a[mid], a[hi]]`，因为 `a[mid] == target` 已经在前面单独判断过了。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<long long> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &a[i]);\n    long long target;\n    scanf(\"%lld\", &target);\n\n    int lo = 0, hi = n - 1, ans = -1;\n    // TODO: 二分查找（先判断哪一半有序）\n\n    printf(\"%d\\n\", ans);\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "7 4 5 6 7 0 1 2\n0\n",
+      "output": "4\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "7 4 5 6 7 0 1 2\n3\n",
+      "output": "-1\n",
+      "name": "样例 2（未找到）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5 1 2 3 4 5\n3\n",
+      "output": "2\n",
+      "name": "未旋转",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "1 1\n1\n",
+      "output": "0\n",
+      "name": "单元素命中",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "1 1\n0\n",
+      "output": "-1\n",
+      "name": "单元素未命中",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 5 1 2 3 4\n4\n",
+      "output": "4\n",
+      "name": "旋转在末尾",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2 3 1\n1\n",
+      "output": "1\n",
+      "name": "两元素",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<long long> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &a[i]);\n    long long target;\n    scanf(\"%lld\", &target);\n\n    int lo = 0, hi = n - 1, ans = -1;\n    while (lo <= hi) {\n        int mid = lo + (hi - lo) / 2;\n        if (a[mid] == target) { ans = mid; break; }\n        if (a[lo] <= a[mid]) {                 // 左半有序\n            if (a[lo] <= target && target < a[mid]) hi = mid - 1;\n            else                                    lo = mid + 1;\n        } else {                               // 右半有序\n            if (a[mid] < target && target <= a[hi]) lo = mid + 1;\n            else                                    hi = mid - 1;\n        }\n    }\n    printf(\"%d\\n\", ans);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

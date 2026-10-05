@@ -1,0 +1,92 @@
+{
+  "id": "advanced-max-product-subarray",
+  "title": "乘积最大子数组",
+  "difficulty": "中等",
+  "tags": [
+    "动态规划",
+    "数组"
+  ],
+  "source": {
+    "name": "LeetCode 152 / 双状态 DP",
+    "url": "https://leetcode.cn/problems/maximum-product-subarray/"
+  },
+  "statement": "给定一个整数数组 $a$，求其中**乘积最大的连续子数组**的乘积。\n\n子数组要求**连续**（不能跳着取），且至少包含一个元素。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 2 \\times 10^5$）。\n\n第二行 $n$ 个整数 $a_i$（$|a_i| \\le 10$）。",
+  "output_format": "一行一个整数，表示最大乘积。",
+  "constraints": [
+    "1 ≤ n ≤ 2×10^5",
+    "|a_i| ≤ 10",
+    "子数组必须连续"
+  ],
+  "samples": [
+    {
+      "input": "4\n2 3 -2 4\n",
+      "output": "6\n",
+      "explain": "子数组 `[2,3]` 的乘积为 6；`[2,3,-2,4]` 为 -48，更小。"
+    },
+    {
+      "input": "3\n-2 0 -1\n",
+      "output": "0\n",
+      "explain": "最大乘积来自子数组 `[0]`，值为 0。"
+    }
+  ],
+  "hint": "**难点**：不能像「最大子段和」那样只维护一个最大值。因为**负数乘以负数会变成正数**——当前最小的那个负数，乘上下一个负数后可能一跃成为最大值。\n\n**所以要同时维护两个状态**（都以 $i$ 结尾）：\n- `curMax`：以 $i$ 结尾的最大乘积；\n- `curMin`：以 $i$ 结尾的最小乘积。\n\n转移时，三者取极值：\n```\nlong long c1 = x, c2 = curMax * x, c3 = curMin * x;\ncurMax = max({c1, c2, c3});\ncurMin = min({c1, c2, c3});\nbest   = max(best, curMax);\n```\n\n> **易错点**：\n> 1. 必须**先算好两个新值再同时赋值**，否则 `curMax` 被覆盖后 `curMin` 就算错了；\n> 2. 答案要取**整个过程中的最大值**，不能直接返回最后的 `curMax`；\n> 3. 元素可能是负数，所以初值不能设成 $0$。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <algorithm>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<long long> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &a[i]);\n\n    long long curMax = a[0], curMin = a[0], best = a[0];\n    // TODO: 同时维护最大值与最小值\n\n    printf(\"%lld\\n\", best);\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "4\n2 3 -2 4\n",
+      "output": "6\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\n-2 0 -1\n",
+      "output": "0\n",
+      "name": "样例 2（含零）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\n5\n",
+      "output": "5\n",
+      "name": "单元素正",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "1\n-5\n",
+      "output": "-5\n",
+      "name": "单元素负",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "4\n-1 -2 -3 -4\n",
+      "output": "24\n",
+      "name": "全负数偶数个",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5\n1 2 0 3 4\n",
+      "output": "12\n",
+      "name": "含零分隔",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "3\n-2 -3 -1\n",
+      "output": "6\n",
+      "name": "负负得正",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <algorithm>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<long long> a(n);\n    for (int i = 0; i < n; ++i) scanf(\"%lld\", &a[i]);\n\n    long long curMax = a[0], curMin = a[0], best = a[0];\n    for (int i = 1; i < n; ++i) {\n        long long x = a[i];\n        long long c1 = x, c2 = curMax * x, c3 = curMin * x;\n        curMax = std::max({c1, c2, c3});\n        curMin = std::min({c1, c2, c3});\n        best = std::max(best, curMax);\n    }\n    printf(\"%lld\\n\", best);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

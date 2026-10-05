@@ -18,18 +18,21 @@ import streamlit as st  # noqa: E402
 
 from oj.config import DEFAULT_LANG, SITE_NAME, SITE_SLOGAN  # noqa: E402
 from oj.core import submissions  # noqa: E402
+from oj.core.knowledge import load_all as load_knowledge  # noqa: E402
 from oj.core.store import default_problem_set  # noqa: E402
 from oj.judge.engine import VERDICT_COLOR, VERDICT_ICON, VERDICT_TEXT, Judge  # noqa: E402
 from oj.judge.toolchain import toolchain_info  # noqa: E402
 
 # 页面级 UI 组件
-from ui import editor, results, sidebar, theme, views  # noqa: E402
+from ui import editor, knowledge, results, sidebar, theme, views  # noqa: E402
 
 
 def _init_state() -> None:
     defaults = {
-        "page": "problems",           # problems | problem | submissions | about
+        "page": "problems",           # problems | problem | knowledge | knowledge_detail
+                                      # | submissions | about
         "current_pid": None,
+        "current_category": None,     # 知识点详情页用
         "code": {},                   # {problem_id: source}
         "last_result": None,          # JudgeResult
         "last_mode": None,            # "judge" | "run"
@@ -57,6 +60,7 @@ def main() -> None:
     _init_state()
 
     problemset = default_problem_set()
+    knowledge_map = load_knowledge()
     if st.session_state.toolchain is None:
         st.session_state.toolchain = toolchain_info()
 
@@ -64,9 +68,13 @@ def main() -> None:
 
     page = st.session_state.page
     if page == "problems":
-        views.render_problem_list(problemset)
+        views.render_problem_list(problemset, knowledge_map)
     elif page == "problem":
-        views.render_problem_detail(problemset)
+        views.render_problem_detail(problemset, knowledge_map)
+    elif page == "knowledge":
+        knowledge.render_knowledge_list(knowledge_map, problemset)
+    elif page == "knowledge_detail":
+        knowledge.render_knowledge_detail(knowledge_map, problemset)
     elif page == "submissions":
         views.render_submissions(problemset)
     else:

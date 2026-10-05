@@ -1,0 +1,202 @@
+{
+  "category": "07-sort-search",
+  "name": "排序与查找",
+  "summary": "排序是「把无序变有序」以换取后续操作的高效；二分查找是「利用有序性每次排除一半」。这一章的核心考点是：各种排序的性质对比（稳定性、复杂度、适用场景）、以及二分查找的边界处理。",
+  "overview": "**排序**本身很少直接考，但它是无数算法的前置步骤——区间合并要排序、贪心要排序、双指针求两数之和要排序、去重要排序。因此必须熟练掌握至少一种 $O(n\\log n)$ 的排序，并理解它们的差异。\n\n几种排序的关键区别：**快排**平均 $O(n\\log n)$、原地、但**不稳定**且最坏 $O(n^2)$（已排序输入 + 固定基准）；**归并排序**稳定、最坏也是 $O(n\\log n)$、但需要 $O(n)$ 额外空间，且**天然适合求逆序对**；**堆排序**原地、最坏 $O(n\\log n)$、但不稳定且常数较大。\n\n**二分查找**看起来简单，实际上「**边界**」是最大的坑。写二分时最容易犯的错误是死循环和漏掉答案。推荐两种不易错的写法：① **闭区间** `[lo, hi]`，循环条件 `lo <= hi`；② **左闭右开** `[lo, hi)`，循环条件 `lo < hi`。选定一种就贯彻到底，不要混用。\n\n**二分答案**是二分的进阶用法：当「求最大值的最小可能」或「求最小值的最大可能」时，如果「可行性」关于答案单调，就可以二分答案再写一个 `check()` 验证。\n\n**归并排序求逆序对**是经典技巧：在合并两个有序段时，若右边元素小于左边元素，则左边剩余的所有元素都与它构成逆序对。\n\n> **一句话记忆**：二分的难点不在「找」，而在「边界」；写之前先明确区间是闭的还是半开的。",
+  "patterns": [
+    {
+      "name": "二分查找（精确查找）",
+      "signal": "有序数组中查找目标值的下标、判断是否存在",
+      "idea": "每次取中点 `mid = lo + (hi - lo) / 2`（这样写避免 `lo + hi` 溢出），与目标比较：相等则返回；目标在右半则 `lo = mid + 1`；在左半则 `hi = mid - 1`。闭区间写法循环条件是 `lo <= hi`。",
+      "complexity": "时间 O(log n) / 空间 O(1)",
+      "pitfalls": [
+        "**中点写成 `lo + (hi - lo) / 2`**，不要写 `(lo + hi) / 2`，后者在 lo、hi 都很大时会整型溢出",
+        "更新边界必须是 `mid ± 1`，若写成 `lo = mid` 会死循环",
+        "循环条件 `lo <= hi`（闭区间）与 `lo < hi`（半开区间）必须与边界更新方式配套，混用必错"
+      ],
+      "problems": [
+        "search-binary"
+      ]
+    },
+    {
+      "name": "二分查找边界（lower_bound / upper_bound）",
+      "signal": "找第一个 >= x 的位置、找最后一个 <= x 的位置、统计出现次数",
+      "idea": "`lower_bound` 求**第一个不小于 x** 的位置：当 `a[mid] < x` 时答案一定在右侧，`lo = mid + 1`；否则 `hi = mid`（mid 可能就是答案，不能跳过）。循环结束时 `lo` 即为答案。`upper_bound` 求第一个大于 x 的位置，把 `<` 换成 `<=` 即可。两者相减就是 x 的出现次数。",
+      "complexity": "时间 O(log n) / 空间 O(1)",
+      "pitfalls": [
+        "**`hi = mid` 而不是 `hi = mid - 1`**——因为 mid 本身可能是答案，跳过就丢了",
+        "循环条件是 `lo < hi`（半开区间），不是 `lo <= hi`，否则会死循环",
+        "返回值可能是 `n`（表示所有元素都小于 x），调用方要处理这个边界"
+      ],
+      "problems": [
+        "search-lower-bound"
+      ]
+    },
+    {
+      "name": "二分答案（答案单调性 + 判定函数）",
+      "signal": "「最大值最小」「最小值最大」；求满足条件的最小/最大数值",
+      "idea": "如果「答案越大越容易满足条件」（单调性），就可以对**答案空间**二分：每次取一个候选答案 `mid`，写一个 `check(mid)` 判断它是否可行，根据结果收缩区间。最后收敛到最优答案。关键在于把「最优化问题」转成「判定问题」。",
+      "complexity": "时间 O(log(答案范围) × check 复杂度)",
+      "pitfalls": [
+        "必须先确认单调性成立，否则二分无意义",
+        "`check` 函数的方向（true 表示可行还是不可行）要和二分收缩方向一致",
+        "答案空间的上界要开够，通常取 `1e9` 或 `1e18`"
+      ],
+      "problems": [
+        "search-sqrt"
+      ]
+    },
+    {
+      "name": "归并排序求逆序对",
+      "signal": "统计逆序对数量、统计「前面比后面大」的配对",
+      "idea": "在归并排序的合并步骤中，设左半段为 `L`、右半段为 `R`，两者各自有序。当 `R[j] < L[i]` 时，`L[i..mid]` 中的所有元素都大于 `R[j]`，因此一次性贡献 `mid - i + 1` 个逆序对。这样在 $O(n\\log n)$ 内完成统计。",
+      "complexity": "时间 O(n log n) / 空间 O(n)",
+      "pitfalls": [
+        "统计公式是 `mid - i + 1`（左半段**剩余**的元素个数），不是固定值",
+        "必须用 `long long` 存答案——逆序对数量可达 $n(n-1)/2$，n=1e5 时约 5e9，超出 int",
+        "归并排序需要辅助数组，注意每层合并后要把数据拷回原数组"
+      ],
+      "problems": [
+        "sort-inversion-count"
+      ]
+    },
+    {
+      "name": "快排 / 快速选择（第 K 小）",
+      "signal": "实现排序；求第 K 小而不需要完整排序",
+      "idea": "快排选一个基准 `pivot`，把数组划分成「小于基准」和「大于基准」两部分，再递归处理两侧。**快速选择**（Quickselect）利用同样的划分：每次划分后若基准正好落在第 K 位就返回，否则只递归包含第 K 位的那一侧，平均复杂度从 $O(n\\log n)$ 降到 $O(n)$。",
+      "complexity": "快排平均 O(n log n)，最坏 O(n²)；快速选择平均 O(n)",
+      "pitfalls": [
+        "**固定取首元素作基准**在「已排序数组」上会退化成 $O(n^2)$，应随机选基准或用三数取中",
+        "划分时注意相等元素的处理，否则可能出现死循环或不平衡划分",
+        "快排是**不稳定**排序，若要求稳定请用归并"
+      ],
+      "problems": [
+        "sort-quicksort"
+      ]
+    },
+    {
+      "name": "二分变体（旋转数组 / 非全局有序）",
+      "signal": "数组被旋转过、局部有序但仍想二分",
+      "idea": "关键观察：旋转数组从中间切开后，**至少有一半是完全有序的**。每轮先判断哪一半有序，再看目标值是否落在该有序区间内，据此决定收缩方向，从而仍然保持 O(log n)。",
+      "complexity": "时间 O(log n) / 空间 O(1)",
+      "pitfalls": [
+        "判断区间是否包含目标时，开闭边界要与「mid 已单独判过相等」相配套",
+        "用 `a[lo] <= a[mid]` 判断左半有序，`<=` 不能写成 `<`（两个元素时是关键）",
+        "数组无重复元素时逻辑最简单；有重复需额外处理"
+      ],
+      "problems": [
+        "search-rotated-array"
+      ]
+    },
+    {
+      "name": "三路划分（荷兰国旗）",
+      "signal": "只有 3 种取值需要原地分类；一趟遍历 + O(1) 空间",
+      "idea": "用 `low`、`i`、`high` 三个指针把数组分成四段：`[0,low)` 放最小值、`[low,i)` 放中间值、`[i,high]` 待处理、`(high,n)` 放最大值。看 `a[i]`：是最小值就与 `a[low]` 交换并双双前移；是中间值则 `i++`；是最大值就与 `a[high]` 交换并 `high--`。",
+      "complexity": "时间 O(n) / 空间 O(1)",
+      "pitfalls": [
+        "**处理最大值时 `i` 不能自增**——换过来的元素还没检查过",
+        "循环条件是 `i <= high`（待处理区间为空时停止）",
+        "是最小值交换后要同时 `low++` 和 `i++`，因为换过来的元素必然已在正确位置"
+      ],
+      "problems": [
+        "sort-color-sort"
+      ]
+    }
+  ],
+  "techniques": [
+    {
+      "name": "二分查找（闭区间，精确查找）",
+      "detail": "最基础的二分写法，循环条件 lo <= hi，边界更新为 mid ± 1。",
+      "lang": "cpp",
+      "code": "int lo = 0, hi = n - 1;\nwhile (lo <= hi) {\n    int mid = lo + (hi - lo) / 2;   // 防溢出\n    if (a[mid] == target) return mid;\n    if (a[mid] < target) lo = mid + 1;\n    else                 hi = mid - 1;\n}\nreturn -1;                          // 未找到"
+    },
+    {
+      "name": "lower_bound（第一个 >= x 的位置）",
+      "detail": "半开区间写法，hi = mid 不跳过候选。返回 n 表示所有元素都小于 x。",
+      "lang": "cpp",
+      "code": "int lo = 0, hi = n;                 // 半开区间 [lo, hi)\nwhile (lo < hi) {\n    int mid = lo + (hi - lo) / 2;\n    if (a[mid] < x) lo = mid + 1;   // mid 不可能是答案\n    else            hi = mid;       // mid 可能是答案，不能跳过\n}\nreturn lo;                          // 第一个 >= x 的下标，或 n"
+    },
+    {
+      "name": "upper_bound（第一个 > x 的位置）",
+      "detail": "与 lower_bound 只差一个符号。两者相减即为 x 的出现次数。",
+      "lang": "cpp",
+      "code": "int lo = 0, hi = n;\nwhile (lo < hi) {\n    int mid = lo + (hi - lo) / 2;\n    if (a[mid] <= x) lo = mid + 1;  // 唯一的区别：<= 而非 <\n    else             hi = mid;\n}\nreturn lo;\n\n// 出现次数 = upper_bound(x) - lower_bound(x)"
+    },
+    {
+      "name": "二分答案（通用骨架）",
+      "detail": "先确定答案范围和单调性，再写 check 函数。",
+      "lang": "cpp",
+      "code": "// 求满足 check(x) 的最小 x（check 关于 x 单调：越大越容易满足）\nlong long lo = 0, hi = 1e18;\nwhile (lo < hi) {\n    long long mid = lo + (hi - lo) / 2;\n    if (check(mid)) hi = mid;       // mid 可行，尝试更小\n    else            lo = mid + 1;\n}\nreturn lo;"
+    },
+    {
+      "name": "归并排序求逆序对",
+      "detail": "在合并时统计：右段元素小于左段时，左段剩余全部与它构成逆序对。",
+      "lang": "cpp",
+      "code": "long long cnt = 0;\nstd::vector<int> tmp(n);\n\nvoid mergeSort(std::vector<int> &a, int l, int r) {\n    if (l >= r) return;\n    int mid = l + (r - l) / 2;\n    mergeSort(a, l, mid);\n    mergeSort(a, mid + 1, r);\n\n    int i = l, j = mid + 1, k = l;\n    while (i <= mid && j <= r) {\n        if (a[i] <= a[j]) {\n            tmp[k++] = a[i++];\n        } else {\n            cnt += mid - i + 1;      // 关键：左段剩余元素个数\n            tmp[k++] = a[j++];\n        }\n    }\n    while (i <= mid) tmp[k++] = a[i++];\n    while (j <= r)   tmp[k++] = a[j++];\n    for (int t = l; t <= r; ++t) a[t] = tmp[t];\n}"
+    },
+    {
+      "name": "快速排序（随机基准 + 三路划分）",
+      "detail": "随机选基准避免退化；三路划分把「小于/等于/大于」分开，重复元素多时更高效。",
+      "lang": "cpp",
+      "code": "void quickSort(std::vector<int> &a, int l, int r) {\n    if (l >= r) return;\n    // 随机基准，避免有序输入退化\n    int p = l + rand() % (r - l + 1);\n    std::swap(a[l], a[p]);\n    int pivot = a[l];\n    int i = l, j = r;\n    while (i < j) {\n        while (i < j && a[j] >= pivot) --j;\n        if (i < j) a[i++] = a[j];\n        while (i < j && a[i] <= pivot) ++i;\n        if (i < j) a[j--] = a[i];\n    }\n    a[i] = pivot;\n    quickSort(a, l, i - 1);\n    quickSort(a, i + 1, r);\n}"
+    }
+  ],
+  "complexity_table": [
+    {
+      "op": "冒泡 / 插入 / 选择排序",
+      "time": "O(n²)",
+      "note": "小规模或近乎有序时可用"
+    },
+    {
+      "op": "快速排序（平均 / 最坏）",
+      "time": "O(n log n) / O(n²)",
+      "note": "不稳定；最坏出现在固定基准 + 有序输入"
+    },
+    {
+      "op": "归并排序（任何情况）",
+      "time": "O(n log n)",
+      "note": "稳定；需 O(n) 额外空间"
+    },
+    {
+      "op": "堆排序",
+      "time": "O(n log n)",
+      "note": "原地但不稳定，常数较大"
+    },
+    {
+      "op": "计数 / 基数排序",
+      "time": "O(n + k)",
+      "note": "要求值域有限，是非比较排序"
+    },
+    {
+      "op": "二分查找",
+      "time": "O(log n)",
+      "note": "要求序列有序"
+    },
+    {
+      "op": "快速选择（第 K 小）",
+      "time": "平均 O(n)",
+      "note": "不需要完整排序"
+    },
+    {
+      "op": "二分答案",
+      "time": "O(log R × T(check))",
+      "note": "R 为答案范围，T 为判定代价"
+    },
+    {
+      "op": "归并求逆序对",
+      "time": "O(n log n)",
+      "note": "与归并排序同阶，附带统计"
+    }
+  ],
+  "checklist": [
+    "二分前先确认数组**有序**（或答案具有单调性）",
+    "中点写 `lo + (hi - lo) / 2`，防整型溢出",
+    "先定好区间是闭 `[lo,hi]` 还是半开 `[lo,hi)`，然后贯彻到底",
+    "求边界（lower_bound）时 `hi = mid`，不能写 `mid - 1`",
+    "死循环了先检查：是不是某个分支没让区间缩小？",
+    "逆序对答案用 `long long`",
+    "快排要随机化基准，否则有序输入会退化",
+    "要求稳定排序 → 用归并，不用快排",
+    "「最大值最小」类问题 → 二分答案 + check 函数"
+  ]
+}

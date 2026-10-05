@@ -1,0 +1,92 @@
+{
+  "id": "string-first-unique-char",
+  "title": "第一个只出现一次的字符",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "哈希表",
+    "计数"
+  ],
+  "source": {
+    "name": "LeetCode 387 / 剑指 Offer 50",
+    "url": "https://leetcode.cn/problems/first-unique-character-in-a-string/"
+  },
+  "statement": "给定一个小写字母字符串 $s$，找到它的**第一个不重复字符**，返回其**下标**（从 $0$ 开始）。\n\n如果不存在不重复的字符，返回 $-1$。",
+  "input_format": "一行一个字符串 $s$（$1 \\le |s| \\le 10^5$），仅含小写英文字母。",
+  "output_format": "一行，输出第一个不重复字符的下标；若不存在则输出 $-1$。",
+  "constraints": [
+    "1 ≤ |s| ≤ 10^5",
+    "仅含小写字母"
+  ],
+  "samples": [
+    {
+      "input": "leetcode\n",
+      "output": "0\n",
+      "explain": "`l` 只出现一次，且是第一个这样的字符，下标为 0。"
+    },
+    {
+      "input": "aabb\n",
+      "output": "-1\n",
+      "explain": "每个字符都出现了两次，没有不重复的字符。"
+    }
+  ],
+  "hint": "**两趟扫描**：\n\n1. 第一趟用计数数组（或哈希表）统计每个字符出现的次数；\n2. 第二趟从左到右找**第一个**计数为 $1$ 的字符，返回其下标。\n\n因为只有 26 个小写字母，用 `int cnt[26]` 比哈希表更快，常数极小。\n\n> **易错点**：不能只统计一次就返回——必须先统计完整，否则后面的字符还没被计入，会误判成「只出现一次」。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n\nchar s[100005];\nint cnt[26];\n\nint main() {\n    if (!fgets(s, sizeof(s), stdin)) { printf(\"-1\\n\"); return 0; }\n    int len = (int)strlen(s);\n    while (len > 0 && (s[len - 1] == '\\n' || s[len - 1] == '\\r')) s[--len] = 0;\n\n    // TODO: 第一趟统计次数，第二趟找第一个次数为 1 的下标\n    int ans = -1;\n\n    printf(\"%d\\n\", ans);\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "leetcode\n",
+      "output": "0\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "aabb\n",
+      "output": "-1\n",
+      "name": "样例 2（无唯一）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "z\n",
+      "output": "0\n",
+      "name": "单字符",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "aabbc\n",
+      "output": "4\n",
+      "name": "唯一在末尾",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abcabc\n",
+      "output": "-1\n",
+      "name": "唯一在开头",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "abcdef\n",
+      "output": "0\n",
+      "name": "全部唯一",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "aabbccddeef\n",
+      "output": "10\n",
+      "name": "长重复",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <cstring>\n\nchar s[100005];\nint cnt[26];\n\nint main() {\n    if (!fgets(s, sizeof(s), stdin)) { printf(\"-1\\n\"); return 0; }\n    int len = (int)strlen(s);\n    while (len > 0 && (s[len - 1] == '\\n' || s[len - 1] == '\\r')) s[--len] = 0;\n\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < len; ++i) ++cnt[s[i] - 'a'];   // 第一趟\n\n    int ans = -1;\n    for (int i = 0; i < len; ++i) {                    // 第二趟\n        if (cnt[s[i] - 'a'] == 1) { ans = i; break; }\n    }\n    printf(\"%d\\n\", ans);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

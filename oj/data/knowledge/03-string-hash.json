@@ -1,0 +1,191 @@
+{
+  "category": "03-string-hash",
+  "name": "字符串与哈希",
+  "summary": "字符串题的两大主线：一是「用滑动窗口处理连续子串」，二是「用哈希表/计数数组把 O(n²) 的配对查找降到 O(n)」。当涉及子串匹配时，还需掌握 KMP 与字符串哈希。",
+  "overview": "字符串本质是字符数组，所以数组上的双指针、前缀和技巧几乎都能迁移过来。但字符串有几个独特之处：\n\n**字符集有限**。ASCII 只有 128 个字符，小写字母只有 26 个，这意味着「计数数组」比哈希表更快——用一个 `int cnt[26]` 就能代替 `unordered_map`，且常数极小。这是字符串题最常用的优化。\n\n**连续子串是核心对象**。求「最长/最短满足条件的子串」几乎都落在**滑动窗口**上：右边界扩张、左边界收缩，两个指针都只前进不后退，因此是 $O(n)$。判断窗口是否合法通常靠计数。\n\n**回文有专门技巧**。判回文用相向双指针；求最长回文子串用「中心扩展」（$O(n^2)$）或 Manacher（$O(n)$）。\n\n**子串匹配**是另一条线：暴力是 $O(nm)$，KMP 通过预处理 `next` 数组把「失配后回退位置」预先算好，降到 $O(n+m)$。\n\n> **一句话记忆**：字符串题先问「字符集有多大」——有限就用计数数组；再问「是不是连续子串」——是就上滑动窗口。",
+  "patterns": [
+    {
+      "name": "滑动窗口求最长/最短子串",
+      "signal": "「最长无重复子串」「最小覆盖子串」「至多 k 个不同字符的最长子串」",
+      "idea": "维护窗口 `[l, r]`，右指针 `r` 负责扩张，把新字符纳入窗口；当窗口不满足条件时，左指针 `l` 收缩直到重新合法。每轮记录答案。由于 `l` 和 `r` 都单调不减，总复杂度 $O(n)$。关键是定义清楚「窗口的合法性」，以及用计数数组实时维护这个性质。",
+      "complexity": "时间 O(n) / 空间 O(字符集大小)",
+      "pitfalls": [
+        "收缩时要用 while 而不是 if——一次扩张可能对应多次收缩",
+        "「最长」在收缩**之前**更新答案，「最短」在收缩**之后**（或每次合法时）更新",
+        "字符集是 256（ASCII）还是 26（小写字母）要看清题意，数组开小了会越界"
+      ],
+      "problems": [
+        "string-longest-unique-substr"
+      ]
+    },
+    {
+      "name": "哈希表 / 计数数组做配对查找",
+      "signal": "判断两个串是否互为异位词、找重复元素、找配对",
+      "idea": "把「需要反复查找某个元素是否存在/出现几次」的信息预先存进哈希表或计数数组，之后每次查询都是 $O(1)$，从而把 $O(n^2)$ 的暴力配对降到 $O(n)$。异位词判断就是典型：统计两串的字符频次，比较计数数组是否相同。",
+      "complexity": "时间 O(n) / 空间 O(字符集大小)",
+      "pitfalls": [
+        "先比长度——长度不同直接 false，能省一次遍历",
+        "计数数组记得初始化为 0（`int cnt[26] = {}`）",
+        "判断「两数组是否相同」可以直接用 `==` 比较 `std::array` 或 `std::vector`"
+      ],
+      "problems": [
+        "string-valid-anagram",
+        "string-first-unique-char",
+        "string-group-anagrams"
+      ]
+    },
+    {
+      "name": "相向双指针判回文",
+      "signal": "判断回文串、验证回文、字符串反转",
+      "idea": "`l` 从头、`r` 从尾向中间靠拢，逐对比较。若题目要求「只考虑字母数字、忽略大小写」，则在移动指针时跳过非字母数字字符，并把字符统一转成小写再比较。",
+      "complexity": "时间 O(n) / 空间 O(1)",
+      "pitfalls": [
+        "跳过非法字符时，内层 while 也要带 `l < r` 边界，否则可能越界",
+        "大小写转换用 `tolower` 前要先确认字符是字母（`isdigit`/`isalpha`）",
+        "空串和单字符串都算回文，边界情况别漏"
+      ],
+      "problems": [
+        "string-palindrome"
+      ]
+    },
+    {
+      "name": "按单词切分与反转",
+      "signal": "反转句子中单词顺序、按空格切分、规范化空格",
+      "idea": "用 `istringstream` 自动按空白切分并跳过连续空格，把单词逐个读出存进 vector，再倒序输出、用单个空格连接。若要求原地完成（$O(1)$ 空间），则先整体反转、再逐个单词反转。",
+      "complexity": "时间 O(n) / 空间 O(n)（切分法）或 O(1)（三步反转）",
+      "pitfalls": [
+        "`istringstream >> word` 会自动跳过前导/连续空格，这是它最大的便利",
+        "输出时最后一个单词后**不能**多一个空格",
+        "原地法注意「先整体反转再单词反转」的顺序，反过来会得到错误结果"
+      ],
+      "problems": [
+        "string-reverse-words"
+      ]
+    },
+    {
+      "name": "子串查找（暴力 / KMP / 字符串哈希）",
+      "signal": "统计子串出现次数、找子串位置、判断是否包含",
+      "idea": "**暴力**逐位置尝试匹配，$O(nm)$，多数情况下够用。**KMP** 预处理模式串的 `next`（或 `pi`）数组，记录「失配时应该回退到哪个位置」，避免重复比较，做到 $O(n+m)$。**字符串哈希**把子串映射成整数，用前缀哈希 $O(1)$ 比较任意两段子串是否相等。",
+      "complexity": "暴力 O(nm) / KMP O(n+m) / 哈希 O(n) 预处理 + O(1) 比较",
+      "pitfalls": [
+        "「不重叠」与「可重叠」计数结果不同——本题若要求不重叠，匹配成功后要跳过整个模式串长度",
+        "KMP 的 next 数组定义有多种写法（前缀函数 / 最长相等前后缀），要统一口径",
+        "字符串哈希存在碰撞风险，竞赛中常用双哈希或加模数降低概率"
+      ],
+      "problems": [
+        "string-substr-count",
+        "string-implement-strstr"
+      ]
+    },
+    {
+      "name": "公共前缀 / 多串比较",
+      "signal": "求一组字符串的最长公共前缀；多串同时逐位比较",
+      "idea": "**纵向扫描**：以第一个串为基准，维护当前公共前缀长度 `k`，依次与其他串逐字符比较，一旦不匹配或到达某串末尾就把 `k` 缩小。",
+      "complexity": "时间 O(n·L) / 空间 O(1)",
+      "pitfalls": [
+        "必须同时判断「是否超出当前串长度」，否则越界",
+        "基准串本身为空时公共前缀长度直接为 0",
+        "输入可能含空行，读入时不能简单 strip 掉所有换行"
+      ],
+      "problems": [
+        "string-longest-common-prefix"
+      ]
+    }
+  ],
+  "techniques": [
+    {
+      "name": "滑动窗口通用模板",
+      "detail": "右扩左缩，两个指针都单调前进，整体 O(n)。适用于一切「连续子串 + 条件」的问题。",
+      "lang": "cpp",
+      "code": "int cnt[256] = {};\nint l = 0, best = 0;\nfor (int r = 0; r < (int)s.size(); ++r) {\n    ++cnt[(unsigned char)s[r]];        // 右扩\n    while (/* 窗口不合法 */) {\n        --cnt[(unsigned char)s[l]];    // 左缩\n        ++l;\n    }\n    best = std::max(best, r - l + 1);  // 更新答案\n}\nreturn best;"
+    },
+    {
+      "name": "字符计数比较（异位词）",
+      "detail": "用固定大小数组统计频次，直接比较两个数组是否相等。",
+      "lang": "cpp",
+      "code": "if (s.size() != t.size()) return false;\nstd::array<int, 26> cs{}, ct{};\nfor (char c : s) ++cs[c - 'a'];\nfor (char c : t) ++ct[c - 'a'];\nreturn cs == ct;      // std::array 支持 == 比较"
+    },
+    {
+      "name": "回文判断（跳过非字母数字）",
+      "detail": "相向双指针，移动时跳过不参与比较的字符。",
+      "lang": "cpp",
+      "code": "int l = 0, r = (int)s.size() - 1;\nwhile (l < r) {\n    while (l < r && !std::isalnum((unsigned char)s[l])) ++l;\n    while (l < r && !std::isalnum((unsigned char)s[r])) --r;\n    if (std::tolower((unsigned char)s[l]) != std::tolower((unsigned char)s[r]))\n        return false;\n    ++l; --r;\n}\nreturn true;"
+    },
+    {
+      "name": "按单词切分（istringstream）",
+      "detail": "自动跳过连续空白，适合「规范化空格」类题目。",
+      "lang": "cpp",
+      "code": "std::istringstream iss(s);\nstd::vector<std::string> words;\nstd::string w;\nwhile (iss >> w) words.push_back(w);\n// 倒序拼接\nstd::string res;\nfor (int i = (int)words.size() - 1; i >= 0; --i) {\n    if (!res.empty()) res += ' ';\n    res += words[i];\n}"
+    },
+    {
+      "name": "KMP 前缀函数",
+      "detail": "pi[i] 表示 s[0..i] 的最长相等真前后缀长度。匹配时失配就回退到 pi[j-1]。",
+      "lang": "cpp",
+      "code": "std::vector<int> prefix_function(const std::string &p) {\n    int m = p.size();\n    std::vector<int> pi(m, 0);\n    for (int i = 1; i < m; ++i) {\n        int j = pi[i - 1];\n        while (j > 0 && p[i] != p[j]) j = pi[j - 1];\n        if (p[i] == p[j]) ++j;\n        pi[i] = j;\n    }\n    return pi;\n}"
+    },
+    {
+      "name": "字符串哈希（滚动哈希）",
+      "detail": "把子串映射为整数，O(1) 判断两段子串是否相等。base 常用 131 或 13331，模数用大质数。",
+      "lang": "cpp",
+      "code": "const unsigned long long B = 131;\nstd::vector<unsigned long long> h(n + 1, 0), pw(n + 1, 1);\nfor (int i = 0; i < n; ++i) {\n    h[i + 1] = h[i] * B + (unsigned char)s[i];\n    pw[i + 1] = pw[i] * B;\n}\n// 子串 s[l..r] 的哈希（0-based，含端点）\nauto get = [&](int l, int r) { return h[r + 1] - h[l] * pw[r - l + 1]; };"
+    }
+  ],
+  "complexity_table": [
+    {
+      "op": "字符计数数组统计",
+      "time": "O(n)",
+      "note": "字符集有限时优于哈希表"
+    },
+    {
+      "op": "unordered_map 查找",
+      "time": "O(1) 均摊",
+      "note": "最坏 O(n)，有哈希碰撞"
+    },
+    {
+      "op": "滑动窗口（n 个字符）",
+      "time": "O(n)",
+      "note": "l、r 均单调不减"
+    },
+    {
+      "op": "相向双指针判回文",
+      "time": "O(n)",
+      "note": ""
+    },
+    {
+      "op": "暴力子串匹配",
+      "time": "O(nm)",
+      "note": "n 主串长，m 模式串长"
+    },
+    {
+      "op": "KMP 匹配",
+      "time": "O(n+m)",
+      "note": "预处理 O(m) + 匹配 O(n)"
+    },
+    {
+      "op": "字符串哈希预处理",
+      "time": "O(n)",
+      "note": "之后 O(1) 比较子串"
+    },
+    {
+      "op": "最长回文子串（中心扩展）",
+      "time": "O(n²)",
+      "note": "2n−1 个中心，各扩展 O(n)"
+    },
+    {
+      "op": "最长回文子串（Manacher）",
+      "time": "O(n)",
+      "note": "竞赛用，实现较复杂"
+    }
+  ],
+  "checklist": [
+    "先问字符集多大：26 个小写字母就用 `int cnt[26]`，别上哈希表",
+    "看到「最长/最短连续子串」→ 滑动窗口",
+    "滑动窗口的收缩用 while，不是 if",
+    "「最长」在收缩前更新答案，「最短」在收缩后更新",
+    "判断异位词先比长度",
+    "回文用相向双指针，跳字符时注意边界",
+    "按单词切分优先用 `istringstream`，省去手写空格处理",
+    "子串计数注意「重叠」还是「不重叠」",
+    "n·m 超过 10⁷ 就该考虑 KMP 或哈希，别硬上暴力"
+  ]
+}

@@ -14,6 +14,7 @@ from oj.core.store import ProblemSet
 from oj.judge.engine import AC, Judge
 from ui import editor as editor_ui
 from ui import results as results_ui
+from ui.knowledge import render_problem_knowledge_hint
 from ui.theme import difficulty_badge, escape, tag_badges
 
 
@@ -26,7 +27,7 @@ def _goto(page: str, pid: Optional[str] = None) -> None:
 
 # ==================================================================== 题库列表
 
-def render_problem_list(ps: ProblemSet) -> None:
+def render_problem_list(ps: ProblemSet, knowledge: Optional[dict] = None) -> None:
     kw = st.session_state.filter_keyword
     diff = st.session_state.filter_difficulty
     cat = st.session_state.filter_category
@@ -138,7 +139,7 @@ def _submitted_map() -> dict:
 
 # ==================================================================== 题目详情
 
-def render_problem_detail(ps: ProblemSet) -> None:
+def render_problem_detail(ps: ProblemSet, knowledge: Optional[dict] = None) -> None:
     pid = st.session_state.current_pid
     problem = ps.get(pid) if pid else None
     if problem is None:
@@ -149,6 +150,10 @@ def render_problem_detail(ps: ProblemSet) -> None:
 
     if st.button("← 返回题库", key="back_to_list"):
         _goto("problems")
+
+    # 若该题已被知识点总结引用，显示归属提示
+    if knowledge:
+        render_problem_knowledge_hint(knowledge, problem.id)
 
     _render_statement(problem)
     st.markdown('<hr class="hr-soft">', unsafe_allow_html=True)

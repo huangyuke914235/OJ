@@ -1,0 +1,92 @@
+{
+  "id": "string-longest-common-prefix",
+  "title": "最长公共前缀",
+  "difficulty": "入门",
+  "tags": [
+    "字符串",
+    "模拟"
+  ],
+  "source": {
+    "name": "LeetCode 14 / 字符串模拟",
+    "url": "https://leetcode.cn/problems/longest-common-prefix/"
+  },
+  "statement": "给定 $n$ 个小写字母字符串，求它们的**最长公共前缀**。\n\n如果不存在公共前缀，输出空行。",
+  "input_format": "第一行一个整数 $n$（$1 \\le n \\le 10^4$）。\n\n接下来 $n$ 行，每行一个字符串（可为空串，长度 $0 \\le |s| \\le 200$）。",
+  "output_format": "一行，输出最长公共前缀。若不存在则输出一个空行。",
+  "constraints": [
+    "1 ≤ n ≤ 10^4",
+    "0 ≤ |s| ≤ 200",
+    "仅含小写字母"
+  ],
+  "samples": [
+    {
+      "input": "3\nflower\nflow\nflight\n",
+      "output": "fl\n",
+      "explain": "三个串的公共前缀是 `fl`。"
+    },
+    {
+      "input": "3\ndog\nracecar\ncar\n",
+      "output": "\n",
+      "explain": "第一个字符就不同，不存在公共前缀。"
+    }
+  ],
+  "hint": "**纵向扫描**：以第一个字符串为基准，记当前公共前缀长度为 $k$（初始为第一个串的长度）。\n\n依次与其他每个字符串比较：从前往后逐字符匹配，一旦不匹配或到达某个串末尾就停止，把 $k$ 更新为匹配长度。若某轮 $k$ 变成 $0$，可以提前结束。\n\n时间 $O(n \\cdot L)$（$L$ 为最短串长度），空间 $O(1)$。\n\n> **易错点**：必须同时判断「是否超出当前串长度」，否则会越界访问。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <iostream>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<std::string> w(n);\n    std::getline(std::cin, w[0]);      // 吃掉第一行剩余\n    for (int i = 0; i < n; ++i) std::getline(std::cin, w[i]);\n\n    // TODO: 纵向扫描求最长公共前缀\n    std::string ans;\n\n    printf(\"%s\\n\", ans.c_str());\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "3\nflower\nflow\nflight\n",
+      "output": "fl\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "3\ndog\nracecar\ncar\n",
+      "output": "\n",
+      "name": "样例 2（无公共前缀）",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "1\nabc\n",
+      "output": "abc\n",
+      "name": "单字符串",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "3\nabc\nabc\nabc\n",
+      "output": "abc\n",
+      "name": "完全相同",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\nab\nabc\nabcd\n",
+      "output": "ab\n",
+      "name": "某串是前缀",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "3\n\nabc\ndef\n",
+      "output": "\n",
+      "name": "首串为空",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "2\n\n\n",
+      "output": "\n",
+      "name": "全部空串",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <iostream>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    std::vector<std::string> w(n);\n    std::getline(std::cin, w[0]);\n    for (int i = 0; i < n; ++i) std::getline(std::cin, w[i]);\n\n    int k = (int)w[0].size();\n    for (int i = 1; i < n && k > 0; ++i) {\n        int j = 0;\n        while (j < k && j < (int)w[i].size() && w[i][j] == w[0][j]) ++j;\n        k = j;\n    }\n    printf(\"%s\\n\", w[0].substr(0, k).c_str());\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

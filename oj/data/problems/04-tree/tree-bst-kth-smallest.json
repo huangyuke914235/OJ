@@ -1,0 +1,93 @@
+{
+  "id": "tree-bst-kth-smallest",
+  "title": "二叉搜索树中第 k 小的元素",
+  "difficulty": "中等",
+  "tags": [
+    "树",
+    "二叉搜索树",
+    "中序遍历"
+  ],
+  "source": {
+    "name": "LeetCode 230 / BST 中序遍历",
+    "url": "https://leetcode.cn/problems/kth-smallest-element-in-a-bst/"
+  },
+  "statement": "给定一棵**二叉搜索树**（BST）和一个整数 $k$，求树中**第 $k$ 小**的元素值。\n\n保证 $1 \\le k \\le$ 节点总数。",
+  "input_format": "第一行，二叉搜索树的层序序列，空格分隔，`null` 表示空节点。\n\n第二行，一个整数 $k$。\n\n$1 \\le$ 节点数 $\\le 10^5$，$1 \\le k \\le$ 节点数。",
+  "output_format": "一行，输出第 $k$ 小的元素值。",
+  "constraints": [
+    "1 ≤ 节点数 ≤ 10^5",
+    "1 ≤ k ≤ 节点数",
+    "输入保证是合法的 BST"
+  ],
+  "samples": [
+    {
+      "input": "3 1 4 null 2\n1\n",
+      "output": "1\n",
+      "explain": "中序遍历得到 `1 2 3 4`，第 1 小是 1。"
+    },
+    {
+      "input": "5 3 6 2 4 null null 1\n3\n",
+      "output": "3\n",
+      "explain": "中序遍历得到 `1 2 3 4 5 6`，第 3 小是 3。"
+    }
+  ],
+  "hint": "**利用 BST 的核心性质：中序遍历得到严格递增序列。**\n\n所以「第 $k$ 小」就是中序遍历序列的第 $k$ 个元素。\n\n实现时用计数器，中序遍历到第 $k$ 个就可以**提前返回**，不必遍历完整棵树。\n\n```\nvoid inorder(Node* n) {\n    if (!n || cnt >= k) return;\n    inorder(n->l);\n    if (++cnt == k) { ans = n->v; return; }\n    inorder(n->r);\n}\n```\n\n时间 $O(h + k)$（$h$ 为树高），最坏 $O(n)$。\n\n> **进阶**：若树经常被修改，可以在每个节点维护「子树节点数」，这样能像二分一样 $O(h)$ 直接定位，无需遍历。",
+  "starter_code": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <queue>\n#include <iostream>\n\nstruct Node {\n    long long v;\n    Node *l = nullptr, *r = nullptr;\n};\n\n// TODO: 中序遍历找第 k 小\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n    int k;\n    scanf(\"%d\", &k);\n    // TODO\n    return 0;\n}\n"
+  },
+  "tests": [
+    {
+      "input": "3 1 4 null 2\n1\n",
+      "output": "1\n",
+      "name": "样例 1",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "5 3 6 2 4 null null 1\n3\n",
+      "output": "3\n",
+      "name": "样例 2",
+      "score": 10,
+      "sample": true
+    },
+    {
+      "input": "7\n1\n",
+      "output": "7\n",
+      "name": "单节点",
+      "score": 10,
+      "sample": false
+    },
+    {
+      "input": "2 1 3\n3\n",
+      "output": "3\n",
+      "name": "取最大",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "2 1 3\n1\n",
+      "output": "1\n",
+      "name": "取最小",
+      "score": 15,
+      "sample": false
+    },
+    {
+      "input": "5 4 null 3 null 2 null 1\n2\n",
+      "output": "2\n",
+      "name": "左链",
+      "score": 20,
+      "sample": false
+    },
+    {
+      "input": "8 4 12 2 6 10 14\n5\n",
+      "output": "10\n",
+      "name": "完整树",
+      "score": 20,
+      "sample": false
+    }
+  ],
+  "reference": {
+    "cpp": "#include <cstdio>\n#include <vector>\n#include <string>\n#include <queue>\n#include <sstream>\n#include <iostream>\n\nstruct Node {\n    long long v;\n    Node *l = nullptr, *r = nullptr;\n};\n\nNode* buildTree(const std::vector<std::string> &t) {\n    if (t.empty() || t[0] == \"null\") return nullptr;\n    Node *root = new Node{std::stoll(t[0])};\n    std::queue<Node*> q;\n    q.push(root);\n    size_t i = 1;\n    while (!q.empty() && i < t.size()) {\n        Node *cur = q.front(); q.pop();\n        if (i < t.size()) {\n            if (t[i] != \"null\") { cur->l = new Node{std::stoll(t[i])}; q.push(cur->l); }\n            ++i;\n        }\n        if (i < t.size()) {\n            if (t[i] != \"null\") { cur->r = new Node{std::stoll(t[i])}; q.push(cur->r); }\n            ++i;\n        }\n    }\n    return root;\n}\n\nint k, cnt = 0;\nlong long ans = 0;\n\nvoid inorder(Node *n) {\n    if (!n || cnt >= k) return;\n    inorder(n->l);\n    if (++cnt == k) { ans = n->v; return; }\n    inorder(n->r);\n}\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n    scanf(\"%d\", &k);\n\n    std::istringstream iss(line);\n    std::vector<std::string> tok;\n    std::string t;\n    while (iss >> t) tok.push_back(t);\n\n    inorder(buildTree(tok));\n    printf(\"%lld\\n\", ans);\n    return 0;\n}\n"
+  },
+  "time_limit": 2.0
+}

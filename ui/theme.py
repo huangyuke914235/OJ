@@ -166,6 +166,65 @@ code {{ font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 
 .notice-err {{
     background: #fef2f2; border-left-color: {RED}; color: #991b1b;
 }}
+
+/* ---------- 知识点总结 ---------- */
+.kb-card {{
+    background: #fff; border: 1px solid {BORDER}; border-radius: 12px;
+    padding: 16px 20px; margin-bottom: 14px;
+}}
+.kb-pat {{
+    background: #fff; border: 1px solid {BORDER}; border-radius: 12px;
+    padding: 15px 18px; margin-bottom: 10px;
+}}
+.kb-pat-h {{
+    font-size: 15.5px; font-weight: 700; color: {INK};
+    display: flex; align-items: center; gap: 9px; margin-bottom: 8px;
+}}
+.kb-pat-i {{
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: {ACCENT_SOFT}; color: {ACCENT};
+    font-size: 12.5px; font-weight: 700; flex: 0 0 auto;
+}}
+.kb-pat-s {{
+    font-size: 13px; color: #475569; background: #f8fafc;
+    border-radius: 8px; padding: 8px 12px; margin-bottom: 9px;
+}}
+.kb-pat-body {{ font-size: 13.5px; color: #334155; line-height: 1.75; }}
+.kb-pat-c {{ font-size: 12.5px; color: {MUTED}; margin-top: 8px; }}
+.kb-pitfall {{
+    background: #fffbeb; border-left: 3px solid {AMBER};
+    padding: 10px 15px; border-radius: 0 8px 8px 0;
+    font-size: 13px; color: #92400e; margin: 8px 0 12px;
+}}
+.kb-pitfall ul {{ margin: 5px 0 0; padding-left: 20px; }}
+.kb-pitfall li {{ margin: 3px 0; line-height: 1.6; }}
+.kb-tech-h {{
+    font-size: 14.5px; font-weight: 700; color: {INK}; margin: 16px 0 6px;
+}}
+.kb-tech-d {{ font-size: 13.5px; color: #475569; line-height: 1.75; margin-bottom: 8px; }}
+.kb-table {{
+    width: 100%; border-collapse: collapse; font-size: 13.5px;
+    background: #fff; border: 1px solid {BORDER}; border-radius: 10px;
+    overflow: hidden;
+}}
+.kb-table th {{
+    background: #f8fafc; text-align: left; padding: 10px 14px;
+    font-weight: 600; color: {INK}; border-bottom: 1px solid {BORDER};
+}}
+.kb-td-op {{ padding: 9px 14px; border-bottom: 1px solid #f1f5f9; color: {INK}; }}
+.kb-td-t {{
+    padding: 9px 14px; border-bottom: 1px solid #f1f5f9;
+    color: {ACCENT}; font-weight: 600; white-space: nowrap;
+}}
+.kb-td-n {{ padding: 9px 14px; border-bottom: 1px solid #f1f5f9; color: {MUTED}; }}
+.kb-check {{ font-size: 13.5px; color: #334155; line-height: 2; padding-left: 22px; }}
+.kb-check li {{ margin: 5px 0; }}
+.kb-hint {{
+    background: {ACCENT_SOFT}; border-left: 3px solid {ACCENT};
+    padding: 10px 15px; border-radius: 0 8px 8px 0;
+    font-size: 13px; color: #3730a3; margin-bottom: 14px;
+}}
 </style>
 """
 

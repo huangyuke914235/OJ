@@ -1,0 +1,197 @@
+{
+  "category": "06-graph",
+  "name": "图论基础",
+  "summary": "图由顶点和边组成。图论题的解题流程几乎是固定的三步：① 选存储方式（邻接矩阵 / 邻接表 / 边表）；② 选遍历方式（BFS / DFS）；③ 在遍历中附加信息（距离、访问标记、入度、并查集）。",
+  "overview": "图是最高频也最容易出错的考点之一。**图论题难在建模，不在代码**——把实际问题抽象成图，选对算法，剩下就是模板。\n\n**第一步：选存储。** 邻接矩阵 `g[u][v]` 适合稠密图（$E \\approx V^2$），判断两点是否相邻是 $O(1)$，但空间 $O(V^2)$。邻接表 `vector<int> g[V]` 适合稀疏图，空间 $O(V+E)$，遍历某点的邻居是 $O(deg)$。**绝大多数题目用邻接表**。\n\n**第二步：选遍历。** BFS 用队列，按「层」扩展，**在无权图上天然给出最短路径**。DFS 用递归或栈，适合「连通性判断」「找环」「遍历所有路径」。两者都是 $O(V+E)$。\n\n**第三步：加信息。** 这是真正区分度所在：BFS 里加 `dist[]` 得到最短距离；DFS 里加「颜色标记」检测环；拓扑排序用「入度」；连通块用并查集或 DFS 染色。\n\n**拓扑排序**只适用于有向无环图（DAG）。Kahn 算法基于入度：反复取出入度为 0 的点，把它指向的点的入度减 1。若最终输出的点数少于总点数，说明有环。\n\n**并查集**是处理「动态连通性」的利器：路径压缩 + 按秩合并后，单次操作近似 $O(1)$。它不关心图的具体结构，只关心「谁和谁在一起」。\n\n> **一句话记忆**：图题先画图建模，再问「要最短路径（BFS）、要连通性（DFS/并查集）、还是要顺序（拓扑）」。",
+  "patterns": [
+    {
+      "name": "BFS 求无权图最短路",
+      "signal": "无权图（或边权全为 1）上求两点最短距离；最少步数问题",
+      "idea": "从起点入队，逐层扩展。用 `dist[]` 记录到起点的距离，初始化为 -1 表示未访问。每次从队列取出 `u`，遍历它的邻居 `v`，若 `dist[v] == -1` 则 `dist[v] = dist[u] + 1` 并入队。因为 BFS 按层扩展，第一次到达某点时走过的层数一定是最少的。",
+      "complexity": "时间 O(V + E) / 空间 O(V)",
+      "pitfalls": [
+        "**必须在入队时就标记已访问**，不能等出队时再标记，否则同一节点会被多次入队，复杂度退化甚至死循环",
+        "`dist` 数组初始化为 -1 既能当「未访问」标记又能存距离，比单独开 `visited` 更省",
+        "图不连通时，起点的连通分量之外的点距离应保持 -1，不要当成 0"
+      ],
+      "problems": [
+        "graph-bfs-shortest"
+      ]
+    },
+    {
+      "name": "DFS 求连通块 / 染色",
+      "signal": "求连通分量个数、判断两点是否连通、二分图判定",
+      "idea": "对每个未访问的顶点发起一次 DFS，把它能到达的所有点标记为同一块，块计数加一。二分图判定则在 DFS 中给相邻点染相反颜色，若发现相邻两点同色说明存在奇环，不是二分图。",
+      "complexity": "时间 O(V + E) / 空间 O(V)",
+      "pitfalls": [
+        "外层要遍历**所有**顶点发起 DFS，只在 1 号点发起会漏掉不连通的部分",
+        "无向图建边时要双向加边，且 DFS 时要跳过「父节点」避免走回头路（判环时尤其重要）",
+        "顶点编号是 0-based 还是 1-based 要统一，数组大小要相应开够"
+      ],
+      "problems": [
+        "graph-connected-components"
+      ]
+    },
+    {
+      "name": "拓扑排序（Kahn 算法）",
+      "signal": "有依赖关系的排序、课程表、任务调度、判断有向图是否有环",
+      "idea": "先统计每个点的入度。把所有入度为 0 的点入队。反复取出队首 `u` 加入结果序列，并把 `u` 的所有邻居 `v` 的入度减 1——若 `v` 的入度变成 0 就入队。循环结束时若结果序列长度小于总点数，说明图中有环，无法拓扑排序。",
+      "complexity": "时间 O(V + E) / 空间 O(V)",
+      "pitfalls": [
+        "入度数组要统计完整，无向图的「入度」概念不适用——拓扑排序只用于有向图",
+        "若要求**字典序最小**，把队列换成小根堆（`priority_queue`）即可",
+        "结果长度 < V 说明有环，这是判断 DAG 的标准手段，别忘了检查"
+      ],
+      "problems": [
+        "graph-topological-sort"
+      ]
+    },
+    {
+      "name": "并查集（动态连通性）",
+      "signal": "动态加边并查询连通性、判断是否成环、Kruskal 最小生成树",
+      "idea": "每个集合用一棵树表示，`parent[x]` 指向父节点，根节点的父是自己。`find(x)` 沿父链找到根；`union(a, b)` 把一棵树的根挂到另一棵的根上。配合**路径压缩**（`find` 时把沿途节点直接指向根）和**按秩合并**（小树挂到大树上），单次操作近似 $O(1)$。",
+      "complexity": "单次操作摊还 O(α(n)) ≈ O(1) / 空间 O(n)",
+      "pitfalls": [
+        "**忘记路径压缩**会让树退化成链，复杂度变成 O(n)",
+        "`find` 用递归写在小数据下没问题，大数据可能爆栈，建议写迭代版",
+        "判断「加这条边是否成环」= 判断两端点是否已在同一集合（`find(a) == find(b)`）"
+      ],
+      "problems": [
+        "advanced-dsu"
+      ]
+    },
+    {
+      "name": "网格图上的 BFS / DFS",
+      "signal": "岛屿数量、迷宫最短路、区域填充、连通区域统计",
+      "idea": "把二维网格看成图：每个格子是顶点，上下左右相邻（或八连通）的格子之间有边。用方向数组 `dx[]/dy[]` 统一处理四个方向，用 `visited` 标记或直接原地修改网格（如把 '1' 改成 '0'）来避免重复访问。",
+      "complexity": "时间 O(V·E) = O(rows × cols) / 空间 O(rows × cols)",
+      "pitfalls": [
+        "边界检查 `0 <= nx < rows && 0 <= ny < cols` 必须写全，否则越界",
+        "原地修改网格虽然省空间，但会破坏输入数据——若后续还要用需先备份",
+        "多源 BFS（多个起点同时扩展）只需在初始化时把所有起点入队，不要写成多次单源 BFS"
+      ],
+      "problems": [
+        "graph-grid-islands"
+      ]
+    },
+    {
+      "name": "带权最短路（Dijkstra）",
+      "signal": "带权图求最短路且边权非负；「最少花费」「最短时间」",
+      "idea": "堆优化的 Dijkstra：`dist[s]=0`，用小根堆存 `(距离, 顶点)`。每次弹出堆顶，**若其距离已大于 `dist[u]` 说明是过期条目，跳过**；否则遍历邻居做松弛，把改进后的距离压入堆。",
+      "complexity": "时间 O((V+E) log V) / 空间 O(V+E)",
+      "pitfalls": [
+        "**边权必须非负**，有负权要用 Bellman-Ford 或 SPFA",
+        "**必须跳过过期条目**，否则复杂度退化",
+        "距离数组要用 long long，INF 取足够大（如 4e18）"
+      ],
+      "problems": [
+        "graph-dijkstra"
+      ]
+    },
+    {
+      "name": "二分图判定（染色）",
+      "signal": "能否把点分成两组使每条边两端异组；判断奇环",
+      "idea": "给顶点染 0/1 两色，从每个未染色的点出发 BFS：邻居未染色就染相反色，若邻居已染色且与当前同色则判定失败。等价于「图中不存在奇环」。",
+      "complexity": "时间 O(V+E) / 空间 O(V+E)",
+      "pitfalls": [
+        "**外层必须遍历所有顶点**，图不一定连通，只从 1 号点开始会漏判",
+        "判断冲突是「邻居与当前点同色」，不是「邻居未染色」",
+        "孤立点自成一组，不影响二分性"
+      ],
+      "problems": [
+        "graph-bipartite"
+      ]
+    }
+  ],
+  "techniques": [
+    {
+      "name": "邻接表建图（无向图）",
+      "detail": "稀疏图的通用存储方式，空间 O(V+E)。",
+      "lang": "cpp",
+      "code": "int n, m;\nstd::cin >> n >> m;\nstd::vector<std::vector<int>> g(n + 1);   // 1-based\nfor (int i = 0; i < m; ++i) {\n    int u, v;\n    std::cin >> u >> v;\n    g[u].push_back(v);\n    g[v].push_back(u);          // 无向图要双向加边\n}"
+    },
+    {
+      "name": "BFS 求最短路",
+      "detail": "入队即标记，dist 数组同时承担「距离」和「访问标记」两个职责。",
+      "lang": "cpp",
+      "code": "std::vector<int> dist(n + 1, -1);   // -1 表示未访问\nstd::queue<int> q;\ndist[s] = 0;\nq.push(s);\nwhile (!q.empty()) {\n    int u = q.front(); q.pop();\n    for (int v : g[u]) {\n        if (dist[v] == -1) {          // 未访问\n            dist[v] = dist[u] + 1;\n            q.push(v);                // 入队时立即标记\n        }\n    }\n}"
+    },
+    {
+      "name": "DFS 求连通块数量",
+      "detail": "对每个未访问点发起 DFS，块数加一。",
+      "lang": "cpp",
+      "code": "std::vector<bool> vis(n + 1, false);\nstd::function<void(int)> dfs = [&](int u) {\n    vis[u] = true;\n    for (int v : g[u]) {\n        if (!vis[v]) dfs(v);\n    }\n};\n\nint blocks = 0;\nfor (int i = 1; i <= n; ++i) {\n    if (!vis[i]) {          // 每个未访问点开一个新块\n        dfs(i);\n        ++blocks;\n    }\n}"
+    },
+    {
+      "name": "拓扑排序（Kahn，字典序最小）",
+      "detail": "入度为 0 入堆；用优先队列即可得到字典序最小的拓扑序。",
+      "lang": "cpp",
+      "code": "std::vector<int> indeg(n + 1, 0);\nfor (int u = 1; u <= n; ++u)\n    for (int v : g[u]) ++indeg[v];\n\nstd::priority_queue<int, std::vector<int>, std::greater<int>> pq;  // 小根堆 → 字典序最小\nfor (int i = 1; i <= n; ++i)\n    if (indeg[i] == 0) pq.push(i);\n\nstd::vector<int> order;\nwhile (!pq.empty()) {\n    int u = pq.top(); pq.pop();\n    order.push_back(u);\n    for (int v : g[u]) {\n        if (--indeg[v] == 0) pq.push(v);\n    }\n}\nif ((int)order.size() < n) { /* 有环 */ }"
+    },
+    {
+      "name": "并查集（路径压缩 + 按秩合并）",
+      "detail": "近乎 O(1) 的连通性查询，是处理动态连通性的标准工具。",
+      "lang": "cpp",
+      "code": "struct DSU {\n    std::vector<int> p, rnk;\n    DSU(int n) : p(n + 1), rnk(n + 1, 0) {\n        for (int i = 1; i <= n; ++i) p[i] = i;\n    }\n    int find(int x) {                 // 路径压缩（迭代版，防爆栈）\n        int root = x;\n        while (p[root] != root) root = p[root];\n        while (p[x] != root) { int nx = p[x]; p[x] = root; x = nx; }\n        return root;\n    }\n    bool unite(int a, int b) {        // 按秩合并\n        a = find(a); b = find(b);\n        if (a == b) return false;     // 已在同一集合（加这条边会成环）\n        if (rnk[a] < rnk[b]) std::swap(a, b);\n        p[b] = a;\n        if (rnk[a] == rnk[b]) ++rnk[a];\n        return true;\n    }\n    bool same(int a, int b) { return find(a) == find(b); }\n};"
+    },
+    {
+      "name": "网格 BFS（四方向）",
+      "detail": "方向数组统一处理上下左右，注意边界检查。",
+      "lang": "cpp",
+      "code": "const int dx[4] = {1, -1, 0, 0};\nconst int dy[4] = {0, 0, 1, -1};\nstd::queue<std::pair<int,int>> q;\nstd::vector<std::vector<int>> dist(rows, std::vector<int>(cols, -1));\ndist[sx][sy] = 0;\nq.push({sx, sy});\nwhile (!q.empty()) {\n    auto [x, y] = q.front(); q.pop();\n    for (int d = 0; d < 4; ++d) {\n        int nx = x + dx[d], ny = y + dy[d];\n        if (nx < 0 || nx >= rows || ny < 0 || ny >= cols) continue;  // 边界\n        if (grid[nx][ny] == 1 || dist[nx][ny] != -1) continue;       // 障碍或已访问\n        dist[nx][ny] = dist[x][y] + 1;\n        q.push({nx, ny});\n    }\n}"
+    }
+  ],
+  "complexity_table": [
+    {
+      "op": "邻接矩阵：判断两点是否相邻",
+      "time": "O(1)",
+      "note": "空间 O(V²)，适合稠密图"
+    },
+    {
+      "op": "邻接矩阵：遍历某点邻居",
+      "time": "O(V)",
+      "note": "需扫描整行"
+    },
+    {
+      "op": "邻接表：遍历某点邻居",
+      "time": "O(deg(u))",
+      "note": "空间 O(V+E)，适合稀疏图"
+    },
+    {
+      "op": "BFS / DFS 遍历全图",
+      "time": "O(V+E)",
+      "note": "邻接表实现"
+    },
+    {
+      "op": "拓扑排序（Kahn）",
+      "time": "O(V+E)",
+      "note": "字典序最小用堆则 O(V log V + E)"
+    },
+    {
+      "op": "并查集单次操作",
+      "time": "O(α(n)) ≈ O(1)",
+      "note": "需路径压缩 + 按秩合并"
+    },
+    {
+      "op": "Dijkstra（堆优化）",
+      "time": "O((V+E) log V)",
+      "note": "非负边权，用于带权最短路"
+    },
+    {
+      "op": "Floyd 全源最短路",
+      "time": "O(V³)",
+      "note": "小规模图，可处理负边"
+    }
+  ],
+  "checklist": [
+    "图题第一步永远是「建模 + 选存储」，邻接表是默认选择",
+    "BFS **入队时就标记**已访问，不是出队时",
+    "无权图最短路用 BFS；带权图要用 Dijkstra（非负）或 Bellman-Ford",
+    "连通块要遍历所有顶点发起 DFS，不能只从 1 号点开始",
+    "拓扑排序只用于有向图；结果长度 < V 说明有环",
+    "要求字典序最小的拓扑序 → 把队列换成小根堆",
+    "并查集必须写路径压缩，否则可能退化",
+    "网格题用方向数组，边界检查要写全",
+    "多源 BFS 在初始化时把所有起点一次性入队"
+  ]
+}

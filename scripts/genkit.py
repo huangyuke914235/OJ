@@ -95,9 +95,76 @@ def finalize(problem: dict, out_path: Path, samples_from: int = 0) -> Path:
     return out_path
 
 
+# 常用 C++ 头文件集合，减少各题参考解的样板
+CPP_HEADER = """#include <cstdio>
+#include <cstring>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <queue>
+#include <stack>
+#include <deque>
+#include <map>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+#include <functional>
+#include <numeric>
+#include <iostream>
+using namespace std;
+"""
+
+
 def numbers(text: str) -> List[int]:
     return [int(x) for x in text.split()]
 
 
 def lines(text: str) -> List[str]:
     return text.strip("\n").split("\n")
+
+
+def problem(
+    pid: str,
+    title: str,
+    difficulty: str,
+    tags: List[str],
+    source: str,
+    url: str,
+    statement: str,
+    input_format: str,
+    output_format: str,
+    constraints: List[str],
+    solver: Callable[[str], str],
+    specs: Sequence[CaseSpec],
+    cpp: str,
+    hint: str = "",
+    samples: Optional[List[dict]] = None,
+    starter: Optional[str] = None,
+    time_limit: float = 2.0,
+) -> dict:
+    """用较少的样板构造一道题。
+
+    测试数据由 ``solver`` 生成，因此标准输出**必然**与参考解一致。
+
+    :param cpp: C++ 参考解完整源码
+    :param starter: 起始代码；省略时用 ``cpp`` 并去掉函数体（仅作占位）
+    """
+    tests = build_tests(specs, solver)
+    return {
+        "id": pid,
+        "title": title,
+        "difficulty": difficulty,
+        "tags": list(tags),
+        "source": {"name": source, "url": url},
+        "statement": statement,
+        "input_format": input_format,
+        "output_format": output_format,
+        "constraints": list(constraints),
+        "samples": samples or [],
+        "hint": hint,
+        "starter_code": {"cpp": starter if starter is not None else cpp},
+        "tests": tests,
+        "reference": {"cpp": cpp},
+        "time_limit": time_limit,
+    }

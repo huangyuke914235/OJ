@@ -1,0 +1,210 @@
+{
+  "category": "01-array-linkedlist",
+  "name": "数组与链表",
+  "summary": "线性表的两种物理实现：数组靠「连续内存 + 下标」换随机访问，链表靠「指针 + 分散节点」换插入删除。绝大多数线性表题的解法本质是「用两个或多个游标协调推进」。",
+  "overview": "数组与链表是所有数据结构的起点，也是笔试面试出现频率最高的部分。\n\n**数组**在内存中连续存放，因此支持 $O(1)$ 随机访问，但插入/删除需要搬移元素，代价 $O(n)$。数组题的核心矛盾通常是「如何在一次遍历内完成本需要多次遍历的事」——解法往往落在**双指针**、**前缀和**、**滑动窗口**上。\n\n**链表**由分散的节点通过指针串起来，随机访问 $O(n)$，但在已知位置插入/删除只需 $O(1)$（不算查找）。链表题的核心矛盾是「单向指针只能前进，如何回头或定位倒数第 k 个」——解法往往落在**快慢指针**、**哑结点（dummy head）**、**迭代中保存前驱**上。\n\n> **一句话记忆**：数组题想「怎么少遍历几遍」，链表题想「怎么用有限几个指针把位置关系理清」。",
+  "patterns": [
+    {
+      "name": "双指针（相向而行）",
+      "signal": "有序数组上找一对元素满足某条件；或需要原地收缩区间",
+      "idea": "左指针 `l` 指向开头，右指针 `r` 指向结尾。根据当前两数之和与目标的大小关系决定移动哪一侧：和偏小就 `l++`，和偏大就 `r--`。关键在于**每一步都能排除掉一整行/一整列的候选**，从而把 $O(n^2)$ 降到 $O(n)$。",
+      "complexity": "时间 O(n) / 空间 O(1)",
+      "pitfalls": [
+        "循环条件写 `l < r` 而不是 `l <= r`，否则同一个元素会被用两次",
+        "忘记题目要求的下标从 0 还是 1 开始",
+        "数组无序时不能直接用相向双指针，需先排序（但排序会改变原下标）"
+      ],
+      "problems": [
+        "array-two-sum-sorted",
+        "array-reverse"
+      ]
+    },
+    {
+      "name": "双指针（同向 / 快慢）",
+      "signal": "原地删除元素、去重、判断环、找倒数第 k 个",
+      "idea": "两个指针从同一侧出发，以不同速度或不同规则前进。**快慢指针**（速度不同）用于判环与找中点；**读写指针**（一快一慢但都是线性推进）用于原地压缩数组，把「保留的元素」写到 `slow` 位置，`fast` 负责扫描。",
+      "complexity": "时间 O(n) / 空间 O(1)",
+      "pitfalls": [
+        "判环时快指针一次走两步，循环条件必须同时检查 `fast` 和 `fast->next` 非空",
+        "找环入口时需要「相遇后一个指针回到起点、两者同速前进」的推导，直接返回相遇点会错",
+        "原地压缩后要返回 `slow` 作为新长度，而不是 `fast`"
+      ],
+      "problems": [
+        "list-detect-cycle",
+        "array-rotate-right",
+        "array-remove-duplicates",
+        "array-move-zeroes",
+        "list-middle-node"
+      ]
+    },
+    {
+      "name": "原地反转 / 循环移位",
+      "signal": "要求 O(1) 额外空间地反转数组、旋转数组、反转链表",
+      "idea": "**数组反转**用相向双指针交换。**循环右移 k 位**有一个经典三步法：整体反转 → 反转前 k 个 → 反转后 n−k 个。**链表反转**用三个指针 `prev/cur/next` 逐个掉头，`next` 的作用是防止链断掉后找不到后继。",
+      "complexity": "时间 O(n) / 空间 O(1)",
+      "pitfalls": [
+        "移位前要 `k %= n`，否则 k > n 时会越界或逻辑错",
+        "链表反转必须在改 `cur->next` **之前**先存下 `next = cur->next`",
+        "反转结束后返回的是 `prev` 而不是 `cur`（`cur` 已经是 nullptr）"
+      ],
+      "problems": [
+        "array-reverse",
+        "array-rotate-right",
+        "list-reverse"
+      ]
+    },
+    {
+      "name": "链表哑结点与指针重连",
+      "signal": "需要删除/插入节点，且可能动到头部节点",
+      "idea": "新建一个 `dummy` 结点指向原头结点，这样「删除头结点」和「删除中间结点」就统一了，不必写特判。删除倒数第 k 个的经典做法是**快慢指针间隔 k**：快指针先走 k 步，然后两者同步前进，快指针到尾时慢指针正好停在待删节点的前驱。",
+      "complexity": "时间 O(n) / 空间 O(1)",
+      "pitfalls": [
+        "删节点后忘记释放内存（工程上），或忘记把 `prev->next` 接上",
+        "快指针先走 k 步时若中途变成 nullptr，说明 k 超过链表长度",
+        "返回时返回 `dummy->next` 而不是原 `head`（head 可能已被删）"
+      ],
+      "problems": [
+        "list-remove-nth-from-end",
+        "list-merge-sorted"
+      ]
+    },
+    {
+      "name": "前缀和 / 滑动窗口",
+      "signal": "求连续子数组的和、最大子段和、区间统计",
+      "idea": "**前缀和**把区间和转成两个前缀相减，`sum(i..j) = pre[j+1] - pre[i]`，从而 $O(1)$ 查询任意区间。**Kadane 算法**求最大子段和：设 `cur` 为「以当前位置结尾的最大和」，转移为 `cur = max(a[i], cur + a[i])`，含义是「要么另起炉灶，要么接上前面」。",
+      "complexity": "时间 O(n) / 空间 O(n)（前缀和）或 O(1)（Kadane）",
+      "pitfalls": [
+        "前缀和数组要开 n+1 大小并令 `pre[0] = 0`，否则区间 [0, j] 无法统一表示",
+        "Kadane 的答案是遍历过程中的最大值，不能直接返回 `cur`",
+        "全负数数组时 Kadane 应返回最大的那个负数，初值不能设为 0"
+      ],
+      "problems": [
+        "array-max-subarray"
+      ]
+    },
+    {
+      "name": "区间合并 / 排序后扫描",
+      "signal": "给一堆区间，求合并后的区间、重叠个数、覆盖长度",
+      "idea": "先按**左端点升序**排序，然后线性扫描：维护当前合并区间的 `[l, r]`，若下一个区间的左端点 `<= r` 则说明有重叠（或相接），把 `r` 更新为 `max(r, next_r)`；否则当前区间定型，推入答案并开启新区间。",
+      "complexity": "时间 O(n log n)（排序主导）/ 空间 O(log n) 或 O(n)",
+      "pitfalls": [
+        "排序时若左端点相同，应再按右端点排序，保证结果稳定",
+        "判断重叠用 `<=` 还是 `<` 取决于题目是否把「端点相接」视为重叠",
+        "更新右端点要取 `max`，不能直接赋值——新区间可能完全被包含"
+      ],
+      "problems": [
+        "array-merge-intervals"
+      ]
+    },
+    {
+      "name": "多数元素 / 投票抵消",
+      "signal": "求出现次数超过一半的元素；「两两抵消后剩下的那个」",
+      "idea": "Boyer-Moore 投票算法：维护候选者 `cand` 与计数 `cnt`。遍历数组，`cnt == 0` 时把当前元素设为候选者；与候选者相同则 `cnt++`，否则 `cnt--`。直觉是「多数元素与其他元素一换一抵消后仍会剩下」。",
+      "complexity": "时间 O(n) / 空间 O(1)",
+      "pitfalls": [
+        "答案必须「严格超过一半」，恰好等于一半不满足条件",
+        "若题目不保证存在多数元素，投票后还需再扫一遍验证",
+        "计数归零时换候选者，不要写成只在第一个元素时初始化"
+      ],
+      "problems": [
+        "array-majority-element"
+      ]
+    }
+  ],
+  "techniques": [
+    {
+      "name": "相向双指针模板",
+      "detail": "适用于有序数组上的配对查找、原地反转、盛水问题等。核心是「每次移动都能排除掉确定的候选」。",
+      "lang": "cpp",
+      "code": "int l = 0, r = n - 1;\nwhile (l < r) {\n    int sum = a[l] + a[r];\n    if (sum == target) {\n        // 找到解\n        break;\n    } else if (sum < target) {\n        ++l;          // 和太小，只能让左边变大\n    } else {\n        --r;          // 和太大，只能让右边变小\n    }\n}"
+    },
+    {
+      "name": "快慢指针判环 + 找环入口",
+      "detail": "快指针一次两步、慢指针一次一步。若有环必相遇；相遇后把其中一个指针放回头结点，两者改为同速前进，再次相遇处即环入口。",
+      "lang": "cpp",
+      "code": "ListNode *slow = head, *fast = head;\nwhile (fast && fast->next) {\n    slow = slow->next;\n    fast = fast->next->next;\n    if (slow == fast) {\n        // 有环：找入口\n        ListNode *p = head;\n        while (p != slow) {\n            p = p->next;\n            slow = slow->next;\n        }\n        return p;          // 环入口\n    }\n}\nreturn nullptr;            // 无环"
+    },
+    {
+      "name": "链表反转（迭代）",
+      "detail": "三指针逐个掉头。next 必须最先保存，否则改完 cur->next 就丢失了后继。",
+      "lang": "cpp",
+      "code": "ListNode *prev = nullptr, *cur = head;\nwhile (cur) {\n    ListNode *next = cur->next;   // 先存后继\n    cur->next = prev;             // 掉头\n    prev = cur;                   // 前驱前移\n    cur = next;                   // 当前前移\n}\nreturn prev;                      // 新头结点"
+    },
+    {
+      "name": "数组循环右移 k 位（三次反转）",
+      "detail": "整体反转后，前 k 个和后 n−k 个各自反转，等价于循环右移 k 位。空间 O(1)。",
+      "lang": "cpp",
+      "code": "k %= n;                                  // 必须取模\nstd::reverse(a.begin(), a.end());        // 1. 整体反转\nstd::reverse(a.begin(), a.begin() + k);  // 2. 前 k 个\nstd::reverse(a.begin() + k, a.end());    // 3. 后 n-k 个"
+    },
+    {
+      "name": "Kadane 最大子段和",
+      "detail": "cur 表示「以 i 结尾的最大子段和」，每一步决定是接上前面的还是从 i 重新开始。",
+      "lang": "cpp",
+      "code": "long long cur = a[0], best = a[0];   // 初值取首元素，兼顾全负数\nfor (int i = 1; i < n; ++i) {\n    cur = std::max<long long>(a[i], cur + a[i]);\n    best = std::max(best, cur);\n}\nreturn best;"
+    },
+    {
+      "name": "区间合并",
+      "detail": "按左端点排序后线性扫描，用 max 更新右端点。",
+      "lang": "cpp",
+      "code": "std::sort(iv.begin(), iv.end());     // 按左端点升序\nstd::vector<std::pair<int,int>> res;\nfor (auto &[l, r] : iv) {\n    if (res.empty() || l > res.back().second) {\n        res.push_back({l, r});        // 无重叠，开新区间\n    } else {\n        res.back().second = std::max(res.back().second, r);\n    }\n}"
+    }
+  ],
+  "complexity_table": [
+    {
+      "op": "数组：按下标随机访问",
+      "time": "O(1)",
+      "note": "连续内存，直接算地址"
+    },
+    {
+      "op": "数组：尾部插入/删除",
+      "time": "O(1) 均摊",
+      "note": "vector 扩容时需搬移，均摊为常数"
+    },
+    {
+      "op": "数组：中间插入/删除",
+      "time": "O(n)",
+      "note": "需搬移后续元素"
+    },
+    {
+      "op": "数组：查找某值",
+      "time": "O(n)",
+      "note": "无序时只能线性扫描"
+    },
+    {
+      "op": "链表：按下标访问第 k 个",
+      "time": "O(n)",
+      "note": "必须从头走 k 步"
+    },
+    {
+      "op": "链表：已知前驱时插入/删除",
+      "time": "O(1)",
+      "note": "只改指针，不搬数据"
+    },
+    {
+      "op": "链表：查找某值",
+      "time": "O(n)",
+      "note": "无法随机访问"
+    },
+    {
+      "op": "排序（比较排序）",
+      "time": "O(n log n)",
+      "note": "归并/快排/堆排"
+    },
+    {
+      "op": "二分查找（有序数组）",
+      "time": "O(log n)",
+      "note": "每次排除一半"
+    }
+  ],
+  "checklist": [
+    "看到「有序数组 + 找一对」→ 立刻想到相向双指针",
+    "看到「原地删除 / 去重」→ 想到读写双指针，返回值是新长度",
+    "看到「链表 + 倒数第 k / 找中点 / 判环」→ 想到快慢指针",
+    "链表题动头结点时，先加 dummy 结点消除特判",
+    "链表反转必须「先存 next 再改指针」",
+    "循环右移 k 位先做 k %= n",
+    "最大子段和用 Kadane，注意全负数的情况",
+    "区间合并先按左端点排序，右端点用 max 更新",
+    "数组题先问：能不能一次遍历解决？不能的话能不能用前缀和预处理？"
+  ]
+}
